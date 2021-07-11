@@ -24,7 +24,7 @@ We hope to provide several documents, available as .jl (Pluto format) with PDF/H
 5. Matters of efficiency
 6. Advantages of macros
 7. Voronoi diagrams
-8. Examples from John Hinch's new book on fluid dynamics?
+8. Examples from John Hinch's new book on [fluid dynamics](https://www.cambridge.org/gb/academic/subjects/mathematics/fluid-dynamics-and-solid-mechanics/think-you-compute-prelude-computational-fluid-dynamics?format=PB)?  [code](https://www.damtp.cam.ac.uk/user/hinch/teaching/CMIFM_Handouts/)
 9. Game of life
 10. Automatic differentiation --> neural networks (gradient descent) [starting point](https://www.youtube.com/watch?v=vAp6nUMrKYg)
 11. Something to read in large CSV data files/process/summarise / data analysis
