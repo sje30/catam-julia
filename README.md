@@ -9,7 +9,7 @@ This is the home page for creating the Julia materials for CATAM.
 We hope to provide several documents, available as .jl (Pluto format) with PDF/HTML.  Movies could be made too (but take a lot of time).
 
 
-1. Introduction to Julia for CATAM
+1. [Introduction to Julia for CATAM](intro/README.md)
 2. Conversion of 1A code.
 3. Conversion of 1B Numerical analysis
 4. Case studies (see next section) to demonstrate different aspects of Julia
