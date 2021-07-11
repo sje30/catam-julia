@@ -10,7 +10,7 @@ We hope to provide several documents, available as .jl (Pluto format) with PDF/H
 
 
 1. [Introduction to Julia for CATAM](intro/README.md)
-2. Conversion of 1A code.
+2. Conversion of [1A code](1a/README.md).
 3. Conversion of 1B Numerical analysis
 4. 1B model code for [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf)
 5. Case studies (see next section) to demonstrate different aspects of Julia
