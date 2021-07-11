@@ -1,6 +1,6 @@
 # Introduction document
 
-This document will be a Julia equivalent of the [MATLAB introduction]()
+This document will be a Julia equivalent of the [MATLAB introduction](https://www.maths.cam.ac.uk/undergrad/catam/files/booklet.pdf)
 
 Rather than provide a simple translation, we will rewrite the key elements.
 
