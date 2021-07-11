@@ -29,6 +29,7 @@ We hope to provide several documents, available as .jl (Pluto format) with PDF/H
 10. Automatic differentiation --> neural networks (gradient descent) [starting point](https://www.youtube.com/watch?v=vAp6nUMrKYg)
 11. Something to read in large CSV data files/process/summarise / data analysis
 12. Numerical optimisation?
+13. Turing patterns -- following tutorial by [Miura and Maini](https://paperpile.com/app/p/56e34cfe-cb76-07bd-ae2d-49dd9faad3b9)
 
 # Acknowledgements
 
