@@ -4,10 +4,38 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ b4c31904-2384-425d-a12b-5f3c145bc5fb
+using PrettyTables
+
+# ╔═╡ 1cbe8ec9-a704-4912-98d2-69385c773627
+using Plots
+
+# ╔═╡ 09a3f57a-db03-4bf4-9129-ab4a0254604e
+begin
+	using PlutoUI
+	PlutoUI.TableOfContents(title = "Contents")
+end
+
 # ╔═╡ 58a85b40-e086-11eb-1471-a3d9d5596625
 md"""
-# Julia for CATAM
+# Introduction to Julia for CATAM
 
+"""
+
+# ╔═╡ b695a54f-da17-4acf-aa30-5fb2344df48e
+md"""
+## About this manual
+
+This manual is intended as an introduction to the programming language Julia for use for [CATAM](https://www.maths.cam.ac.uk/undergrad/catam). Some of the advantages of Julia over other programming languages can be found in the section [Learning Julia](#ffcdf202-a14d-417a-9a82-bf3e5ba38972). The other principal advantage it has over the likes of perennial favourites Matlab and Python is speed, which can be critical in some Part II projects in particular, and is rare among languages with the intuitive and wide-ranging syntax that Julia provides.
+
+This manual is perfectly viewable in web-page form, and you will be able to copy code from the manual into Julia to test/edit it. No code which is used in creating the outputs seen in this document is hidden.
+
+However, the interactivity built into the Pluto notebook in which this is written is lost. To enable this:
+- Download the notebook as a *.jl* file by clicking *`Edit or run this notebook`* in the top right, and clicking the download button
+- Download and install Julia as detailed in the section [Installing Julia](#45aa5e5d-b518-4f28-ab45-365a9c3d4ee1) (note that no editor, e.g. VSCode, is needed)
+- Download the Pluto package as detailed in the section [Pluto notebooks](#3cb29926-3332-429b-b8b6-0b95113b388b)
+- Open the notebook which you have downloaded in Pluto
+A more detailed guide to downloading Julia and Pluto, with images, is [here](https://medium.com/swlh/a-guide-to-building-reactive-notebooks-for-scientific-computing-with-julia-and-pluto-jl-1a2c0c455d51)
 """
 
 # ╔═╡ 45aa5e5d-b518-4f28-ab45-365a9c3d4ee1
@@ -17,7 +45,7 @@ md"""
 To use Julia, two elements are required: Julia itself, and an editor to allow you to write and run your programs.
 
 Julia is a standalone program downloaded from <https://julialang.org/downloads/>
-- For most Windows users, the version to download will be the 64-bit (installer). Once downloaded, run the installer, making sure to check the "Add Julia to PATH" box (which will allow the editor to find it)
+- For most Windows users, the version to download will be the 64-bit (installer). Once downloaded, run the installer, making sure to check the **Add Julia to PATH** box (which will allow the editor to find it)
 - For Mac users there is no such paralysis of choice, the single Mac download link is the one you want
 - For Linux users, you know what you're doing anyway
 Additional platform specific information can be found at <https://julialang.org/downloads/platform/>
@@ -26,7 +54,7 @@ An editor is technically not essential, although it makes programming immeasuara
 
 The third and final step is to open VSCode and install the Julia extension which allows it to recognise and run Julia code. This is found in the Extensions tab (accessible via **View** > **Extensions**, or `Ctrl` + `Shift` + `X`, or as the fifth symbol on the left sidebar). Search for Julia, and click Install. Once the extension has installed, restart VSCode, and it will be ready to use. Documentation for the extension is found at <https://www.julia-vscode.org/docs/dev/>, which provides (at the time of writing) limited information on using the extension.
 
-Many alternatives to VSCode exist, as detailed in the Editors and IDEs section of <https://julialang.org/>. If you already have an editor of choice, it is likely that a Julia syntax-highlighting or even REPL extension exists for it.
+Many alternatives to VSCode exist, as detailed in the **Editors and IDEs** section of <https://julialang.org/>. If you already have an editor of choice, it is likely that a Julia syntax-highlighting or even REPL extension exists for it.
 """
 
 # ╔═╡ 6dab02d3-4b45-4227-a790-00350002a909
@@ -53,7 +81,7 @@ a + b
 
 # ╔═╡ d3da52ff-1f54-4b15-bdb7-1c213154cc89
 md"""
-Note that without the semicolon, an output is displayed, which may or may not be desirable. Multiple lines can be written at once by seperation by semicolons, e.g
+Note that without the semicolon, an output is displayed, which may or may not be desirable. Multiple lines can be written at once by seperation by semicolons, e.g.:
 """
 
 # ╔═╡ 21f97b7f-7dd1-4f12-9812-081f08ed3f1f
@@ -65,7 +93,9 @@ One particularly useful feature of the REPL is help mode. By typing `?` into the
 
 ### The editor
 
-The editor pane is the large central pane, which will allow the writing of programs in the form of scripts. To create a new file, select **File** and choose **New File** from the menu, or use `Ctrl` + `N`. Then, we need to tell VSCode that we are writing Julia, which can be done through the **Select a language** prompt, or by saving the file with the file type *.jl*.
+The editor pane is the large central pane, which will allow the writing of programs in the form of scripts. To create a new file, select **File** and choose **New File** from the menu, or use `Ctrl` + `N`. Then, you need to tell VSCode that you will be writing Julia, which can be done through the **Select a language** prompt, or by saving the file with the file type *.jl*.
+
+VSCode will prompt you to open a folder, which you will want to do. This not only allows for saving of your files to a chosen location, but also will determine the place from which any file paths that you use (such as in the section [Customising outputs](#3665a395-ae1c-40cf-8e98-00534f53ee4f)), allowing your program to work independent of its file location.
 
 Once a script has been written and saved, it can be run through the REPL by clicking the triangle in the top right and selecting **Julia: Execute File in REPL**. This does not have a keyboard shortcut automatically, but this (and any other keyboard shortcuts) can be changed through the command palette (`Ctrl` + `Shift` + `P`) by searching for the relevant command and clicking the cog that appears when you mouse over it.
 """
@@ -216,34 +246,363 @@ which can be seen in the following example:
 # ╔═╡ db2c9293-1c23-4708-b1a9-5ed013d1f8f4
 3 < 4 ? "This is true" : "This is false"
 
+# ╔═╡ f3cfccf4-ff2d-44af-9735-242c2c1e80ac
+md"""
+Alternatively, consider how the function `h` in the previous section could be rewritten to make use of the ternary operator.
+"""
+
+# ╔═╡ 4325ba80-3823-4c76-992e-351969e67222
+md"""
+### Broadcasting and splat
+
+If a function takes an array (such as a vector or a matrix) or similar collection (such as a tuple) as an input, it will treat it as such, and operations will act as such (such as matrix products). However, sometimes different behaviour is desired.
+
+Julia has inbuilt functionality for elementwise operation without needing to define a seperate function to do so, which is called broadcasting. Consider the function:
+"""
+
+# ╔═╡ 84588d2f-de11-44d3-8b1d-afcaa9b59282
+p(x) = x^3 - 4x^2 + 2x
+
+# ╔═╡ cb5f1991-5928-4bae-b853-935d08c1f61a
+A = [ [1,2,3] [4,5,6] [7,8,9] ]
+
+# ╔═╡ f7943ee4-6927-4aef-b97e-b70691e431f7
+md"""
+For matrix `A`, `p(A)` is defined by squaring and cubing `A`
+"""
+
+# ╔═╡ e526a902-224f-4f19-8bab-7c53be471671
+p(A)
+
+# ╔═╡ d9788710-0493-41b2-8510-08ff76614977
+md"""
+If instead we want `p` to act elementwise, there are two options.
+"""
+
+# ╔═╡ cb4f8751-6678-4db3-98f1-2c380d272428
+broadcast(p,A)
+
+# ╔═╡ fffd5baf-9142-4c32-9a85-c0258e6366be
+p.(A)
+
+# ╔═╡ 30f3d516-6f44-4eb3-8792-aa4e5ef7a93f
+md"""
+Alternatively, you may need to parse each element as seperate arguments to a function, which is done through the splat operator `...`. As an example, consider the difference between:
+"""
+
+# ╔═╡ 7c081773-bb95-489c-844a-16f9c5bd950f
++(A)
+
+# ╔═╡ 8c58354d-8a1f-400b-a4a1-ff2ea9016e72
++(A...)
+
+# ╔═╡ 91855dee-a9a6-4782-b4af-62a87c2705b3
+md"""
+This is also useful for defining your own functions with an arbitrary number of arguments without needing them to be contained in a tuple beforehand, such as:
+"""
+
+# ╔═╡ f1a45f51-6ad6-43c2-904f-4fff9e399535
+function myminimum(x...)
+	m = Inf
+	for y ∈ x
+		if y < m
+			m = y
+		end
+	end
+	return m
+end
+
+# ╔═╡ 0b5793f1-8834-4258-846d-47b76bc9b6c8
+md"""
+Here, `x` encapsulates all of the inputs to the function in a single tuple, meaning that any number of arguments can be specified without needing to write seperate functions:
+"""
+
+# ╔═╡ 4df7cae4-4eeb-4681-a8d3-00c4f457ded2
+myminimum(12,15,9,151,23)
+
+# ╔═╡ d3d71501-0dc7-4d9e-a3b4-4cc62aa640ab
+myminimum(π,ℯ)
+
 # ╔═╡ ab8d0a33-c0cd-4ad3-9d94-b9b1afbcca4b
 md"""
 ### Packages
 
 As it is, Julia is already equipped with many useful tools, which for some projects may already be sufficient to complete them. However, there is far more that Julia can do through the package system.
 
-Packages are (usually quite specialised) extensions to Julia's functionality which can be downloaded and used in you programs. As an example, the Plots packages, which allows for the creation various plots, graphs, and diagrams, can be downloaded by running `using Pkg; Pkg.add("Plots")`. This only needs to be done the first time that a package is used, as it will download as remain accessible to you in the future. To access the functionality of the package, run `using Plots`.
+Packages are (usually quite specialised) extensions to Julia's functionality which can be downloaded and used in you programs. Any of these can be downloaded for the first time by running `using Pkg; Pkg.add("<package-name>")` in the REPL. Alternatively, pressing `]` in the REPL puts it in package mode, allowing packages to be downloaded by typing simple `add("<package-name>")`. This only needs to be done the first time that a package is used, as it will download as remain accessible to you in the future. To access the functionality of the package, run `using <package-name>`.
 
 Over 4000 packages exist for Julia, which can be searched through by any of the options linked at <https://julialang.org/packages/>
 """
 
 # ╔═╡ 2691d33f-7ecc-4c5b-a249-ac3f16fbefdb
 md"""
-### Macros
+### Expressions and Macros
+
+The `Expr` data type is used to store Julia code as a variable which is not run until the user wishes to evaluate it. For example:
 """
 
-# ╔═╡ 3cb29926-3332-429b-b8b6-0b95113b388b
+# ╔═╡ 46c6cbb6-e2a7-4ad9-8869-8f31a15c9358
+ifstatement = quote
+	if 3 < 4
+		return true
+	else
+		return false
+	end
+end;
+
+# ╔═╡ 9e65f10e-3963-45c6-a517-cb78756d8d77
+typeof(ifstatement)
+
+# ╔═╡ 2e9e8b67-7173-4e77-b5d1-f7eaa8834b5e
+eval(ifstatement)
+
+# ╔═╡ 47a3f741-4064-477e-8eb9-fc0ccac5858c
 md"""
-## Pluto notebooks
+These can be useful in many situations, such as to operate on pieces of code, or generate code automatically to simplify repetitive code. As an example, suppose we want do calculate the first ``50`` Fibonacci numbers and store them as `F₁`, `F₂`, ..., `F₅₀`. First, we can write a custom function to get the symbol `:Fₙ` (which is much like an expression but represents a single variable/function name instead of a larger snippet of code) from an integer `n`:
+"""
 
-Pluto notebooks are created from the Pluto package for Julia. They act as an alternative, more interactive method of presentation of Julia code; indeed this manual itself is a Pluto notebook. Pluto notebooks are edited from the browser, with text written in Markdown, which is simple but reasonably powerful text-editing tool, with a good introductory guide at several pages of <https://www.markdownguide.org/>.
+# ╔═╡ 18d2d68b-95cb-44a6-93d6-0f1dfd32b03a
+function symbolFn(n)
+	subscriptn = String([Char(0x2080+d) for d in reverse(digits(n))])
+	return Symbol("F",subscriptn)
+end;
 
-To use Pluto:
-  - Run `using Pkg; Pkg.add("Pluto");` in the Julia REPL and wait for the package to be downloaded and installed
-  - Now run `using Pluto; Pluto.run()`, which should open in your browser, or give an address of the form `localhost:1234/?secret=XXXXXXXX` for you to open
-  - You will be presented with a welcome page. A good place to start is the sample notebooks provided by the developers of Pluto, or this manual can be opened and interacted with by entering the URL <https://github.com/sje30/catam-julia/blob/main/intro/julia-manual.jl>. As some functionality of Julia relies on the file location, it may be useful to download the file to a chosen location and open it through Pluto
+# ╔═╡ 1a0ee7c6-58ca-44e5-a94d-b5cf60940392
+md"""
+Then, the variables themselves can be created:
+"""
 
-A similar although not Julia-specific notebook tool is Jupyter, which can be installed for VSCode or run in the browser like Pluto. For more information on this, see <https://jupyter.org/>, and the Jupyter extension for VSCode found through the extension search.
+# ╔═╡ c24f6d7e-0c78-41f4-9468-3d4a6210c47a
+begin
+	F₁ = 1
+	F₂ = 1
+	for n = 3:50
+		eval(:($(symbolFn(n)) = $(symbolFn(n-1)) + $(symbolFn(n-2))))
+	end
+end
+
+# ╔═╡ ffd60a8d-0c0a-4f76-8948-d6314d344878
+F₅₀
+
+# ╔═╡ 85843b08-dcf9-4449-88f9-255773605970
+md"""
+One particular use for expressions is in macros. These are function-like in that they take an input, run some pre-determined code using the input, and produce an output. However, macros differ from functions as they take their inputs as expressions, and also return expressions which are then run as code. Macros are distinguished as such by an `@` preceding their name.
+
+For example, the macro `@mutiple` runs the input code `n` times (note that `n` is specified as an integer by the double colon, so the macro will not run unless an integer is given). An example usage of this macro is also shown below:
+"""
+
+# ╔═╡ cdde6b43-39f2-4cda-bfea-eef48ee494eb
+macro multiple(n::Integer, expr)
+    return quote
+        $([esc(expr) for i ∈ 1:n]...)
+    end
+end
+
+# ╔═╡ 3c21e020-7287-4a3c-9046-7e2ab1150065
+begin
+	x = 1
+	@multiple 10 x += 1
+	x
+end
+
+# ╔═╡ d9bc039f-5e55-456c-8a12-d69869e73541
+md"""
+The macro `@macroexpand` can be used to show the expression returned by another macro before it is evaluated, which helps to see how macros work and is invaluable for debugging custom macros.
+
+Two related useful macros are `@elapsed`, which times how long its argument takes to run in seconds, returning the time while discarding the result, and `@time`, which prints the time and returns the result.
+"""
+
+# ╔═╡ a6023033-f699-4913-83b3-d4abb76e42e6
+@elapsed inv(rand(1000,1000))
+
+# ╔═╡ 3665a395-ae1c-40cf-8e98-00534f53ee4f
+md"""
+## Customising outputs
+
+*Note: Code referencing external files in this section is not interactive. To see the functionality in full, transfer the code yourself to your own scripts and test them out.*
+
+As standard, most outputs that Julia will be able to give will be in terms of variables such as numbers, vectors, matrics, etc., or text printed to the REPL. For more complex outputs, we need to look further afield.
+"""
+
+# ╔═╡ 992d6562-950d-4071-b189-b39a13fb7f30
+md"""
+### Outputting to files
+
+One option for a different output is to send the outputs to a seperate file instead of the REPL. This is done in three steps;
+- Open a file which can be written into (denoted by the `"w"` parameter) as a variable (so that it can be referenced later). The file name given represents a path relative to the current folder, which can be viewed by `pwd()`. If no file with this path exists, one will be created.
+```
+textfile = open("text.txt", "w")
+```
+- Write into the file, by using functions such as `show` and `println` in combination with the file as a parameter. For example, the vector `a = [1, 2, 3, 4]` can be written into the file by
+```
+println(textfile, a)
+```
+- Close the file to save it
+```
+close(textfile)
+```
+If all of the data needed to be written into the file is ready, these can be combined into a single statement, of the form
+```
+open("text.txt", "w") do textfile
+	println(textfile, a)
+end
+```
+which will automatically close the file once the `do` statement has finished.
+"""
+
+# ╔═╡ a4c99e37-b3b8-446e-a655-d4ac1237d0c7
+md"""
+### Creating tables with PrettyTables
+
+A table is often the best way to present data, so having a way of creating them automatically is very useful. Contrary to expectation, the package `Tables` is not the package to do this, since it is more useful for database-like manipulation of tables rather than displaying them as objects. For this purpose, we need `PrettyTables`.
+"""
+
+# ╔═╡ 4f886a63-42fa-4c4d-b7fe-c0caa2884ad3
+md"""
+In its most basic usage, `PrettyTables` allows the conversion of a matrix into a table
+"""
+
+# ╔═╡ 0a95770e-b495-4a4d-9e59-d1fbf662829d
+M = rand(4,4)
+
+# ╔═╡ 8f408461-f868-41d8-98c9-42babca608f7
+with_terminal() do
+	pretty_table(M)
+end
+
+# ╔═╡ 24e06691-f641-4f41-a3f4-dfd57f600c68
+md"""
+One important note with `PrettyTables` is that the tables outputted are printed to the REPL (or another output of choice as we'll see later), and are not returned as variables. As a result, for display purposes within this notebook, the tables will have to be returned in mini-terminals as above, created by the function `with_terminal`. Unfortunately, the limitations of these terminals means that many features of `PrettyTables` cannot be viewed directly from this notebook. To use this code in the REPL, copy only the contents of the `do` block (in this case `pretty_table(M)`).
+
+The power of `PrettyTables` comes in the multitude of customisations that can be made to the table. These, and the package as a whole, are comprehensively documented at <https://ronisbr.github.io/PrettyTables.jl/stable/>.
+
+The most impactful keyword is `backend`, which allows the choice between three forms of output for the table (and most other keywords depend on which backend is chosen):
+- `backend = :text` is the default, outputting the table in raw text
+- `backend = :html` outputs HTML defining the table
+- `backend = :latex` outputs $\LaTeX$ code defining the table as a `tabular` object
+
+`PrettyTables` also allows creating preset configurations which can be used for multiple tables. This can be done either through the `set_table_conf` and `pretty_table_with_conf` functions:
+"""
+
+# ╔═╡ e9eca1cf-149e-4763-8024-1093841c5430
+tableconfig = set_pt_conf(
+	tf = tf_markdown,
+	columns_width = 15,
+	alignment = :c,
+	formatters = (value,i,j) -> round(value, digits = 3)
+)
+
+# ╔═╡ 359594ae-dc8b-4d59-babd-5d5163098cad
+with_terminal() do
+	pretty_table_with_conf(tableconfig, M; header = ["Player $i" for i = 1:4])
+end
+
+# ╔═╡ 384289b4-2788-47ba-a061-7ce025db7a4b
+md"""
+or through the use of macros, with `@ptconf` setting the configuration, `@pt` using this configuration to display tables, and `@ptconfclean` clearing the configuration:
+"""
+
+# ╔═╡ 3a54dbdb-7fa8-4fcc-864a-f67a8c3df010
+@ptconf(
+	backend = :latex,
+	highlighters = LatexHighlighter((data,i,j) -> data[i,j] > 0.5, "textbf"),
+	wrap_table = false,
+	alignment = :c
+)
+
+# ╔═╡ 87ee2688-4612-48f3-b75f-af68ce8061f7
+with_terminal() do
+	@pt :header = ["Player $i" for i = 1:4] M
+end
+
+# ╔═╡ 736b81c0-f10f-4dcb-a1a3-0791bc169cee
+md"""
+In addition, the outputs can be written to files much like `show` or `println` can have their output written to files:
+```
+open("tablefile.txt", "w") do io
+	pretty_table(io, M; header = ["Player $i" for i = 1:4])
+end
+```
+"""
+
+# ╔═╡ 6916be23-b667-471a-bd5d-e45163e7f7df
+md"""
+### Creating and saving graphics with Plots
+
+One of the most useful packages for Julia is the `Plots` package, allowing the creation of plots, graphs, and diagrams of many kinds.
+
+To start with, like any package, `Plots` needs to be downloaded (see section [Packages](#ab8d0a33-c0cd-4ad3-9d94-b9b1afbcca4b)) and imported with `using`:
+"""
+
+# ╔═╡ 0e81d3de-fc91-4327-a9a2-8b375d74f4fa
+md"""
+The most basic plots that `Plots` makes are line graphs between input points, or plots of functions:
+"""
+
+# ╔═╡ 6a6a1d26-c4b7-4acf-9cb9-028415d36655
+begin
+	xdata = collect(1:10)
+	ydata = [10,6,5,4,8,9,3,4,2,1]
+	plot(xdata, ydata)
+end
+
+# ╔═╡ cd9b60e0-11d3-4a7d-bbfc-2576d64364ff
+plot(sinc)
+
+# ╔═╡ 79b48255-2f6d-4825-8139-9825a71100cb
+md"""
+Changing attributes allows the appearance of the plot to be customised. Some of the most useful are:
+- `title` controls the title of the plot
+- `label` controls the name given to the line in the legend, `legend` controls whether the legend appears or not
+- `xlims` and `ylims` (and `zlims` for 3D plots) control the extent of the corresponding axis
+- `grid` controls whether a grid appears in the background of the plot, while `minorgrid` does the same with a grid with smaller divisions
+- `showaxis` controls which axes are shown, while `ticks` controls the numbering of the axes
+A more complete list can be found in the documentation at <http://docs.juliaplots.org/latest/>
+"""
+
+# ╔═╡ 81de08b7-e78c-4238-9eb5-d032dbd55fd0
+plot(tan, title = "The tangent function", legend = false, xlims = (-π,π), ylims = (-10,10), grid = false, showaxis = :x, framestyle = :origin)
+
+# ╔═╡ b475321e-824e-4a77-bb4c-07d7730591f1
+md"""
+Different plot types can be chosen using the attribute `seriestype`, or for some more common types, a specialised function. Additional series types can be found in other packages, such as `StatsPlots` for additional methods of statistical data visualisation, and `GraphRecipes` for plotting graphs of the graph theoretical kind. Also, plots can be saved as variables and then added to with `plot!` and related functions:
+"""
+
+# ╔═╡ f31c2367-d0de-485b-a06f-2b29cb1d319a
+plot([(0,1),(4,3),(1,6),(5,2),(6,3),(2,4)], label = "Blue",seriestype = :scatter, xlims = (-1,7), ylims = (-1,7), framestyle = :origin)
+
+# ╔═╡ 3fab1731-0854-4248-89e2-e04cc909c68c
+barchart = bar([("A",4),("B",5),("C",1),("D",4),("E",6),("F",2)], legend = false, fillcolor = :green)
+
+# ╔═╡ 98f2a28d-5a83-4981-acb2-d68268bc03a7
+bar!(barchart, [("A",2),("B",6),("C",3),("D",3),("E",6),("F",5)], color = :red, bar_width = 0.5)
+
+# ╔═╡ ebdfd3f2-7d95-4391-81e4-1d384b6aa52a
+md"""
+Different plots can be grouped together into a single image using the `layout` attribute:
+"""
+
+# ╔═╡ 37da7e59-a1e3-454c-86ee-959c761fedeb
+begin
+	function customfnplot(fnname)
+		return plot(eval(Meta.parse(fnname)), xlims = (0,4π), legend = false, title = fnname)
+	end
+	
+	sinplot = customfnplot("sin")
+	cosplot = customfnplot("cos")
+	
+	nothing
+end
+
+# ╔═╡ e44a80d2-dd32-443b-a918-2af821cad6ac
+doubleplot = plot(sinplot, cosplot, layout = (2,1))
+
+# ╔═╡ 6ceecd44-e185-4bcd-993c-94677f033714
+md"""
+Plots can be saved as files by the function `savefig`, or can be saved by file type specific functions such as `png`. The following code, if run, would save the `doubleplot` graph as *sinandcos.png*:
+```
+png(doubleplot,"sinandcos")
+```
 """
 
 # ╔═╡ a8973a1e-b1a7-4792-8c0a-4c8c8b4ecd60
@@ -297,16 +656,13 @@ begin
 end
 
 # ╔═╡ 976d19d8-f319-43de-ad60-d5706db26df8
-begin
-	using Plots
-	plot(0:N, sequence, legend=false)
-end
+plot(0:N, sequence, legend=false)
 
 # ╔═╡ 851db6f0-0194-4c88-83dd-c2570c0c8729
 md"""
-If ``r > 3``, the oscillatory behaviour characterising the beginning of the chaotic behaviour of the logistic map is evident. However, it is not the best graphical demonstration of the chaos which occurs for ``r ⪆ 3.57``; instead we will approximate the bifurcation diagram, a graph of the parameter `r` against the corresponding oscillatory values of the difference equation. For this, the algorithm that will be used is detailed at <http://www.math.le.ac.uk/people/rld8/ma1251/lab3.html>.
+If ``r > 3``, the oscillatory behaviour characterising the beginning of the chaotic behaviour of the logistic map is evident. However, it is not the best graphical demonstration of the chaos which occurs for ``r ⪆ 3.57``; instead let's approximate the bifurcation diagram, a graph of the parameter `r` against the corresponding oscillatory values of the difference equation. For this, the algorithm that will be used is detailed at <http://www.math.le.ac.uk/people/rld8/ma1251/lab3.html>.
 
-To start with, we choose a range of values of `r`
+To start with, choose a range of values of `r`
 """
 
 # ╔═╡ adbdc425-5de6-42be-9399-36f24f2d8316
@@ -327,11 +683,6 @@ Then, the sequence will continue for some more iterations to ensure that many of
 
 # ╔═╡ 96e2fbe3-8569-49a8-af5b-bae456024b66
 maxoscillatoryvalues = 100
-
-# ╔═╡ de18f6c7-bbd8-45f9-9d17-d59ddafb64ad
-md"""
-The plot is initialised as an empty plot:
-"""
 
 # ╔═╡ aad017bb-7fa3-4af6-85cc-6d9018c744d8
 md"""
@@ -363,25 +714,39 @@ bifurcationplot = scatter(points, markersize = 1, markercolor = :black, legend =
 # ╔═╡ 62c56061-9064-45a2-bf9b-c9f17fb2f8cd
 md"""
 If you are viewing this manual as an editable Pluto notebook, try some different ranges for `rvalues` (in particular, an interesting result occurs by choosing a range of values from ``-2`` to ``0``).
-
-The Plots package also allows the plot generated to be saved as a file. If you want to try this, uncomment the code below and run it:
 """
 
-# ╔═╡ b869dd0b-3d83-4f3c-a403-4f6a0c1bfa06
-#png(bifurcationplot, "bifurcationplot")
-
-# ╔═╡ 0d7b8fe7-c140-4843-9ae1-163cfa109685
+# ╔═╡ 3cb29926-3332-429b-b8b6-0b95113b388b
 md"""
-`png` saves the graph as a .png image, either in the same location as the .jl script running it is saved, or in the current folder if run in the REPL.
+## Pluto notebooks
+
+Pluto notebooks are created from the Pluto package for Julia. They act as an alternative, more interactive method of presentation of Julia code; indeed this manual itself is a Pluto notebook. Pluto notebooks are edited from the browser, with text written in Markdown, which is simple but reasonably powerful text-editing tool, with a good introductory guide at several pages of <https://www.markdownguide.org/>.
+
+To use Pluto:
+  - Run `using Pkg; Pkg.add("Pluto");` in the Julia REPL and wait for the package to be downloaded and installed
+  - Now run `using Pluto; Pluto.run()`, which should open in your browser, or give an address of the form `localhost:1234/?secret=XXXXXXXX` for you to open
+  - You will be presented with a welcome page. A good place to start is the sample notebooks provided by the developers of Pluto, or this manual (see section [Using this manual](#b695a54f-da17-4acf-aa30-5fb2344df48e))
+
+A similar although not Julia-specific notebook tool is Jupyter, which can be installed for VSCode or run in the browser like Pluto. For more information on this, see <https://jupyter.org/>, and the Jupyter extension for VSCode found through the extension search.
 """
+
+# ╔═╡ 183fc57c-17dc-490a-8a7c-befa48e69b13
+#= To Do
+- More examples
+- General reordering
+=#
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+PrettyTables = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
 
 [compat]
 Plots = "~1.18.2"
+PlutoUI = "~0.7.9"
+PrettyTables = "~1.1.0"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -448,6 +813,11 @@ deps = ["StaticArrays"]
 git-tree-sha1 = "9f02045d934dc030edad45944ea80dbd1f0ebea7"
 uuid = "d38c429a-6771-53c6-b99e-75d170b6e991"
 version = "0.5.7"
+
+[[Crayons]]
+git-tree-sha1 = "3f71217b538d7aaee0b69ab47d9b7724ca8afa0d"
+uuid = "a8cc5b0e-0ffa-5ad4-8c14-923d3ee1735f"
+version = "4.0.4"
 
 [[DataAPI]]
 git-tree-sha1 = "ee400abb2298bd13bfc3df1c412ed228061a2385"
@@ -831,11 +1201,23 @@ git-tree-sha1 = "f32cd6fcd2909c2d1cdd47ce55e1394b04a66fe2"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 version = "1.18.2"
 
+[[PlutoUI]]
+deps = ["Base64", "Dates", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "Suppressor"]
+git-tree-sha1 = "44e225d5837e2a2345e69a1d1e01ac2443ff9fcb"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.9"
+
 [[Preferences]]
 deps = ["TOML"]
 git-tree-sha1 = "00cfd92944ca9c760982747e9a1d0d5d86ab1e5a"
 uuid = "21216c6a-2e73-6563-6e65-726566657250"
 version = "1.2.2"
+
+[[PrettyTables]]
+deps = ["Crayons", "Formatting", "Markdown", "Reexport", "Tables"]
+git-tree-sha1 = "0d1245a357cc61c8cd61934c07447aa569ff22e6"
+uuid = "08abe8d2-0d0c-5749-adfa-8a2ac140af0d"
+version = "1.1.0"
 
 [[Printf]]
 deps = ["Unicode"]
@@ -938,6 +1320,11 @@ deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
 git-tree-sha1 = "000e168f5cc9aded17b6999a560b7c11dda69095"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 version = "0.6.0"
+
+[[Suppressor]]
+git-tree-sha1 = "a819d77f31f83e5792a76081eee1ea6342ab8787"
+uuid = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+version = "0.2.0"
 
 [[TOML]]
 deps = ["Dates"]
@@ -1188,6 +1575,7 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╟─58a85b40-e086-11eb-1471-a3d9d5596625
+# ╟─b695a54f-da17-4acf-aa30-5fb2344df48e
 # ╟─45aa5e5d-b518-4f28-ab45-365a9c3d4ee1
 # ╟─6dab02d3-4b45-4227-a790-00350002a909
 # ╠═07d24863-82aa-4b13-aa92-1b06a0b5276b
@@ -1217,9 +1605,67 @@ version = "0.9.1+5"
 # ╟─89b0c356-3962-4201-abb6-caeb334fce6a
 # ╠═c5193537-9e52-4391-b352-3aaf640192c4
 # ╠═db2c9293-1c23-4708-b1a9-5ed013d1f8f4
+# ╟─f3cfccf4-ff2d-44af-9735-242c2c1e80ac
+# ╟─4325ba80-3823-4c76-992e-351969e67222
+# ╠═84588d2f-de11-44d3-8b1d-afcaa9b59282
+# ╠═cb5f1991-5928-4bae-b853-935d08c1f61a
+# ╟─f7943ee4-6927-4aef-b97e-b70691e431f7
+# ╠═e526a902-224f-4f19-8bab-7c53be471671
+# ╟─d9788710-0493-41b2-8510-08ff76614977
+# ╠═cb4f8751-6678-4db3-98f1-2c380d272428
+# ╠═fffd5baf-9142-4c32-9a85-c0258e6366be
+# ╟─30f3d516-6f44-4eb3-8792-aa4e5ef7a93f
+# ╠═7c081773-bb95-489c-844a-16f9c5bd950f
+# ╠═8c58354d-8a1f-400b-a4a1-ff2ea9016e72
+# ╟─91855dee-a9a6-4782-b4af-62a87c2705b3
+# ╠═f1a45f51-6ad6-43c2-904f-4fff9e399535
+# ╟─0b5793f1-8834-4258-846d-47b76bc9b6c8
+# ╠═4df7cae4-4eeb-4681-a8d3-00c4f457ded2
+# ╠═d3d71501-0dc7-4d9e-a3b4-4cc62aa640ab
 # ╟─ab8d0a33-c0cd-4ad3-9d94-b9b1afbcca4b
-# ╠═2691d33f-7ecc-4c5b-a249-ac3f16fbefdb
-# ╟─3cb29926-3332-429b-b8b6-0b95113b388b
+# ╟─2691d33f-7ecc-4c5b-a249-ac3f16fbefdb
+# ╠═46c6cbb6-e2a7-4ad9-8869-8f31a15c9358
+# ╠═9e65f10e-3963-45c6-a517-cb78756d8d77
+# ╠═2e9e8b67-7173-4e77-b5d1-f7eaa8834b5e
+# ╟─47a3f741-4064-477e-8eb9-fc0ccac5858c
+# ╠═18d2d68b-95cb-44a6-93d6-0f1dfd32b03a
+# ╟─1a0ee7c6-58ca-44e5-a94d-b5cf60940392
+# ╠═c24f6d7e-0c78-41f4-9468-3d4a6210c47a
+# ╠═ffd60a8d-0c0a-4f76-8948-d6314d344878
+# ╟─85843b08-dcf9-4449-88f9-255773605970
+# ╠═cdde6b43-39f2-4cda-bfea-eef48ee494eb
+# ╠═3c21e020-7287-4a3c-9046-7e2ab1150065
+# ╟─d9bc039f-5e55-456c-8a12-d69869e73541
+# ╠═a6023033-f699-4913-83b3-d4abb76e42e6
+# ╟─3665a395-ae1c-40cf-8e98-00534f53ee4f
+# ╟─992d6562-950d-4071-b189-b39a13fb7f30
+# ╟─a4c99e37-b3b8-446e-a655-d4ac1237d0c7
+# ╠═b4c31904-2384-425d-a12b-5f3c145bc5fb
+# ╟─4f886a63-42fa-4c4d-b7fe-c0caa2884ad3
+# ╠═0a95770e-b495-4a4d-9e59-d1fbf662829d
+# ╠═8f408461-f868-41d8-98c9-42babca608f7
+# ╟─24e06691-f641-4f41-a3f4-dfd57f600c68
+# ╠═e9eca1cf-149e-4763-8024-1093841c5430
+# ╠═359594ae-dc8b-4d59-babd-5d5163098cad
+# ╟─384289b4-2788-47ba-a061-7ce025db7a4b
+# ╠═3a54dbdb-7fa8-4fcc-864a-f67a8c3df010
+# ╠═87ee2688-4612-48f3-b75f-af68ce8061f7
+# ╟─736b81c0-f10f-4dcb-a1a3-0791bc169cee
+# ╟─6916be23-b667-471a-bd5d-e45163e7f7df
+# ╠═1cbe8ec9-a704-4912-98d2-69385c773627
+# ╟─0e81d3de-fc91-4327-a9a2-8b375d74f4fa
+# ╠═6a6a1d26-c4b7-4acf-9cb9-028415d36655
+# ╠═cd9b60e0-11d3-4a7d-bbfc-2576d64364ff
+# ╟─79b48255-2f6d-4825-8139-9825a71100cb
+# ╠═81de08b7-e78c-4238-9eb5-d032dbd55fd0
+# ╟─b475321e-824e-4a77-bb4c-07d7730591f1
+# ╠═f31c2367-d0de-485b-a06f-2b29cb1d319a
+# ╠═3fab1731-0854-4248-89e2-e04cc909c68c
+# ╠═98f2a28d-5a83-4981-acb2-d68268bc03a7
+# ╟─ebdfd3f2-7d95-4391-81e4-1d384b6aa52a
+# ╠═37da7e59-a1e3-454c-86ee-959c761fedeb
+# ╠═e44a80d2-dd32-443b-a918-2af821cad6ac
+# ╟─6ceecd44-e185-4bcd-993c-94677f033714
 # ╟─a8973a1e-b1a7-4792-8c0a-4c8c8b4ecd60
 # ╠═d595f9fe-83bc-497a-8f2e-558bf893a3b7
 # ╟─7c0491c6-8144-4b0c-83d3-7011c6e98b9a
@@ -1237,13 +1683,13 @@ version = "0.9.1+5"
 # ╠═a643373c-ca5f-4d7d-9e94-9d1dcc7446e7
 # ╟─6d2765c1-ed26-4c78-98d8-02c71e7c2af6
 # ╠═96e2fbe3-8569-49a8-af5b-bae456024b66
-# ╟─de18f6c7-bbd8-45f9-9d17-d59ddafb64ad
 # ╟─aad017bb-7fa3-4af6-85cc-6d9018c744d8
 # ╠═547a3549-ba11-4dbc-b316-0c2dd7384b0d
 # ╠═ad032574-1ca6-483d-b642-58af6838f9d0
 # ╠═97d306da-666d-4ba9-bd6c-16b79212f926
 # ╟─62c56061-9064-45a2-bf9b-c9f17fb2f8cd
-# ╠═b869dd0b-3d83-4f3c-a403-4f6a0c1bfa06
-# ╟─0d7b8fe7-c140-4843-9ae1-163cfa109685
+# ╟─3cb29926-3332-429b-b8b6-0b95113b388b
+# ╠═09a3f57a-db03-4bf4-9129-ab4a0254604e
+# ╠═183fc57c-17dc-490a-8a7c-befa48e69b13
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
