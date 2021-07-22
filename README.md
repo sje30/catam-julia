@@ -8,7 +8,9 @@ This is the home page for creating the Julia materials for CATAM.
 
 We hope to provide several documents, available as .jl (Pluto format) with PDF/HTML.  Movies could be made too (but take a lot of time).
 
-[HTML version of material so far](https://sje30.github.io/catam-julia/intro/julia-manual.html)
+[HTML version of material so
+far](https://sje30.github.io/catam-julia/intro/julia-manual.html) and
+[case studies](https://sje30.github.io/catam-julia/casestudies/).
 
 1. [Introduction to Julia for CATAM](intro/README.md)
 2. Conversion of [1A code](1a/README.md).
