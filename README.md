@@ -18,22 +18,20 @@ for mathematicians to learn the key concepts of the
 2. [Case study: permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/Permutations.html)
 
 
-# Work in progress belo
+# Work in progress below
 
 
-We hope to provide several documents, available as .jl (Pluto format) with PDF/HTML.  Movies could be made too (but take a lot of time).
+We hope to provide several documents, available as .jl (Pluto format)
+with PDF/HTML.  Movies could be made too (but take a lot of time).
 
-[HTML version of material so
-far](https://sje30.github.io/catam-julia/intro/julia-manual.html) and
-[case studies](https://sje30.github.io/catam-julia/casestudies/).
-
-1. [Introduction to Julia for CATAM](intro/README.md)
-2. Conversion of [1A code](1a/README.md).
-3. Conversion of 1B Numerical analysis
-4. 1B model code for [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf)
+1. [Introduction to Julia for CATAM](intro/README.md) UNDERWAY
+2. Conversion of [1A code](1a/README.md) TODO
+3. Conversion of 1B Numerical analysis DODO
+4. 1B model code for
+   [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf) TODO
 5. Case studies (see next section) to demonstrate different aspects of Julia
 
-# Possible case studies
+## Possible case studies
 
 1. Logistic equation (for the introduction)
 2. SIR model for disease spread
