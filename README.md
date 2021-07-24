@@ -1,10 +1,25 @@
-# catam-julia
-CATAM material in Julia
+# CATAM material in Julia
 
-This is the home page for creating the Julia materials for CATAM.
+This is the home page for creating the Julia materials for Mathematics
+students at the University of Cambridge.  As part of the degree,
+students are encouraged to work on projects in
+[CATAM](https://www.maths.cam.ac.uk/undergrad/catam/computer-aided-teaching-all-mathematics-catam):
+Computer-Aided Teaching of All Mathematics.  Currently, MATLAB is used
+by most students, although students are free to use whichever language
+they wish.  The aim of this project is to provide material suitable
+for mathematicians to learn the key concepts of the
+[Julia](https://julialang.org) programming language.
 
 
-# Material
+
+# Draft material ready for commenting
+
+1. [Introduction to Julia for CATAM](https://sje30.github.io/catam-julia/intro/julia-manual.html)
+2. [Case study: permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/Permutations.html)
+
+
+# Work in progress belo
+
 
 We hope to provide several documents, available as .jl (Pluto format) with PDF/HTML.  Movies could be made too (but take a lot of time).
 
