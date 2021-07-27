@@ -47,6 +47,12 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 12. Numerical optimisation?
 13. Turing patterns -- following tutorial by [Miura and Maini](https://paperpile.com/app/p/56e34cfe-cb76-07bd-ae2d-49dd9faad3b9)
 14. Mandlebrot/Julia fractals
+15. Statistics of card shuffles
+16. RSA/Diffie-Hellman Encryption
+17. Different approaches to approximate pi or e (monte carlo, series, continued fractions, etc.)
+18. Perlin noise generation
+19. Enumeration of Polyominoes
+20. Finite projective geometry
 
 # Acknowledgements
 
