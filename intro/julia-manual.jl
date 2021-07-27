@@ -118,11 +118,12 @@ md"""
 
 This manual doesn't focus on teaching Julia, purely because there are already plenty of freely available resources online to get you started
 - A good place to start is the Julia Manual on Julia's official website, starting with <https://docs.julialang.org/en/v1/manual/getting-started/> and navigable through the left-hand menu
+- Another great option is the Julia Express linked at <https://github.com/bkamins/The-Julia-Express/>
 - For programmers already familiar with other languages, a useful page from the manual is <https://docs.julialang.org/en/v1/manual/noteworthy-differences/>, detailing how Julia differs from other languages, and <https://cheatsheets.quantecon.org/>, which gives explicit differences in syntax between Julia, Python, and MATLAB
-- A short introductory guide is at <https://computationalthinking.mit.edu/Spring21/basic_syntax/>. This is an interactive Pluto notebook, with the ability to edit the snippets of code (see section on Pluto notebooks for further details)
+- A short introductory guide is at <https://computationalthinking.mit.edu/Spring21/basic_syntax/>. This is an interactive Pluto notebook, with the ability to edit the snippets of code (see section on Pluto notebooks for further details). Further similar material is also available at <https://computationalthinking.mit.edu/>
 - A quick cheatsheet for Julia syntax and its abilities is at <https://juliadocs.github.io/Julia-Cheat-Sheet/>
 - A similar cheatsheet for the Plots package is at <https://github.com/sswatson/cheatsheets/blob/master/plotsjl-cheatsheet.pdf>
-- YouTube (as usual) provides a plethora of videos of a wide range of qualities; simply searching for "Learn Julia" is a good start
+- YouTube (as usual) provides a plethora of videos of a wide range of qualities; simply searching for "Learn Julia", or the Julia language channel <https://www.youtube.com/c/TheJuliaLanguage>, would be a good start
 
 However, there are some particular features worth highlighting:
 """
@@ -213,19 +214,19 @@ because Julia interprets this as the variable with name `de`, not `d` multiplied
 md"""
 ### Short-circuiting and the ternary operator
 
-The `if`-statement is perhaps one of the most used in programming, since it allows the program to respond differently depending on different conditions. Therefore, since it is so ubiquitous, it can be useful to have some abbreviations for it.
+The `if`-statement is one of the most used in programming, since it allows the program to respond differently depending on different conditions. In cases where `if`-statements are short, the syntax can become bulky, so can be substituted for some concise alternatives.
 
 Usually, the **AND** (`&&`) and **OR** (`||`) operators are used for combining logical statements. An optimisation which allows more efficient code is *short-circuiting*:
 - Consider the statement `<statement-1> && <statement-2>`. If `<statement-1>` is `false`, then there is no need to evaluate `<statement-2>`, since the overall result will always be `false`, so Julia *short-circuits* by ignoring it and simply returning `false`
-- Simiarly, in the case `<statement-1> || <statement-2>` with `<statement-1>` true, the overall expression will be `true` without checking `<statement-2>`
+- Similarly, in the case `<statement-1> || <statement-2>` with `<statement-1>` true, the overall result will be `true` without checking `<statement-2>`
 A useful way of using this is to have `<statement-2>` not be a logical statement at all, and instead be a piece of code. This will then only run if no short-circuit is made, abbreviating:
-```
+```julia
 if <statement-1>
 	<statement-2>			=>			<statement-1> && <statement-2>
 end
 ```
 and
-```
+```julia
 if !<statement-1>
 	<statement-2>			=>			<statement-1> || <statement-2>
 end
@@ -242,11 +243,11 @@ For example:
 # ╔═╡ 89b0c356-3962-4201-abb6-caeb334fce6a
 md"""
 Another common use for an `if`-statement is to assign a variable one of two values, depending on whether a condition is met or not. This can be done by the ternary operator, which provides the following abbreviation
-```
+```julia
 if <condition>
-	x = <value-if>
-else 						=>		x = (<condition> ? <value-if> : <value-else>)
-	x = <value-else>
+	x = <valueif>
+else 						=>		x = (<condition> ? <valueif> : <valueelse>)
+	x = <valueelse>
 end
 ```
 which can be seen in the following example:
@@ -269,7 +270,7 @@ md"""
 
 If a function takes an array (such as a vector or a matrix) or similar collection (such as a tuple) as an input, it will treat it as such, and operations will act as such (such as matrix products). However, sometimes different behaviour is desired.
 
-Julia has inbuilt functionality for elementwise operation without needing to define a seperate function to do so, which is called broadcasting. Consider the function:
+Julia has inbuilt functionality for elementwise operation without needing to define a separate function to do so, which is called broadcasting. Consider the function:
 """
 
 # ╔═╡ 84588d2f-de11-44d3-8b1d-afcaa9b59282
@@ -299,7 +300,7 @@ p.(A)
 
 # ╔═╡ 30f3d516-6f44-4eb3-8792-aa4e5ef7a93f
 md"""
-Alternatively, you may need to parse each element as seperate arguments to a function, which is done through the splat operator `...`. As an example, consider the difference between:
+Alternatively, you may need to pass each element as separate arguments to a function, which is done through the splat operator `...`. As an example, consider the difference between:
 """
 
 # ╔═╡ 7c081773-bb95-489c-844a-16f9c5bd950f
@@ -310,7 +311,7 @@ Alternatively, you may need to parse each element as seperate arguments to a fun
 
 # ╔═╡ 91855dee-a9a6-4782-b4af-62a87c2705b3
 md"""
-This is also useful for defining your own functions with an arbitrary number of arguments without needing them to be contained in a tuple beforehand, such as:
+The same syntax has another use, that is for defining your own functions with an arbitrary number of arguments without needing them to be contained in a tuple beforehand, such as:
 """
 
 # ╔═╡ f1a45f51-6ad6-43c2-904f-4fff9e399535
@@ -326,7 +327,7 @@ end
 
 # ╔═╡ 0b5793f1-8834-4258-846d-47b76bc9b6c8
 md"""
-Here, `x` encapsulates all of the inputs to the function in a single tuple, meaning that any number of arguments can be specified without needing to write seperate functions:
+Here, `x` captures all of the inputs to the function in a single tuple, meaning that any number of arguments can be specified without needing to write separate functions:
 """
 
 # ╔═╡ 4df7cae4-4eeb-4681-a8d3-00c4f457ded2
@@ -341,7 +342,7 @@ md"""
 
 As it is, Julia is already equipped with many useful tools, which for some projects may already be sufficient to complete them. However, there is far more that Julia can do through the package system.
 
-Packages are (usually quite specialised) extensions to Julia's functionality which can be downloaded and used in you programs. Any of these can be downloaded for the first time by running `using Pkg; Pkg.add("<package-name>")` in the REPL. Alternatively, pressing `]` in the REPL puts it in package mode, allowing packages to be downloaded by typing simple `add("<package-name>")`. This only needs to be done the first time that a package is used, as it will download as remain accessible to you in the future. To access the functionality of the package, run `using <package-name>`.
+Packages are (usually quite specialised) extensions to Julia's functionality which can be downloaded and used in your programs. Any of these can be downloaded for the first time by running `using Pkg; Pkg.add("<package-name>")` in the REPL. Alternatively, pressing `]` in the REPL puts it in package mode, allowing packages to be downloaded by simply typing `add("<package-name>")`. This only needs to be done the first time that a package is used, as it will download and remain accessible to you in the future. To access the functionality of the package, run `using <package-name>`.
 
 Over 4000 packages exist for Julia, which can be searched through by any of the options linked at <https://julialang.org/packages/>
 """
@@ -350,11 +351,11 @@ Over 4000 packages exist for Julia, which can be searched through by any of the 
 md"""
 ### Expressions and Macros
 
-The `Expr` data type is used to store Julia code as a variable which is not run until the user wishes to evaluate it. For example:
+The `Expr` data type is used to store Julia code as a variable, which is not run until the user wishes to evaluate it. For example:
 """
 
 # ╔═╡ 46c6cbb6-e2a7-4ad9-8869-8f31a15c9358
-ifstatement = quote
+q = quote
 	if 3 < 4
 		return true
 	else
@@ -363,14 +364,14 @@ ifstatement = quote
 end;
 
 # ╔═╡ 9e65f10e-3963-45c6-a517-cb78756d8d77
-typeof(ifstatement)
+typeof(q)
 
 # ╔═╡ 2e9e8b67-7173-4e77-b5d1-f7eaa8834b5e
-eval(ifstatement)
+eval(q)
 
 # ╔═╡ 47a3f741-4064-477e-8eb9-fc0ccac5858c
 md"""
-These can be useful in many situations, such as to operate on pieces of code, or generate code automatically to simplify repetitive code. As an example, suppose we want do calculate the first ``50`` Fibonacci numbers and store them as `F₁`, `F₂`, ..., `F₅₀`. First, we can write a custom function to get the symbol `:Fₙ` (which is much like an expression but represents a single variable/function name instead of a larger snippet of code) from an integer `n`:
+These can be useful in many situations, such as to operate on pieces of code, or generate code automatically to simplify repetitivity. As an example, suppose we want to calculate the first ``50`` Fibonacci numbers and store them as `F₁`, `F₂`, ..., `F₅₀`. First, we can write a custom function to get the symbol `:Fₙ` (which is much like an `Expr` but represents a single variable/function name instead of a larger snippet of code) from an integer `n`:
 """
 
 # ╔═╡ 18d2d68b-95cb-44a6-93d6-0f1dfd32b03a
@@ -396,12 +397,22 @@ begin
 	end
 end
 
+# ╔═╡ 61ba579c-981f-48df-a002-ab452897c311
+md"""
+and then displayed (note that the `with_terminal` function creates the terminal for the notebook, in the REPL only the `[println ...]` line is needed):
+"""
+
 # ╔═╡ ffd60a8d-0c0a-4f76-8948-d6314d344878
+with_terminal() do
+	[println( String(s), " = $(eval(:($s)))" ) for s ∈ symbolFn.(1:15)]
+end
+
+# ╔═╡ a0e8c156-480d-40d5-a3dc-36e1757ae0f5
 F₅₀
 
 # ╔═╡ 85843b08-dcf9-4449-88f9-255773605970
 md"""
-One particular use for expressions is in macros. These are function-like in that they take an input, run some pre-determined code using the input, and produce an output. However, macros differ from functions as they take their inputs as expressions, and also return expressions which are then run as code. Macros are distinguished as such by an `@` preceding their name.
+One particular use for expressions is in macros. These are function-like in that they take an input, run some pre-determined code using the input, and produce an output. However, macros differ from functions as they take their inputs as `Expr`s, and also return `Expr`s which are then run as code. Macros are distinguished as such by an `@` preceding their name.
 
 For example, the macro `@mutiple` runs the input code `n` times (note that `n` is specified as an integer by the double colon, so the macro will not run unless an integer is given). An example usage of this macro is also shown below:
 """
@@ -460,11 +471,16 @@ One of the matrix types that `LinearAlgebra` presents is `Hermitian`, which is a
 md"""
 The use of the composition has no impact on the speed, but helps with readability by avoiding large stacks of parentheses.
 
-Julia can also recognise properties in matrices that it isn't told. For example, if the random Hermitian matrices are returned to the normal Matrix type, the `eigvals` algorithm is still just as fast:
+Julia can also recognise properties in matrices that it isn't told. For example, if the random Hermitian matrices are returned to the normal `Matrix` type, the `eigvals` algorithm is still just as fast:
 """
 
 # ╔═╡ 106b6981-0691-46ad-a74c-637eaf97c91d
 @belapsed eigvals(H) setup = (H = (Matrix ∘ Hermitian ∘ rand)(ComplexF64,1000,1000))
+
+# ╔═╡ 7091f035-8f17-460f-a9e9-d7cd9198e106
+md"""
+In order for your own code to make best use of the potential efficiency that Julia boasts, refer to documentation, as well as <https://docs.julialang.org/en/v1/manual/performance-tips/>.
+"""
 
 # ╔═╡ 3665a395-ae1c-40cf-8e98-00534f53ee4f
 md"""
@@ -479,21 +495,21 @@ As standard, most outputs that Julia will be able to give will be in terms of va
 md"""
 ### Outputting to files
 
-One option for a different output is to send the outputs to a seperate file instead of the REPL. This is done in three steps;
+One option for a different output is to send the outputs to a separate file instead of the REPL. This is done in three steps:
 - Open a file which can be written into (denoted by the `"w"` parameter) as a variable (so that it can be referenced later). The file name given represents a path relative to the current folder, which can be viewed by `pwd()`. If no file with this path exists, one will be created.
-```
+```julia
 textfile = open("text.txt", "w")
 ```
 - Write into the file, by using functions such as `show` and `println` in combination with the file as a parameter. For example, the vector `a = [1, 2, 3, 4]` can be written into the file by
-```
+```julia
 println(textfile, a)
 ```
 - Close the file to save it
-```
+```julia
 close(textfile)
 ```
 If all of the data needed to be written into the file is ready, these can be combined into a single statement, of the form
-```
+```julia
 open("text.txt", "w") do textfile
 	println(textfile, a)
 end
@@ -505,7 +521,7 @@ which will automatically close the file once the `do` statement has finished.
 md"""
 ### Creating tables with PrettyTables
 
-A table is often the best way to present data, so having a way of creating them automatically is very useful. Contrary to expectation, the package `Tables` is not the package to do this, since it is more useful for database-like manipulation of tables rather than displaying them as objects. For this purpose, we need `PrettyTables`.
+A table is often the best way to present data, so having a way of creating them automatically is very useful. Contrary to expectation, the package `Tables` is not the package to do this, since it is more useful for database-like manipulation of tables rather than displaying them as objects. For this purpose, one good option is `PrettyTables`.
 """
 
 # ╔═╡ 4f886a63-42fa-4c4d-b7fe-c0caa2884ad3
@@ -540,7 +556,7 @@ tableconfig = set_pt_conf(
 	tf = tf_markdown,
 	columns_width = 15,
 	alignment = :c,
-	formatters = (value,i,j) -> round(value, digits = 3)
+	formatters = ((value,i,j) -> round(value, digits = 3))
 )
 
 # ╔═╡ 359594ae-dc8b-4d59-babd-5d5163098cad
@@ -569,7 +585,7 @@ end
 # ╔═╡ 736b81c0-f10f-4dcb-a1a3-0791bc169cee
 md"""
 In addition, the outputs can be written to files much like `show` or `println` can have their output written to files:
-```
+```julia
 open("tablefile.txt", "w") do io
 	pretty_table(io, M; header = ["Player $i" for i = 1:4])
 end
@@ -1731,7 +1747,9 @@ version = "0.9.1+5"
 # ╠═de04ed4a-84f4-4030-84dd-0092e7772ffa
 # ╟─1a0ee7c6-58ca-44e5-a94d-b5cf60940392
 # ╠═c24f6d7e-0c78-41f4-9468-3d4a6210c47a
+# ╟─61ba579c-981f-48df-a002-ab452897c311
 # ╠═ffd60a8d-0c0a-4f76-8948-d6314d344878
+# ╠═a0e8c156-480d-40d5-a3dc-36e1757ae0f5
 # ╟─85843b08-dcf9-4449-88f9-255773605970
 # ╠═cdde6b43-39f2-4cda-bfea-eef48ee494eb
 # ╠═3c21e020-7287-4a3c-9046-7e2ab1150065
@@ -1745,6 +1763,7 @@ version = "0.9.1+5"
 # ╠═285f7f1c-6f64-46c4-8956-69dd8988b131
 # ╟─dd71ca55-2e7b-40e7-9811-97739b236eaa
 # ╠═106b6981-0691-46ad-a74c-637eaf97c91d
+# ╟─7091f035-8f17-460f-a9e9-d7cd9198e106
 # ╟─3665a395-ae1c-40cf-8e98-00534f53ee4f
 # ╟─992d6562-950d-4071-b189-b39a13fb7f30
 # ╟─a4c99e37-b3b8-446e-a655-d4ac1237d0c7
