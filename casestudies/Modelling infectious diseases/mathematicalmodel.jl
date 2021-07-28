@@ -34,8 +34,8 @@ for i ∈ 2:ntimes
 	S[i] /= scale; I[i] /= scale; R[i] /= scale
 end
 
-lineplot = plot(times, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:green :red :blue]);
-areaplot = areaplot(times, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:green :red :blue]);
+lineplot = plot(times, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:gold :red :blue]);
+areaplot_ = areaplot(times, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:gold :red :blue]);
 
 display(lineplot)
-display(areaplot)
+display(areaplot_)

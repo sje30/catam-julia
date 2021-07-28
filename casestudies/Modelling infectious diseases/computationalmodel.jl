@@ -18,7 +18,7 @@ function populationplot(population::Matrix{Int64})
     return heatmap(
         hcat(population, fill(missing, sqrtN), [1,2,3, fill(missing, sqrtN - 3)...]),
         legend = false,
-        color = [:green, :red, :blue],
+        color = [:gold, :red, :blue],
         size = (4*sqrtN,4*sqrtN),
         showaxis = false,
         ticks = false
@@ -59,8 +59,8 @@ end
 R = N .- (S + I)
 
 gif_ = gif(anim);
-lineplot = plot(0:length(S)-1, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:green :red :blue]);
-areaplot_ = areaplot(0:length(S)-1, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:green :red :blue]);
+lineplot = plot(0:length(S)-1, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:gold :red :blue]);
+areaplot_ = areaplot(0:length(S)-1, [S I R], label = ["Susceptible" "Infectious" "Recovered"], color = [:gold :red :blue]);
 
 display(gif_)
 display(lineplot)

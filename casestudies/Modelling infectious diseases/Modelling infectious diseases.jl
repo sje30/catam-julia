@@ -157,7 +157,7 @@ lineplot₁ = plot(
 	times,
 	[S₁ I₁ N₁ .- (S₁ + I₁)],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ 7fe01089-0b35-417e-b857-1b0ba3653ccd
@@ -165,7 +165,7 @@ areaplot₁ = areaplot(
 	times,
 	[S₁ I₁ N₁ .- (S₁ + I₁)],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ e794f4a0-fcad-427e-af49-7fd20ed11a10
@@ -215,7 +215,7 @@ plot(
 	times,
 	[S₁′ I₁′ R₁′],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ a52bbb3c-3f25-46a0-819c-dce56bd7c75c
@@ -223,7 +223,7 @@ areaplot(
 	times,
 	[S₁′ I₁′ R₁′],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ 7a039123-2afd-4f2d-b47b-d05f3cb4f13c
@@ -295,7 +295,7 @@ I₂[1] = 1;
 
 # ╔═╡ 8fbf94ce-50f5-48a6-91ce-d2f67fa505e4
 md"""
-As an additional form of output, I will create an animation of the population at each stage, using the `Plots` package. I use the function `populationplot` to convert the matrix `population` into a heatmap where `1` is green, `2` is red, and `3` is blue (which is why I use numbers in the matrix). In order to maintain these colours, three additional pixels of each of these values are added, as otherwise `Plots` will change the scale if the range of values of the plot is not 1 to 3.
+As an additional form of output, I will create an animation of the population at each stage, using the `Plots` package. I use the function `populationplot` to convert the matrix `population` into a heatmap where `1` is yellow, `2` is red, and `3` is blue (which is why I use numbers in the matrix). In order to maintain these colours, three additional pixels of each of these values are added, as otherwise `Plots` will change the scale if the range of values of the plot is not 1 to 3.
 """
 
 # ╔═╡ f4e7d095-13c3-40dc-b248-61d8a065d61c
@@ -307,7 +307,7 @@ function populationplot(population::Matrix{Int64})
         hcat(population, fill(missing, sqrtN₂),
 			[1,2,3, fill(missing, sqrtN₂ - 3)...]),
         legend = false,
-        color = [:green, :red, :blue],
+        color = [:gold, :red, :blue],
         size = (4*sqrtN₂,4*sqrtN₂),
         showaxis = false,
         ticks = false
@@ -422,7 +422,7 @@ lineplot₂ = plot(
 	0:length(S₂)-1,
 	[S₂ I₂ R₂],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ fff03d6e-741b-48a6-b90f-89a52f4d707e
@@ -430,7 +430,7 @@ areaplot₂ = areaplot(
 	0:length(S₂)-1,
 	[S₂ I₂ R₂],
 	label = ["Susceptible" "Infectious" "Recovered"],
-	color = [:green :red :blue]
+	color = [:gold :red :blue]
 )
 
 # ╔═╡ df111c85-33bf-4ca1-846e-a20e3491dcbd
@@ -441,7 +441,7 @@ The second model took noticeably more effort for me to program than the first. T
 
 Here is a snippet of an early draft of the program for the second model:
 ```julia
-population = fill(:green, (sqrtN₂, sqrtN₂))
+population = fill(:gold, (sqrtN₂, sqrtN₂))
 population[rand(1:N₂)] = :red
 
 anim₂ = Animation()
@@ -463,13 +463,13 @@ for n ∈ 2:(maxsteps+1)
 	newpopulation = copy(population)
 	for j ∈ 1:sqrtN₂, i ∈ 1:sqrtN₂
         if population[i,j] == :red
-            i > 1 && population[i-1,j] == :green && rand() < p &&
+            i > 1 && population[i-1,j] == :gold && rand() < p &&
 				newpopulation[i-1,j] = :red
-            j > 1 && population[i,j-1] == :green && rand() < p &&
+            j > 1 && population[i,j-1] == :gold && rand() < p &&
 				newpopulation[i,j-1] = :red
-            i < sqrtN₂ && population[i+1,j] == :green && rand() < p &&
+            i < sqrtN₂ && population[i+1,j] == :gold && rand() < p &&
 				newpopulation[i+1,j] = :red
-            j < sqrtN₂ && population[i,j+1] == :green && rand() < p &&
+            j < sqrtN₂ && population[i,j+1] == :gold && rand() < p &&
 				newpopulation[i,j+1] = :red
             rand() < q && newpopulation[i,j] = :blue
         end
@@ -478,7 +478,7 @@ for n ∈ 2:(maxsteps+1)
 	population = newpopulation
 	frame(anim₂,populationplot(population))
 	
-	S₂[n] = count(==(:green), population)
+	S₂[n] = count(==(:gold), population)
 	I₂[n] = count(==(:red), population)
 	I₂[n] == 0 && (S₂ = S₂[1:n]; I₂ = I₂[1:n]; break)
 end
