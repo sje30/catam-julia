@@ -37,7 +37,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 2. SIR model for disease spread
 3. Four colour map theorem
 4. Finding prime numbers
-5. Matters of efficiency
+5. Matters of efficiency (Gokul mentions maths macros `@simd`, `@fastmath`, `@inbounds` and column-major arrays in particular)
 6. Advantages of macros
 7. Voronoi diagrams
 8. Examples from John Hinch's new book on [fluid dynamics](https://www.cambridge.org/gb/academic/subjects/mathematics/fluid-dynamics-and-solid-mechanics/think-you-compute-prelude-computational-fluid-dynamics?format=PB)?  [code](https://www.damtp.cam.ac.uk/user/hinch/teaching/CMIFM_Handouts/)
@@ -53,6 +53,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 18. Perlin noise generation
 19. Enumeration of Polyominoes
 20. Finite projective geometry
+21. Julia's type system and multiple dispatch (see [Gokul's thoughts](https://github.com/sje30/catam-julia/issues/4))
 
 # Acknowledgements
 
