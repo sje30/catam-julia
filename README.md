@@ -25,7 +25,7 @@ We hope to provide several documents, available as .jl (Pluto format)
 with PDF/HTML.  Movies could be made too (but take a lot of time).
 
 1. [Introduction to Julia for CATAM](intro/README.md) UNDERWAY
-2. Conversion of [1A code](1a/README.md) TODO
+2. Conversion of [1A code](1a/README.md) UNDERWAY
 3. Conversion of 1B Numerical analysis DODO
 4. 1B model code for
    [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf) TODO
