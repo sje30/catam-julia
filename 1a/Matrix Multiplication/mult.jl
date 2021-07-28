@@ -17,9 +17,9 @@ function mult(A,B)
 	# we loop over all pairs of rows and columns
 	for i = 1:aRows
 		for j = 1:bCols
-			# and for each pair we store their dot pruduct in C
+			# and for each pair we store their dot product in C
 			for k = 1:aCols
-				C[i,j] += A[i,k] * B[k,j];
+				C[i,j] += A[i,k] * B[k,j]
 			end
 		end
 	end
