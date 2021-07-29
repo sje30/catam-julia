@@ -5,7 +5,7 @@ N = sqrtN^2
 population = fill(1, (sqrtN, sqrtN)) 
 # 1 == susceptible, 2 == infectious, 3 == recovered
 
-# I₀ = 1
+# One random infectious person
 population[rand(1:N)] = 2
 
 # Probability of infected individual infecting susceptible neighbour
@@ -53,7 +53,7 @@ for n ∈ 2:(maxsteps+1)
     S[n] = S[n-1] - nnewreds
     I[n] = I[n-1] + nnewreds - nnewblues
     # Disease dies out
-    I[n] == 0 && break #(S = S[1:n]; I = I[1:n]; break)
+    I[n] == 0 && break
 end
 
 R = N .- (S + I)

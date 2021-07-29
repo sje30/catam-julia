@@ -7,12 +7,11 @@ times = 0:δt:T
 ntimes = length(times)
 
 N = 10000
-I₀ = 1
 
 S = zeros(size(times))
-S[1] = N - I₀
+S[1] = N - 1
 I = zeros(size(times))
-I[1] = I₀
+I[1] = 1
 R = zeros(size(times))
 
 # Rate of infection
