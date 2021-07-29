@@ -28,7 +28,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 2. Conversion of [1A code](1a/README.md) UNDERWAY
 3. Conversion of 1B Numerical analysis DODO
 4. 1B model code for
-   [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf) TODO
+   [root-finding](https://www.maths.cam.ac.uk/undergrad/catam/files/0pt1.pdf) UNDERWAY @jmb280cam
 5. Case studies (see next section) to demonstrate different aspects of Julia
 
 ## Possible case studies
