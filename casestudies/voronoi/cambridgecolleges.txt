@@ -1,0 +1,32 @@
+name,x,y
+Christ's,667,506
+Churchill,444,653
+Clare,591,502
+Clare Hall,454,478
+Corpus Christi,619,458
+Darwin,566,414
+Downing,708,430
+Emmanuel,690,472
+Fitzwilliam,459,686
+Girton,200,968
+Gonville & Caius,621,518
+Homerton,863,103
+Hughes Hall,789,420
+Jesus,687,581
+King's,611,487
+Lucy Cavendish,530,620
+Magdalene,596,603
+Murray Edwards,511,684
+Newnham,502,405
+Pembroke,624,437
+Peterhouse,633,417
+Queens',583,436
+Robinson,467,491
+Selwyn,469,420
+Sidney Sussex,645,542
+St Catharine's,614,457
+St Edmund's,517,655
+St John's,619,555
+Trinity,615,545
+Trinity Hall,599,517
+Wolfson,412,371
