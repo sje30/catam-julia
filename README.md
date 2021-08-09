@@ -53,7 +53,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 18. Perlin noise generation
 19. Enumeration of Polyominoes
 20. Finite projective geometry
-21. Julia's type system and multiple dispatch (see [Gokul's thoughts](https://github.com/sje30/catam-julia/issues/4))
+21. A mention of type stability (link from Gokul https://www.juliabloggers.com/writing-type-stable-julia-code/)
 
 # Acknowledgements
 
