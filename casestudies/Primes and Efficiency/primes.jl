@@ -15,23 +15,45 @@ md"""
 # ╔═╡ b735e72f-1498-4bf7-9f30-93a46aa46392
 md"""
 ## Objectives
+- Introduce asymptotic runtime analysis with "big O" notation 
 - Compare different approaches for finding prime numbers in regard to their efficiency
+- Meassure runtimes practically with the tools built into julia
+- Statistically varify certain thereoms about the distribution of primes
 """
 
 # ╔═╡ 480b1c62-9a1d-4504-8872-c388403bec0b
 md"""
-## TODO: Why do we care about Primes?
-- Statistical Data inspires Research
-- Computational Proofs
-- Cryptography
+## Why do we care about Primes?
+There is no doublt that prime numbers play an important role in modern day matheamtics. They appear in almost all areas of study and are stil not understood as well as their simple definition would suggest. But why should one care about computing primes on a computer?
+
+### Statistical Data inspires Research
+Almost all conjectures about the distributions of primes throughout history have been motivated through data. Likewise, new conjectures about the primes inspired by theoretical observations can be checked against a list of small primes, either showing a concrete contradiction or boosting the mathematicians confidence in their conjecture.
+
+### Computational Proofs
+Often, proofs about prime numbers are reduced to a finite case check of small primes which then can be checked by a computer.
+
+### Cryptography
+Many traditional encryption algorithm make use of the fact that there is no algorithm (yet) for decomposing a number into prime factors quickly. Therefore, there is a big need in cryptography for novel large prime numbers.
 """
 
 # ╔═╡ 6164b325-44b8-478e-a122-a871c44d7ab1
 md"""
-## TODO: Theoretical Runtime Analysis
-- The Concept of Elementary Operations
-- Assymptotic Runtime
-- Big $O(n)$ Notation
+## Asymptotic Runtime Analysis
+When analysing an algorithm theoretically, we are interested in counting the number of "elementary operations" as a function of the input size. An elemetray operation, also sometimes called a zero operation, is any algorithmic step that can be peformed by the computer in constant time. Elemetary opertaions include addition, multiplication, division, modulus calculations, conditional checks, etc
+While the time to perform some of these operations, for example multiplication, does depend on the size of the numbers involved, modern computers have specific processor instructions to run such operations directly on the hardware in negligible time.
+
+### The "Big O" Notation
+When copunting elementary operations, we are usually only intersted in its growth rate with respect to the input size. To express this we make use of the following:
+
+_**Definition:**_ For functions $f,g:\mathbb{R}\to\mathbb{R}$ we say that $f$ is $O(g)$ if there exist constants $M$ and $x_0$ such that $|f(x)| \leq Mg(x)$ for all $x \geq x_0$.
+
+For example, we have:
+- The function $x\to 3x^2+100x-3$ is $O(x^2)$
+- The function $x\to \log(x!)$ is $O(x\log x)$
+- The function $x\to \binom{x}{k}$ is $O(x^k)$ for any fixed $k$
+- The function $x\to \sqrt{x} + (\log x)^k$ is $O(\sqrt{x})$ for any fixed $k$
+
+Note that this is just an upper bound on the asymptotic behaviour. A function that is $O(x^2)$ for example could also be $O(x)$ or even smaller. Finding the best upper bound however can generally speaking be very hard.
 """
 
 # ╔═╡ 24f264de-60d8-463b-8907-0a43f8297e52
@@ -111,11 +133,11 @@ function plotTime(f, step, num)
 		append!(inputs, i * step)
 		append!(times, @elapsed f(i * step))
 	end
-	plot(inputs, times)
+	plot(inputs, times, xlabel = "input", ylabel = "seconds", legend = false)
 end
 
 # ╔═╡ 656b291e-f430-4e32-a3c9-87553cf2b1a5
-plotTime(findPrimes, 1000, 50)
+plotTime(findPrimes, 5000, 20)
 
 # ╔═╡ 7c8670bf-85f6-438c-b9d7-a9b1ca4a6c01
 md"""
@@ -124,7 +146,7 @@ The resulting plot clearly demonstrates the quadratic growth we predicted theore
 
 # ╔═╡ a4232c06-eb44-4f7c-a8eb-09aa524cc1a7
 md"""
-## Using All Available Information
+### Using All Available Information
 One observation that allows us to improve the efficiency of our algorithm is that when checking for the existence of divisors, we only have to check for prime divisirs! Since we are finding all the prime numbers in order, whenever we are checking if $n$ is prime, we already have a list of all primes less than $n$ at hand. Let's see how we would write an improved version of the function `isPrime`, which now not only takes a positive integer $n$ as input, but also the list of all primes less than $n$:
 """
 
@@ -179,7 +201,7 @@ Instead of $1+2+3+\cdots + N = N(N+1)/2$ iterations of the inner loop we therfor
 
 # ╔═╡ ce2733ab-10a6-4e87-aae4-ed30fa346823
 md"""
-# Using Some Matheamtical Insight
+### Using Some Matheamtical Insight
 Our algorithms can be made much more efficient when taking into considereation the following property of a positive integer:
 
 
@@ -229,12 +251,12 @@ findPrimesV3(1000000)
 
 # ╔═╡ 6e319277-a897-49aa-9e78-7a905a11dc89
 md"""
-Finding all primes up to one million in just 13 seconds, that's pretty fast now. Let us also analyse the runtime of our improved verion theoretically: Instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than th eprevious ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
+Finding all primes up to one million in just 13 seconds, that's pretty fast now. Let us also analyse the runtime of our improved verion theoretically: Instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the eprevious ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
 """
 
 # ╔═╡ 3ed289cd-6ace-442f-a9b4-7fe109af5e49
 md"""
-# Don't do any Unnecessary Work
+### Don't do any Unnecessary Work
 Pushing the idea of removing unnecessary work further, we realise that there is another place where we can break out of the loop early: When we find a prime divisor of $n$, there is no need to continue looking. Instead, as soon as we find a prime that divides $n$ we should immediately break out of the loop.
 """
 
@@ -270,6 +292,9 @@ findPrimesV4(100000)
 # ╔═╡ 86076221-f0eb-4434-b15e-abcc7fc54384
 findPrimesV4(1000000)
 
+# ╔═╡ 998e600b-6933-48a9-bcf4-f7c1f981411e
+findPrimesV4(10000000)
+
 # ╔═╡ bf89a580-d02c-4c14-af67-f249071b4d5e
 findPrimesV4(100000000)
 
@@ -287,11 +312,117 @@ where $h(n)$ is the smallest prime divisor of $n$ if $n$ is composit, and $\sqrt
 
 # ╔═╡ 8eae3bb0-4fa5-4e0f-8336-d28b199ef229
 md"""
-These last few changes we made don't affect the runtime complexity itself, as they only shave of constant time factors. Never the less, optimizations like these are not to be underestimated, as for small values of $N$, say $N < 10^9$ for example, a factor of $20$ is often worth more than a factor of $\log(N)$.
+The last changes we made does not affect the runtime complexity itself, as it only shaves of a constant time factor. Never the less, optimizations like this one are not to be underestimated, as for small values of $N$, say $N < 10^9$ for example, a factor of $20$ is often worth more than a factor of $\log(N)$ for instance.
 """
 
 # ╔═╡ ae8373e9-347d-4d2c-b988-6170ec2040a2
+md"""
+## Applications
+Now that we have a way of finding the first 10 million primes in almost the blink of an eye, lets make use of them to varify some well-knows but hard to prove result about their distribution.
+"""
 
+# ╔═╡ cdefc0aa-aefa-4c62-b8a9-692331c9bf50
+primes = findPrimesV4(100000000)
+
+# ╔═╡ ba871ee3-125d-402c-aef0-fe7046bf2bde
+md"""
+### The Prime Number Theorem
+As already mentioned in a previous section, th eprime number theorem states that the number of primes up to $N$ is asymptoticall given by $N/\log N$. A better estimate with the same asymptotic is the function $N/(\log N-1)$. To see this result visually, let us plot $i(\log p_i-1)/p_i$ against $i$:
+"""
+
+# ╔═╡ ed0a598c-84a5-4062-bb7a-1d00added226
+function plotPNT(primes)
+	data = []
+	for (i, p) in enumerate(primes)
+		append!(data, i*(log(p)-1)/p)
+	end
+	
+	plot(data, ylims = (0.995,1.015), legend = false)
+end
+
+# ╔═╡ 1455bae3-7b50-4f0f-b521-b5aa5b9ba926
+plotPNT(primes)
+
+# ╔═╡ 54f33702-08e9-439f-9d28-c783d7c27547
+md"""
+As predicted, the ratio does seem to tend towards $1$, be that very slowly.
+"""
+
+# ╔═╡ 03116ef9-39b9-459e-95cc-c367dedd7896
+md"""
+### First and Last Digits of Primes in Base 10
+Despite their unique properties, prime numbers behave in many ways just like a random subset of the integers with a distribution given by the prime number theorem. For example, looking at the last digits of our primes, we expect all possible digits (the odd digits except five) to approximately appear equaly often:
+"""
+
+# ╔═╡ 6e66626d-7660-45d6-88c5-497ffce7c81e
+histogram(broadcast(x -> x % 10, primes), bins = -0.5:1:9.5, xticks = -1:9, legend = false, norm = :pdf, ylims = (.249,.251))
+
+# ╔═╡ 166c0bb7-e75b-4e32-b3f3-0568e9e3d2b3
+md"""
+The first digits of primes on the other hand we expect to follow the so-called Benford's Law, since the distribution of the primes gets progressively sparcer and therefore lower leading digits are more likely:
+"""
+
+# ╔═╡ e5bc63bc-751e-4faa-81ce-db37343baf19
+histogram(broadcast(x -> floor(x/10^floor(log10(x))), primes), bins = 0.5:1:9.5, xticks = -1:9, normalize = :pdf, ylims = (.105,.12), legend = false)
+
+# ╔═╡ 9d56672c-f3a0-4705-8e04-6bd2776d46b5
+md"""
+### The Goldbach Conjecture
+The Goldbach Conjecture is one of the most famous open problems about prime numebrs. Proposed in 1742 by Christian Goldbach in correspondence with Leonhard Euler, it states that every even integer greater than 2 can be written as the sum of two prime numbers. While the problem remains open to this day, the conjecture is strongly believed to be true, not least becasue no counter example has been found so far. Let us varify this for the first few even integers:
+"""
+
+# ╔═╡ b0ba2f26-291f-4204-942f-2b87cd5ba8a8
+function verifyGoldbach(n, primes)
+	sums = Set()
+	for p in primes
+		for q in primes
+			if p+q > n break end
+			push!(sums, p+q)
+		end
+	end
+	for k = 4:2:n
+		if !in(k, sums) return false end
+	end
+	return true
+end		
+
+# ╔═╡ 5c1b3bac-98d2-4d5b-b8ef-85ca8e2a4f80
+md"""
+Since this algorithm runs in $O(n^2)$ time, we will only be able to check up to about 100000. Using the "Fast Fourier Transform" the time complexity could be brought down to $O(n\log n)$ but would go beyond the scope of this case study.
+"""
+
+# ╔═╡ 6d322108-fa1b-41ad-81d6-5f36b6ef2fb1
+verifyGoldbach(100000, primes)
+
+# ╔═╡ 6ee5e9b2-2d38-4a92-9e71-660f06bbc7a5
+md"""
+### Reciprocal Sum of Primes
+It is well known that the sum of resicprocals of primes diverges. Moreover, the growth rate of the partial sums is also known. In particular, the quantity
+
+$\sum_{i = 1}^n \frac{1}{p_i} - \log\log n$
+
+is decreasing and tends to a constant $M \approx 0.2614972$, called the Meissel–Mertens constant, as $n$ tends to infinity. Let us verify that this result is consistent with our data:
+"""
+
+# ╔═╡ 39b108b3-b41e-44c4-9565-d199c5831746
+function plotReciprocal(primes)
+	partialSum = 0.0
+	data = []
+	for (i, r) in enumerate(broadcast(x -> 1/x, primes))
+		partialSum += r
+		append!(data, partialSum - log(log(i)))
+	end
+	
+	plot(data, ylims = (0.4, 0.5), legend = false)
+end
+
+# ╔═╡ a6ea88df-32ae-406a-9ce2-eedbfff3b77f
+plotReciprocal(primes)
+
+# ╔═╡ 2eff73ca-34ba-4a86-bc98-8543003fa46f
+md"""
+The expression does indeed seem to be decreasing and slowly tending towards some positive constant.
+"""
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1146,10 +1277,28 @@ version = "0.9.1+5"
 # ╠═8f73a313-e31d-4087-beb9-1f5c43f44ea1
 # ╠═e9cdb8d0-3daa-4ada-9344-45099f184a64
 # ╠═86076221-f0eb-4434-b15e-abcc7fc54384
+# ╠═998e600b-6933-48a9-bcf4-f7c1f981411e
 # ╠═bf89a580-d02c-4c14-af67-f249071b4d5e
 # ╟─d1edf66f-856b-463a-af27-775507ee70f2
 # ╟─d22ec8ae-e5de-4b8d-85ac-17c7844f667b
 # ╟─8eae3bb0-4fa5-4e0f-8336-d28b199ef229
-# ╠═ae8373e9-347d-4d2c-b988-6170ec2040a2
+# ╟─ae8373e9-347d-4d2c-b988-6170ec2040a2
+# ╠═cdefc0aa-aefa-4c62-b8a9-692331c9bf50
+# ╟─ba871ee3-125d-402c-aef0-fe7046bf2bde
+# ╠═ed0a598c-84a5-4062-bb7a-1d00added226
+# ╠═1455bae3-7b50-4f0f-b521-b5aa5b9ba926
+# ╟─54f33702-08e9-439f-9d28-c783d7c27547
+# ╟─03116ef9-39b9-459e-95cc-c367dedd7896
+# ╠═6e66626d-7660-45d6-88c5-497ffce7c81e
+# ╟─166c0bb7-e75b-4e32-b3f3-0568e9e3d2b3
+# ╠═e5bc63bc-751e-4faa-81ce-db37343baf19
+# ╟─9d56672c-f3a0-4705-8e04-6bd2776d46b5
+# ╠═b0ba2f26-291f-4204-942f-2b87cd5ba8a8
+# ╟─5c1b3bac-98d2-4d5b-b8ef-85ca8e2a4f80
+# ╠═6d322108-fa1b-41ad-81d6-5f36b6ef2fb1
+# ╟─6ee5e9b2-2d38-4a92-9e71-660f06bbc7a5
+# ╠═39b108b3-b41e-44c4-9565-d199c5831746
+# ╠═a6ea88df-32ae-406a-9ce2-eedbfff3b77f
+# ╟─2eff73ca-34ba-4a86-bc98-8543003fa46f
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
