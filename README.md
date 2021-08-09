@@ -15,7 +15,7 @@ for mathematicians to learn the key concepts of the
 # Draft material ready for commenting
 
 1. [Introduction to Julia for CATAM](https://sje30.github.io/catam-julia/intro/julia-manual.html)
-2. [Case study: permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/Permutations.html)
+2. [Case study: permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/permutationsnotebook.html)
 3. [Case study: modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
 4. [Case study: Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
 # Work in progress below
@@ -53,7 +53,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 18. Perlin noise generation
 19. Enumeration of Polyominoes
 20. Finite projective geometry
-21. Julia's type system and multiple dispatch (see [Gokul's thoughts](https://github.com/sje30/catam-julia/issues/4))
+21. A mention of type stability (link from Gokul https://www.juliabloggers.com/writing-type-stable-julia-code/)
 
 # Acknowledgements
 
