@@ -27,7 +27,7 @@ for mathematicians to learn the key concepts of the
 2. [Modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
 3. [Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
 4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints/lagrangepointsnotebook.html)
-5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes and Efficiency/primes.jl)
+5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency/primes.jl)
 6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles/shuffle.jl)
 
 # Work in progress below
