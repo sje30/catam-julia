@@ -1,6 +1,6 @@
 # Polynomial Interpolation
 
-This file is ment as a complement to the 1B [Numberical Analysis Course](http://damtp.cam.ac.uk/).
+This file is ment as a complement to the 1B Numberical Analysis Course.
 
 **Contents**
 - Short summary of the **theory of polynomial interpolation**
