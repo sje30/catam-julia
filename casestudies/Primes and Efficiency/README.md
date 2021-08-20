@@ -6,4 +6,4 @@
 - Measure runtimes experimentally with the ***runtime tools*** built into Julia
 - Statistically varify certain theorems about the ***distribution of primes***
 
-[HTML version](https://sje30.github.io/catam-julia/casestudies/primes-and-efficiency/primes.html)
+[HTML version](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Matters%20of%20Efficiency/primes.html)
