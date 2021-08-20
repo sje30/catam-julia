@@ -4,6 +4,12 @@
 using Markdown
 using InteractiveUtils
 
+# ╔═╡ 0a95c7a9-959a-4d91-9c76-266d352c8ec6
+begin
+	using PlutoUI
+	PlutoUI.TableOfContents(title = "Contents")
+end
+
 # ╔═╡ 0b614b64-d774-4be2-b6fc-c6586d6ce46b
 using Plots
 
@@ -15,29 +21,29 @@ md"""
 # ╔═╡ 2137cb5a-cf1c-4d31-91a7-edf88c4c3f79
 md"""
 ## Objectives
-- Simulate realistic card shuffles
-- Compare different metrics for meassuring randomness
-- Compare different Shuffles in regard to their effectiveness
+- Realistically **simulate** the two most common card shuffles
+- Lay out a method for **measuring randomness** in a deck of cards
+- Compare the two shuffle techniques in regard to their effectiveness
 """
 
 # ╔═╡ 96838eb9-d7ce-4ff2-a0f5-9d9d13d292fc
 md"""
 ## Introduction
-In this case study we will give a practical approach to comparing differnt card shuffles. Simulating card shuffles in a realistic way is not as trivial as it sounds, deciding when a deck is well shuffled is even trickier. For the purpose of this case study we will always work with a deck of 52 distinct cards.
+In this case study we will give a practical approach to comparing different card shuffles. Simulating card shuffles in a realistic way is not as trivial as it sounds, deciding when a deck is well shuffled is even trickier. For the purpose of this case study we will always work with a deck of 52 distinct cards.
 """
 
 # ╔═╡ 39301101-8962-4db1-a746-c865b0d59db3
 md"""
 ## The Deck of Cards
-The first question we have to ask ourselves is how we are going to simulate shuffles on a computer. We will represent the deck of 52 cards with an array containing the inetegrs 1 to 52, initially in order, with 1 being the top card by convention:
+The first question we have to ask ourselves is how we are going to simulate shuffles on a computer. We will represent the deck of 52 cards with an array containing the integers 1 to 52, initially in order, with 1 being the top card by convention:
 """
 
 # ╔═╡ 4d5e1966-aa3e-4690-9957-33d672ae353f
-deck = [i for i in 1:52]
+deck = collect(1:52)
 
 # ╔═╡ 95f00951-0d5c-4757-8826-56ebc3aca32b
 md"""
-We also need a way to neatly visualise our shuffles. The julia inbuilt colour functionality comes very handy here. The following function displays the deck as a horizonatl strip where each card is encoded by a unique colour in the range from blue to red.
+We also need a way to neatly visualise our shuffles. The Julia colour functionality (from the 'Colors' Package) comes in very handy here. The following function displays the deck as a horizontal strip where each card is encoded by a unique colour in the range from blue to red.
 """
 
 # ╔═╡ e54f1fa4-c040-4d9f-99ea-59bfeccdcb3f
@@ -57,7 +63,7 @@ md"""
 
 The riffle shuffle is probably the most famous shuffling technique. To perform a riffle shuffle, approximately half of the deck is held in each hand with the thumbs pointing inwards. Then cards are released simultaneous by both thumbs so that they interleave while falling to the table. A perfect riffle shuffle is one where the cards alternate perfectly. There are two types of perfect riffle shuffles, one where the top card moves to be second from the top (called an in-shuffle), and one where the top and bottom cards are preserved (called an out-shuffle).
 
-To simulate a realistic riffle shuffle we will make use of the _**Gilbert–Shannon–Reeds Model**_. To generate a random permutation according to this model, we flipp a fair coin 52 times, to determine for each position of the shuffled deck whether it came from the first packet or the second packet. Then we split the initial deck into two packets whose sizes are the number of tails and the number of heads flipped, and use the same coin flip sequence to determine from the bottom of which packet to pull each card of the shuffled deck. This algorithm has been reported to be a good match for experimentally observed outcomes of human riffle shuffling.
+To simulate a realistic riffle shuffle we will make use of the _**Gilbert–Shannon–Reeds Model**_. To generate a random permutation according to this model, we flip a fair coin 52 times, to determine for each position of the shuffled deck whether it came from the first packet or the second packet. Then we split the initial deck into two packets whose sizes are the number of tails and the number of heads flipped, and use the same coin flip sequence to determine from the bottom of which packet to pull each card of the shuffled deck. This algorithm has been reported to be a good match for experimentally observed outcomes of human riffle shuffling.
 """
 
 # ╔═╡ fa788983-e7e3-48ce-b874-8378563869a3
@@ -78,6 +84,11 @@ function riffle(deck, n = 1)
 	return riffle(newDeck, n-1)
 end
 
+# ╔═╡ 3f4e23d9-3102-4a1b-b763-ebb6e9264b9a
+md"""
+In this procedure, $n$ denotes the number of riffles performed sequentially.
+"""
+
 # ╔═╡ 61674df8-b398-4ba7-9913-f32822617828
 displayDeck(riffle(deck,1))
 
@@ -87,11 +98,16 @@ displayDeck(riffle(deck,2))
 # ╔═╡ 449066ba-0e05-4c0c-9083-ac1298dc50d0
 displayDeck(riffle(deck,3))
 
+# ╔═╡ e21b7bd3-5df7-4eec-8563-dafe24076c4f
+md"""
+As we increase $n$, the order of the deck looks more and more random, just as expected. After only 3 shuffles however, there is still some clearly visible structure present.
+"""
+
 # ╔═╡ e17dba39-871d-4c65-8d66-6fc0ef708c17
 md"""
-### The overhand Shuffle
+### The Overhand Shuffle
 
-The overhand shuffle is the easiest and most widespread shuffling technique. To perform the shuffle, the deck is gradually transferd one hand to the other by sliding off small packets from the top of the deck with the thub of the receiving hand. The process is repeated several times. The randomness of the whole shuffle is increased by the number of small packets in each iteration as well as the number of iterations performed.
+The overhand shuffle is the easiest and most widespread shuffling technique. To perform the shuffle, the deck is gradually transferred from one hand to the other by sliding off small packets from the top of the deck with the thumb of the receiving hand. The process is repeated several times. The randomness of the whole shuffle is increased by the number of small packets in each iteration as well as the number of iterations performed.
 
 To simulate an overhand shuffle, we will pick each of the $51$ positions between adjacient cards as a 'cutting point' with some probability $p$, independent of each other. We then just reverse the order of the resulting packets definied by these cutting points. While the optimal value of $p$ is $1/2$, practically the deck is usually only split into approximately 10 packets. We will therefore use a generous value of $p = 1/5$ to get an expected number of $10.2$ cutting points corresponding to $11.2$ packets.
 """
@@ -109,6 +125,11 @@ function overhand(deck, n = 1, p = 0.2)
 	return overhand(newDeck, n-1, p)
 end
 
+# ╔═╡ c65b75e0-b974-4d02-b68a-94533310ee32
+md"""
+Again, $n$ denotes the number of iterations of the shuffle performed.
+"""
+
 # ╔═╡ 95c25530-33f6-4de4-acc8-439f039a61a1
 displayDeck(overhand(1:52,1))
 
@@ -118,6 +139,11 @@ displayDeck(overhand(1:52,2))
 # ╔═╡ ed9d5dbe-64cd-462f-b937-4fc7880f2dc3
 displayDeck(overhand(1:52,3))
 
+# ╔═╡ 1a304723-2f76-4ae9-aa99-638f6e405db4
+md"""
+Compared to the riffle shuffle, it seems like the overhand shuffle doesn't randomize the deck as quickly. After 3 overhand shuffles there are still quite a few blocks of consecutive cards that have not been seperated. Let's see how we can make the 'effectiveness' of these shuffles more concrete.
+"""
+
 # ╔═╡ 626314cb-a77b-4a6a-ac08-132276887030
 md"""
 ## Meassuring Randomness
@@ -126,27 +152,32 @@ md"""
 # ╔═╡ c571311e-5946-4f06-8e9d-d5f8d8ed3430
 md"""
 ### The Kullback–Leibler divergence
-Given a refrence probability distribution $Q$, the Kullback–Leibler divergence is a meassure of how much a second probability distribution $P$ differs from $Q$:
+Given a reference probability distribution $Q$, the Kullback–Leibler divergence is a measure of how much a second probability distribution $P$ differs from $Q$:
 
 $D_\text{KL}(P\parallel Q) = \sum _x P(x)\log \left(\frac {P(x)}{Q(x)}\right)$
 
-where the sum is over all elements of the probability sapce in question. Note that the expression is not symmetric in $P$ and $Q$. This is because similarly to a hypothesis test, the distribution $Q$ should be taken as the predicted distribution whereas $P$ is the observed distribution.
+where the sum is over all elements of the probability space in question. Note that the expression is not symmetric in $P$ and $Q$. This is because similarly to a hypothesis test, the distribution $Q$ should be taken as the predicted distribution whereas $P$ is the observed distribution.
 """
 
 # ╔═╡ 62e5ddbf-f908-4b47-a9f8-fee28d82beea
 md"""
-Unfortunately, we cannot apply this meassure to the entire probability space of all permutations since $52! \approx 8.069\times 10^{67}$ is way too large to iterate through. Instead, we will analyse the distribution of final positions of a single card in the deck. If this distribution is close to uniform we can safely assume that the deck is well shuffled. Also note that since the shuffle techniques in considereation treat all cards about eaqually, we will focuss on the card that is initially on top of the deck. If anything, this card will be shuffled least well, as in the beginning it can only 'move' in one direction.
+Unfortunately, we cannot apply this measure to the entire probability space of all permutations since $52! \approx 8.069\times 10^{67}$ is way too large to iterate through. Instead, we will analyse the distribution of final positions of a single card in the deck. If this distribution is close to uniform we can safely assume that the deck is well shuffled. Also note that since the shuffle techniques in consideration treat all cards about equally, we will focus on the card that is initially on top of the deck. If anything, this card will be shuffled least well, as in the beginning it can only 'move' in one direction.
 """
 
 # ╔═╡ d5f0b623-22d3-4476-9d8d-4045fb03650c
 function topCardDist(shuffle, n, m)
 	dist = zeros(52)
-	deck = [i for i in 1:52]
+	deck = collect(1:52)
 	for i in 1:m
 		dist[argmin(shuffle(deck, n))] += 1/m
 	end
 	return dist
 end
+
+# ╔═╡ 257972d2-fcef-48ff-81d3-25d5661a4151
+md"""
+In this procedure, $n$ denotes the number of sequential interations of the shuffle and $m$ is the number of data points collected for the distribution. We can now use the kullback–leibler divergence to get a metric of how 'far away' a distribution is from the desired, uniform distribution:
+"""
 
 # ╔═╡ 11263177-37bb-45de-8310-a3e612d8e652
 function KL(dist)
@@ -160,7 +191,7 @@ end
 
 # ╔═╡ 4804d7ac-15ff-4614-8065-43aefecfb56f
 md"""
-Let us use this meassure of randomness to compare the different shuffles:
+Let us use this measure of randomness to compare the two shuffles:
 """
 
 # ╔═╡ c5c392e8-12ec-438b-9e37-58e36227eaf4
@@ -211,7 +242,7 @@ end
 
 # ╔═╡ 4de522e2-8aba-4465-b9d5-4d77d3451687
 md"""
-Other than for the riffle shuffle, the shape of the distribution alternates between having its peak at the very bottom or the very top of the deck. This is to be expected, since on eiteration of the overhand shuffle reverses the deck, roughly speaking. We also note that the convergence to the uniform distribution seems to be much slower than for the riffle shuffle.
+Other than for the riffle shuffle, the shape of the distribution alternates between having its peak at the very bottom or the very top of the deck. This is to be expected, since one iteration of the overhand shuffle reverses the deck, roughly speaking. We also note that the convergence to the uniform distribution seems to be much slower than for the riffle shuffle.
 """
 
 # ╔═╡ b8bdb3c3-a57f-4f4e-a20e-2600602d5b81
@@ -222,13 +253,20 @@ plot!([KL(topCardDist(overhand, n, 10000)) for n in 1:41], label = "Overhand Shu
 plot!([KL(topCardDist(riffle, n, 10000)) for n in 1:41], label = "Riffle Shuffle")
 end
 
+# ╔═╡ d462dbb3-790b-43b7-98ef-39c2427a0512
+md"""
+We conclude that the riffle shuffle is the supervior shuffling technique, at least under this metric of effectiveness. The data shows that it takes more than 40 iterations of the overhand shuffle to achieve the same degree of uniformity as riffling the deck 8 times.
+"""
+
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
 [deps]
 Plots = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
+PlutoUI = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
 
 [compat]
 Plots = "~1.20.1"
+PlutoUI = "~0.7.9"
 """
 
 # ╔═╡ 00000000-0000-0000-0000-000000000002
@@ -678,6 +716,12 @@ git-tree-sha1 = "8365fa7758e2e8e4443ce866d6106d8ecbb4474e"
 uuid = "91a5bcdd-55d7-5caf-9e0b-520d859cae80"
 version = "1.20.1"
 
+[[PlutoUI]]
+deps = ["Base64", "Dates", "InteractiveUtils", "JSON", "Logging", "Markdown", "Random", "Reexport", "Suppressor"]
+git-tree-sha1 = "44e225d5837e2a2345e69a1d1e01ac2443ff9fcb"
+uuid = "7f904dfe-b85e-4ff6-b463-dae2292396a8"
+version = "0.7.9"
+
 [[Preferences]]
 deps = ["TOML"]
 git-tree-sha1 = "00cfd92944ca9c760982747e9a1d0d5d86ab1e5a"
@@ -785,6 +829,11 @@ deps = ["Adapt", "DataAPI", "StaticArrays", "Tables"]
 git-tree-sha1 = "000e168f5cc9aded17b6999a560b7c11dda69095"
 uuid = "09ab397b-f2b6-538f-b94a-2f83cf4a842a"
 version = "0.6.0"
+
+[[Suppressor]]
+git-tree-sha1 = "a819d77f31f83e5792a76081eee1ea6342ab8787"
+uuid = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+version = "0.2.0"
 
 [[TOML]]
 deps = ["Dates"]
@@ -1045,28 +1094,35 @@ version = "0.9.1+5"
 # ╟─9a596318-209c-4eef-b8a9-50cbb11b2cc0
 # ╟─9fb354b9-a7ca-475d-ac3f-1c88d1972d58
 # ╠═fa788983-e7e3-48ce-b874-8378563869a3
+# ╟─3f4e23d9-3102-4a1b-b763-ebb6e9264b9a
 # ╠═61674df8-b398-4ba7-9913-f32822617828
 # ╠═063aaaa4-1225-4b4b-89f3-7ff3bc205c74
 # ╠═449066ba-0e05-4c0c-9083-ac1298dc50d0
+# ╟─e21b7bd3-5df7-4eec-8563-dafe24076c4f
 # ╟─e17dba39-871d-4c65-8d66-6fc0ef708c17
 # ╠═672a8b21-9b9b-4223-81ea-abed8fad9d0e
+# ╟─c65b75e0-b974-4d02-b68a-94533310ee32
 # ╠═95c25530-33f6-4de4-acc8-439f039a61a1
 # ╠═f3e87927-5568-47bc-abcc-fc30afcc129f
 # ╠═ed9d5dbe-64cd-462f-b937-4fc7880f2dc3
+# ╟─1a304723-2f76-4ae9-aa99-638f6e405db4
 # ╟─626314cb-a77b-4a6a-ac08-132276887030
 # ╟─c571311e-5946-4f06-8e9d-d5f8d8ed3430
 # ╟─62e5ddbf-f908-4b47-a9f8-fee28d82beea
 # ╠═d5f0b623-22d3-4476-9d8d-4045fb03650c
+# ╟─257972d2-fcef-48ff-81d3-25d5661a4151
 # ╠═11263177-37bb-45de-8310-a3e612d8e652
 # ╟─4804d7ac-15ff-4614-8065-43aefecfb56f
 # ╟─c5c392e8-12ec-438b-9e37-58e36227eaf4
-# ╠═0b614b64-d774-4be2-b6fc-c6586d6ce46b
-# ╠═2c73ded2-216a-44e0-8c21-c816c289bec3
-# ╠═637e1c56-feb2-42e0-9c39-f7ad33616d31
+# ╟─2c73ded2-216a-44e0-8c21-c816c289bec3
+# ╟─637e1c56-feb2-42e0-9c39-f7ad33616d31
 # ╟─96e6723a-0fa7-4cd3-a9b4-fb1fa0dffa40
 # ╟─16077fbd-689f-45bb-b063-1b4aeefe8c59
-# ╠═eae5a4eb-cc4e-402a-b96c-e036c6838b64
+# ╟─eae5a4eb-cc4e-402a-b96c-e036c6838b64
 # ╟─4de522e2-8aba-4465-b9d5-4d77d3451687
-# ╠═b8bdb3c3-a57f-4f4e-a20e-2600602d5b81
+# ╟─b8bdb3c3-a57f-4f4e-a20e-2600602d5b81
+# ╟─d462dbb3-790b-43b7-98ef-39c2427a0512
+# ╟─0a95c7a9-959a-4d91-9c76-266d352c8ec6
+# ╟─0b614b64-d774-4be2-b6fc-c6586d6ce46b
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
