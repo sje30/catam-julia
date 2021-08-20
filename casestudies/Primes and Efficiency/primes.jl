@@ -79,7 +79,7 @@ end
 
 # ╔═╡ e3525717-d598-4730-9ee0-b65ea09f7ce0
 md"""
-Now to finding all the primes up to N, we can just run through all the positive integers less than or equal to N, add each integer to our list if it masses our primaly test.
+Now to find all the primes up to N, we can just run through all the positive integers less than or equal to N, add each integer to our list if it passes our primality test.
 """
 
 # ╔═╡ 9f7705cb-775b-4e86-bc70-70b2e852fbc2
@@ -423,6 +423,9 @@ plotReciprocal(primes)
 md"""
 The expression does indeed seem to be decreasing and slowly tending towards some positive constant.
 """
+
+# ╔═╡ 577326bc-58c8-4e72-ab94-c2ac8aa2e0c1
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1242,7 +1245,7 @@ version = "0.9.1+5"
 # ╟─6164b325-44b8-478e-a122-a871c44d7ab1
 # ╟─24f264de-60d8-463b-8907-0a43f8297e52
 # ╠═53cd01c6-0090-47a0-ad59-63950fe471c1
-# ╟─e3525717-d598-4730-9ee0-b65ea09f7ce0
+# ╠═e3525717-d598-4730-9ee0-b65ea09f7ce0
 # ╠═9f7705cb-775b-4e86-bc70-70b2e852fbc2
 # ╟─48e8d826-a81c-42fa-910b-abd3d80a230d
 # ╠═a3d579fc-b5d9-4662-9823-b171e4a29fab
@@ -1300,5 +1303,6 @@ version = "0.9.1+5"
 # ╠═39b108b3-b41e-44c4-9565-d199c5831746
 # ╠═a6ea88df-32ae-406a-9ce2-eedbfff3b77f
 # ╟─2eff73ca-34ba-4a86-bc98-8543003fa46f
+# ╠═577326bc-58c8-4e72-ab94-c2ac8aa2e0c1
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002
