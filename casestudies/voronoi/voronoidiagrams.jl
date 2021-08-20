@@ -216,16 +216,228 @@ md"""
 ## Constructing the Voronoi diagram geometrically
 """
 
-# ╔═╡ 78258400-945b-4e9d-a091-39124f419ce5
+# ╔═╡ 35546877-09ce-4294-acd3-6150a2b3637d
 md"""
 ### A geometric algorithm
 A close look at the Voronoi diagram's construction reveals two useful geometric facts about the edges between points:
 - All edges are equidistant from the two points whose regions it seperates, i.e. are segments of perpendicular bisectors
 - Where edges meet, they are equidistant from three points, so the tripoint must lie at the circumcentre of the three points (the centre of the circle passing through all three)
+"""
 
-Indeed, consider two points ``\mathbf{p}`` and ``\mathbf{q}`` whose regions share an edge in the Voronoi diagram, and consider the circumcentres of ``\mathbf{p}``, ``\mathbf{q}``, and ``\mathbf{r}`` for all other points ``\mathbf{r}`` which define the diagram. All of these circumcentres must lie on the perpendicular bisector of ``\mathbf{p}`` and ``\mathbf{q}``. Additionally, if any of these circumcentres were on the edge between the regions, then ``\mathbf{r}`` would be closer than ``\mathbf{p}`` or ``\mathbf{q}`` on one side of the line, so this must lie at the end of the edge.
+# ╔═╡ f50845c7-45b1-46a0-9c7f-35303080b036
+begin
+	diagram₁ = plot(
+		[   Shape([(-2,-2),(-2,3),(0,2.5),(2,-1.5)]),
+			Shape([(0,2.5),(2,-1.5),(3,-2),(3,3)]),
+			Shape([(5,-2),(4.5,3),(85/12,5/12),(7.5,-1.25)]),
+			Shape([(4.5,3),(85/12,5/12),(8,2.25)]),
+			Shape([(85/12,5/12),(8,2.25),(10,3),(10,-2),(7.5,-1.25)])],
+		c = [:pink :lightblue :pink :lightblue :beige],
+		linewidth = 0,
+		legend = false,
+		showaxis = false,
+		ticks = false,
+		xlims = [-1, 9],
+		ylims = [-1, 2],
+		size = (1000, 300)
+	)
+	
+	scatter!(
+		diagram₁,
+		[(0,0),(2,1),(6,0.5),(7,1.5),(8,1)],
+		c = :black,
+	)
 
-This gives rise to the algorithm that I will implement. For each point ``\mathbf{p}`` of the Voronoi diagram in succession, I will start at a point ``\mathbf{z}`` which I know is on the border of ``\mathbf{p}``'s region (which will be halfway between ``\mathbf{p}`` and the closest other point ``\mathbf{q}``). Then, looking in one direction along the perpendicular bisector, I find the point ``\mathbf{r}`` which along with ``\mathbf{p}`` and ``\mathbf{q}`` defines the first circumcentre that I would come across. This circumcentre becomes a tripoint, and I get a new edge to the region to look down, that is the edge between ``\mathbf{p}`` and ``\mathbf{r}``. I continue this all the way around until I return to the start, giving a cycle of neighbours in the order that they are encountered.
+	
+	plot!(
+		diagram₁,
+		[x -> 2.5 - 2x, x -> 0.5x],
+		c = [:black :gray],
+		linestyle = [:solid :dash]
+	)
+	
+	plot!(
+		diagram₁,
+		[(0.9,0.45),(0.85,0.55),(0.95,0.6)],
+		c = :gray
+	)
+	
+	plot!(
+		diagram₁,
+		1.0865*cos.(0:0.01π:2.01π) .+ 85/12,
+		1.0865*sin.(0:0.01π:2.01π) .+ 5/12,
+		c = :gray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₁,
+		[(4.5,3),(85/12,5/12),(8,2.25),(85/12,5/12),(7.5,-1.25)],
+		c = :black
+	)
+	
+	plot!(
+		diagram₁,
+		[(6,0.5),(85/12,5/12),(7,1.5),(85/12,5/12),(8,1)],
+		c = :gray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₁,
+		[(98/15,7/20),(131/20,17/30)],
+		c = :grey
+	)
+	
+	plot!(
+		diagram₁,
+		[(104/15,19/20),(143/20,29/30)],
+		c = :grey
+	)
+	
+	plot!(
+		diagram₁,
+		[(38/5,37/60),(449/60,4/5)],
+		c = :grey
+	)
+	
+	plot!(
+		diagram₁,
+		Shape([(3,-2),(5,-2),(5,3),(3,3)]),
+		c = :white,
+		linecolor = :white
+	)
+end
+
+# ╔═╡ 26dfe1aa-9e61-46dd-953b-3164c4470458
+md"""
+Consider two points ``\mathbf{p}`` and ``\mathbf{q}`` whose regions share an edge in the Voronoi diagram, and consider the circumcentres of ``\mathbf{p}``, ``\mathbf{q}``, and ``\mathbf{r}`` for all other points ``\mathbf{r}`` which define the diagram. All of these circumcentres must lie on the perpendicular bisector of ``\mathbf{p}`` and ``\mathbf{q}``. Additionally, if any of these circumcentres were on the edge between the regions, then ``\mathbf{r}`` would be closer than ``\mathbf{p}`` or ``\mathbf{q}`` on one side of the line, so this must lie at the end of the edge.
+
+Indeed, for any points ``\mathbf{p}`` and ``\mathbf{q}``, the circumcentres of ``\mathbf{p}`` and ``\mathbf{q}`` with each other point ``\mathbf{r}`` lie on the perpendicular bisector, with the border between the Voronoi regions of ``\mathbf{p}`` and ``\mathbf{q}`` either nonexistent, or one of the line segments between adjacent circumcentres, such as below:
+"""
+
+# ╔═╡ 7c392155-a7b1-4dfb-b6bb-bb52e8f071f7
+begin
+	diagram₂ = scatter(
+		[(4,-0.5),(4,1.5)],
+		c = :black,
+		legend = false,
+		showaxis = false,
+		ticks = false,
+		xlims = [-1, 9],
+		ylims = [-1, 2],
+		ann = [(4.2,-0.6,"q"),(3.8,1.6,"p")],
+		size = (1000, 300)
+	)
+	
+	plot!(
+		diagram₂,
+		[(-2,0),(10,1)],
+		c = :lightgray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₂,
+		[(4.5,6.5/12),(5,7/12)],
+		c = :black
+	)
+	
+	scatter!(
+		diagram₂,
+		[(1,1/4),(3,5/12),(4.5,6.5/12),(5,7/12),(7.5,9.5/12)],
+		c = :lightgray,
+		markerstrokewidth = 0
+	)
+end
+
+# ╔═╡ 406599de-7141-4c59-a294-bffb79973098
+md"""
+This gives rise to the algorithm that I will implement. For each point ``\mathbf{p}`` of the Voronoi diagram in succession, I will start at a point ``\mathbf{z}`` which I know is on the border of ``\mathbf{p}``'s region (which will be halfway between ``\mathbf{p}`` and the closest other point ``\mathbf{q}``).
+"""
+
+# ╔═╡ c5553b17-c7a6-4c3d-92e2-9dff80c28867
+begin
+	diagram₃ = scatter(
+		[(0.5,0.5),(1,1.5),(0.75,1)],
+		c = :black,
+		shape = [:o, :o, :x],
+		markersize = [3, 3, 5],
+		legend = false,
+		showaxis = false,
+		ticks = false,
+		xlims = [-1, 3],
+		ylims = [-1, 2],
+		ann = [(0.7,0.4,"p"),(0.8,1.6,"q"),(0.9,1.1,"z")],
+		size = (400, 300)
+	)
+	
+	plot!(
+		diagram₃,
+		[(-1.25,2),(3.75,-0.5)],
+		c = :gray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₃,
+		[(0.75,1),(1.25,0.75)],
+		c = :black,
+		arrow = arrow(:closed)
+	)
+end
+
+# ╔═╡ 98e6d6c3-1623-403a-b066-bdd280aaee4e
+md"""
+Then, looking in one direction along the perpendicular bisector, I find the point ``\mathbf{r}`` which along with ``\mathbf{p}`` and ``\mathbf{q}`` defines the first circumcentre that I would come across. This circumcentre becomes a tripoint, and I get a new edge to the region to look down, that is the edge between ``\mathbf{p}`` and ``\mathbf{r}``, along their perpendicular bisector.
+"""
+
+# ╔═╡ 283f5b27-6bd6-4cc2-98b7-d72377505626
+begin
+	diagram₄ = scatter(
+		[(0.5,0.5),(1,1.5),(3,1),(65/36,17/36)],
+		c = [:black, :black, :black, :gray],
+		markerstrokewidth = 0,
+		legend = false,
+		showaxis = false,
+		ticks = false,
+		xlims = [-1, 3],
+		ylims = [-1, 2],
+		ann = [(0.7,0.4,"p"),(0.8,1.6,"q"),(2.8,1.1,"r")],
+		size = (400, 300)
+	)
+	
+	plot!(
+		diagram₄,
+		[(-1.25,2),(3.75,-0.5)],
+		c = :gray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₄,
+		[(0.75,1),(65/36,17/36)],
+		c = :black
+	)
+	
+	plot!(
+		diagram₄,
+		[(1.25,3.25),(2.25,-1.75)],
+		c = :gray,
+		linestyle = :dash
+	)
+	
+	plot!(
+		diagram₄,
+		[(65/36,17/36),(2,-0.5)],
+		c = :black,
+		arrow = arrow(:closed)
+	)
+end
+
+# ╔═╡ 74fe0258-6c8e-4383-9aad-ffcb890e9612
+md"""
+I continue this all the way around until I return to the start, giving a cycle of neighbours in the order that they are encountered.
 
 However if ``\mathbf{p}`` is on the edge of the diagram, then at some point there will be no circumcentre to be find along the line. In this special case, I return to the same initial point ``\mathbf{z}`` and start to look the other way, until again there is no circumcentre to find. Instead of a cycle of neighbours, this gives a sequence of neighbours bookended by neighbours with which ``\mathbf{p}`` shares a unbounded edge.
 """
@@ -1683,7 +1895,15 @@ version = "0.9.1+5"
 # ╠═ac20813e-57ec-4f40-bbaa-eeed7557f2f5
 # ╟─6f1c21bc-2803-4f10-ae1a-47fa6a883f19
 # ╟─5619eeaa-d0ae-4752-987a-abc6b9236725
-# ╟─78258400-945b-4e9d-a091-39124f419ce5
+# ╟─35546877-09ce-4294-acd3-6150a2b3637d
+# ╟─f50845c7-45b1-46a0-9c7f-35303080b036
+# ╟─26dfe1aa-9e61-46dd-953b-3164c4470458
+# ╟─7c392155-a7b1-4dfb-b6bb-bb52e8f071f7
+# ╟─406599de-7141-4c59-a294-bffb79973098
+# ╟─c5553b17-c7a6-4c3d-92e2-9dff80c28867
+# ╟─98e6d6c3-1623-403a-b066-bdd280aaee4e
+# ╟─283f5b27-6bd6-4cc2-98b7-d72377505626
+# ╟─74fe0258-6c8e-4383-9aad-ffcb890e9612
 # ╟─4ff3a96d-14dd-4af8-820a-bbb30c3fca15
 # ╠═7d80b224-03ad-4034-af2d-7975b6e0e7a9
 # ╟─26502d5d-54c6-4d57-9be4-5e8971635560

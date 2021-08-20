@@ -14,10 +14,22 @@ for mathematicians to learn the key concepts of the
 
 # Draft material ready for commenting
 
+## Core material
+
 1. [Introduction to Julia for CATAM](https://sje30.github.io/catam-julia/intro/julia-manual.html)
-2. [Case study: permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/permutationsnotebook.html)
-3. [Case study: modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
-4. [Case study: Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
+2. [1A material]()
+3. [1B material]()
+4. [Root finding]()
+
+## Case studies
+
+1. [Permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/permutationsnotebook.html)
+2. [Modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
+3. [Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
+4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints/lagrangepointsnotebook.html)
+5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency/primes.jl)
+6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles/shuffle.jl)
+
 # Work in progress below
 
 
