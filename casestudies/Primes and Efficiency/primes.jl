@@ -17,14 +17,14 @@ md"""
 ## Objectives
 - Introduce asymptotic runtime analysis with "big O" notation 
 - Compare different approaches for finding prime numbers in regard to their efficiency
-- Meassure runtimes practically with the tools built into julia
-- Statistically varify certain thereoms about the distribution of primes
+- Measure runtimes practically with the tools built into julia
+- Statistically varify certain theorems about the distribution of primes
 """
 
 # ╔═╡ 480b1c62-9a1d-4504-8872-c388403bec0b
 md"""
 ## Why do we care about Primes?
-There is no doublt that prime numbers play an important role in modern day matheamtics. They appear in almost all areas of study and are stil not understood as well as their simple definition would suggest. But why should one care about computing primes on a computer?
+There is no doubt that prime numbers play an important role in modern day mathematics. They appear in almost all areas of study and are still not understood as well as their simple definition would suggest. But why should one care about computing primes on a computer?
 
 ### Statistical Data inspires Research
 Almost all conjectures about the distributions of primes throughout history have been motivated through data. Likewise, new conjectures about the primes inspired by theoretical observations can be checked against a list of small primes, either showing a concrete contradiction or boosting the mathematicians confidence in their conjecture.
@@ -39,11 +39,11 @@ Many traditional encryption algorithm make use of the fact that there is no algo
 # ╔═╡ 6164b325-44b8-478e-a122-a871c44d7ab1
 md"""
 ## Asymptotic Runtime Analysis
-When analysing an algorithm theoretically, we are interested in counting the number of "elementary operations" as a function of the input size. An elemetray operation, also sometimes called a zero operation, is any algorithmic step that can be peformed by the computer in constant time. Elemetary opertaions include addition, multiplication, division, modulus calculations, conditional checks, etc
+When analysing an algorithm theoretically, we are interested in counting the number of "elementary operations" as a function of the input size. An elementary operation, also sometimes called a zero operation, is any algorithmic step that can be performed by the computer in constant time. Elementary operations include addition, multiplication, division, modulus calculations, conditional checks, etc
 While the time to perform some of these operations, for example multiplication, does depend on the size of the numbers involved, modern computers have specific processor instructions to run such operations directly on the hardware in negligible time.
 
 ### The "Big O" Notation
-When copunting elementary operations, we are usually only intersted in its growth rate with respect to the input size. To express this we make use of the following:
+When counting elementary operations, we are usually only interested in its growth rate with respect to the input size. To express this we make use of the following:
 
 _**Definition:**_ For functions $f,g:\mathbb{R}\to\mathbb{R}$ we say that $f$ is $O(g)$ if there exist constants $M$ and $x_0$ such that $|f(x)| \leq Mg(x)$ for all $x \geq x_0$.
 
@@ -60,10 +60,10 @@ Note that this is just an upper bound on the asymptotic behaviour. A function th
 md"""
 ## Finding Primes
 
-In this section we will discuss increasingly efficient methods for finding all the prime numbers up to some integer N. We are particularly interested in analyzing th eruntime of our algorithms as N grows very large.
+In this section we will discuss increasingly efficient methods for finding all the prime numbers up to some integer N. We are particularly interested in analyzing the runtime of our algorithms as N grows very large.
 
 ### A Naive Approach
-In order to check if a given integer n is prime, the most canonical algorithm just counts the number of divisors of n by running though all the integers less than or eual to n. If the number of divisors is exactly 2, we have found ourselves a prime.
+In order to check if a given integer n is prime, the most canonical algorithm just counts the number of divisors of n by running though all the integers less than or equal to n. If the number of divisors is exactly 2, we have found ourselves a prime.
 """
 
 # ╔═╡ 53cd01c6-0090-47a0-ad59-63950fe471c1
@@ -103,11 +103,11 @@ findPrimes(100)
 
 # ╔═╡ dc109446-aa32-4fb7-8f74-edc0c6f98c6a
 md"""
-For most applications and in order to have some meaningfull statistics, we need many more primes. Let's say we therefore want to use our algorithm to find all primes up to 100'000.
+For most applications and in order to have some meaningful statistics, we need many more primes. Let's say we therefore want to use our algorithm to find all primes up to 100,000.
 """
 
 # ╔═╡ a346aa06-7db4-4d7a-aad8-bf005c294c67
-findPrimes(100000)
+@time findPrimes(100000)
 
 # ╔═╡ ba0eae87-4eec-4387-a210-64e0f2126f87
 md"""
@@ -122,7 +122,7 @@ Let's analyze what we have so far. The benefit of an algorithm as simple as the 
 
 # ╔═╡ af8fa992-1bc8-4896-8f6c-8edf3f19c475
 md"""
-We can also analyse our algorithm experimentally. In order to do so, we write a little function that runs any algorithm we give it at equally spaced input values and plots the runtime against input size. Note that in julia we can use the `@elapsed` modifier to get the runtime of any function in seconds and we need to import the package `Plots` to use its plotting functioality:
+We can also analyse our algorithm experimentally. In order to do so, we write a little function that runs any algorithm we give it at equally spaced input values and plots the runtime against input size. Note that in julia we can use the `@elapsed` modifier to get the runtime of any function in seconds and we need to import the package `Plots` to use its plotting functionality:
 """
 
 # ╔═╡ aa777745-618a-4681-b73a-1a1ca978d165
@@ -133,7 +133,7 @@ function plotTime(f, step, num)
 		append!(inputs, i * step)
 		append!(times, @elapsed f(i * step))
 	end
-	plot(inputs, times, xlabel = "input", ylabel = "seconds", legend = false)
+	plot(inputs, times, xlabel = "N", ylabel = "time (seconds)", legend = false)
 end
 
 # ╔═╡ 656b291e-f430-4e32-a3c9-87553cf2b1a5
@@ -141,13 +141,13 @@ plotTime(findPrimes, 5000, 20)
 
 # ╔═╡ 7c8670bf-85f6-438c-b9d7-a9b1ca4a6c01
 md"""
-The resulting plot clearly demonstrates the quadratic growth we predicted theoretically. It is always usefull to also analyse runtime with experimentation, since efficiency is also heavily influenced by things like cache locality, the branch predictor, multithreading features, etc.
+The resulting plot clearly demonstrates the quadratic growth we predicted theoretically. It is always useful to also analyse runtime with experimentation, since efficiency is also heavily influenced by things like cache locality, the branch predictor, multithreading features, etc.
 """
 
 # ╔═╡ a4232c06-eb44-4f7c-a8eb-09aa524cc1a7
 md"""
 ### Using All Available Information
-One observation that allows us to improve the efficiency of our algorithm is that when checking for the existence of divisors, we only have to check for prime divisirs! Since we are finding all the prime numbers in order, whenever we are checking if $n$ is prime, we already have a list of all primes less than $n$ at hand. Let's see how we would write an improved version of the function `isPrime`, which now not only takes a positive integer $n$ as input, but also the list of all primes less than $n$:
+One observation that allows us to improve the efficiency of our algorithm is that when checking for the existence of divisors, we only have to check for prime divisors! Since we are finding all the prime numbers in order, whenever we are checking if $n$ is prime, we already have a list of all primes less than $n$ at hand. Let's see how we would write an improved version of the function `isPrime`, which now not only takes a positive integer $n$ as input, but also the list of all primes less than $n$:
 """
 
 # ╔═╡ f4b38f40-6c51-430a-a7fd-5029e3b6ab0f
@@ -164,7 +164,7 @@ end
 
 # ╔═╡ 17fa50b7-afee-42f9-b622-d18ef1060720
 md"""
-Note that now we have to exclude the cases $n < 2$ explicitely, as for these inputs the list of smaller primes would be empty. Let's now use this new, improved version of `isPrime` to write an improved `findPrimes` function.
+Note that now we have to exclude the cases $n < 2$ explicitly, as for these inputs the list of smaller primes would be empty. Let's now use this new, improved version of `isPrime` to write an improved `findPrimes` function.
 """
 
 # ╔═╡ 519ce97d-fde8-49c7-8b92-56185bd02333
@@ -179,7 +179,7 @@ function findPrimesV2(N)
 end
 
 # ╔═╡ 9e76abdc-ddf9-4edd-a40d-059706f556d0
-findPrimesV2(100000)
+@time findPrimesV2(100_000)
 
 # ╔═╡ ae3c3fa7-0581-46e1-a3f3-abe49173ed1c
 md"""
@@ -196,13 +196,13 @@ _**Prime Number Theorem:**_ The number of primes up to $N$ is asymptotically $N/
 
 # ╔═╡ c28f9636-7d0c-4bd2-9c4d-bfc127ea06bc
 md"""
-Instead of $1+2+3+\cdots + N = N(N+1)/2$ iterations of the inner loop we therfore have approximately $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)\leq \frac{N(N+1)/2}{\log((N+1)/2)}$, using concavity of the function $x/\log(x)$ for $x > e^2$. Note that since we only care about the asymptotic behaviour of the expression, there is no problem with dropping the first term of the series to avoid the pole of $x/\log(x)$ at $1$. The runtime complexity is therefore at most $O(N^2/\log(N))$ and as $N$ grows large we have succesfully shaved of  factor of $\log(N)$.
+Instead of $1+2+3+\cdots + N = N(N+1)/2$ iterations of the inner loop we therfore have approximately $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)\leq \frac{N(N+1)/2}{\log((N+1)/2)}$, using concavity of the function $x/\log(x)$ for $x > e^2$. Note that since we only care about the asymptotic behaviour of the expression, there is no problem with dropping the first term of the series to avoid the pole of $x/\log(x)$ at $1$. The runtime complexity is therefore at most $O(N^2/\log(N))$ and as $N$ grows large we have succesfully shaved of a factor of $\log(N)$.
 """
 
 # ╔═╡ ce2733ab-10a6-4e87-aae4-ed30fa346823
 md"""
-### Using Some Matheamtical Insight
-Our algorithms can be made much more efficient when taking into considereation the following property of a positive integer:
+### Using Some Mathematical Insight
+Our algorithms can be made much more efficient when considering the following property of a positive integer:
 
 
 _**Lemma:**_ If an integer $n\geq 2$ has no prime divisor $p \leq \sqrt n$, then it is prime.
@@ -213,7 +213,7 @@ It is easy to see why this is the case, since if $n$ were to be composite, it wo
 
 # ╔═╡ aa396120-1a8d-4d13-9558-1faad05f76c7
 md"""
-In general, removing unnecessary work is a very effective way of making algorithms more efficient. Especially when it is possible to break out of nested loops early, we can often gain order of magnitudes in performance. Let's see how this translates into our code. Instead of the procedure `isPrime(n)` running through all positive integers up to $n$, we can break out of the loop as soon as we pass $\sqrt n$. Note that we have to be sglightly careful, as in the case where $n$ is the square of a prime, it is essential that we still check $\sqrt n$ itself as a divisor.
+In general, removing unnecessary work is a very effective way of making algorithms more efficient. Especially when it is possible to break out of nested loops early, we can often gain order of magnitudes in performance. Let's see how this translates into our code. Instead of the procedure `isPrime(n)` running through all positive integers up to $n$, we can break out of the loop as soon as we pass $\sqrt n$. Note that we have to be slightly careful, as in the case where $n$ is the square of a prime, it is essential that we still check $\sqrt n$ itself as a divisor.
 """
 
 # ╔═╡ 5f99ba92-7c35-4e6b-a3fc-f42178c43cad
@@ -239,7 +239,7 @@ function findPrimesV3(N)
 end
 
 # ╔═╡ bc2831a1-f808-4bc7-afaf-994abefb5286
-findPrimesV3(100000)
+@time findPrimesV3(100000)
 
 # ╔═╡ 157a17af-eb12-4d6d-be12-37a1b609005d
 md"""
@@ -247,11 +247,11 @@ We have reduced the runtime for `findPrimes(100000)` from 25 seconds down to 1 s
 """
 
 # ╔═╡ 54c591db-16c9-4c9e-9d01-444558af9c6e
-findPrimesV3(1000000)
-
+findPrimesV3(1_000_000)
+1
 # ╔═╡ 6e319277-a897-49aa-9e78-7a905a11dc89
 md"""
-Finding all primes up to one million in just 13 seconds, that's pretty fast now. Let us also analyse the runtime of our improved verion theoretically: Instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the eprevious ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
+Finding all primes up to one million in just 13 seconds, that's pretty fast now. Let us also analyse the runtime of our improved version theoretically: Instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the previous ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
 """
 
 # ╔═╡ 3ed289cd-6ace-442f-a9b4-7fe109af5e49
@@ -287,16 +287,16 @@ function findPrimesV4(N)
 end
 
 # ╔═╡ e9cdb8d0-3daa-4ada-9344-45099f184a64
-findPrimesV4(100000)
+@time findPrimesV4(100_000)
 
 # ╔═╡ 86076221-f0eb-4434-b15e-abcc7fc54384
-findPrimesV4(1000000)
+@time findPrimesV4(1_000_000)
 
 # ╔═╡ 998e600b-6933-48a9-bcf4-f7c1f981411e
-findPrimesV4(10000000)
+@time findPrimesV4(10_000_000)
 
 # ╔═╡ bf89a580-d02c-4c14-af67-f249071b4d5e
-findPrimesV4(100000000)
+@time findPrimesV4(100_000_000)
 
 # ╔═╡ d1edf66f-856b-463a-af27-775507ee70f2
 md"""
@@ -305,29 +305,29 @@ Finding all primes up to one million now only takes one tenth of a second and ju
 
 # ╔═╡ d22ec8ae-e5de-4b8d-85ac-17c7844f667b
 md"""
-How about the runtime complexity of this evidently much faster algorithm? Well, things get a bit more tricky to analyse here, as the asymptotic runtime now depends on how often and how ealry we can break out of the loop, which in turn depends on the distribution of primes in a more complicated way than before. If we count the number of iterations of the inner most loop for odd $N$, we get an estimate of
+How about the runtime complexity of this evidently much faster algorithm? Well, things get a bit more tricky to analyse here, as the asymptotic runtime now depends on how often and how early we can break out of the loop, which in turn depends on the distribution of primes in a more complicated way than before. If we count the number of iterations of the inner most loop for odd $N$, we get an estimate of
 $h(3)/\log(h(3)) + h(5)/\log(h(5)) + \cdots + h(N)/\log(h(N))$,
-where $h(n)$ is the smallest prime divisor of $n$ if $n$ is composit, and $\sqrt n$ if $n$ is prime. 
+where $h(n)$ is the smallest prime divisor of $n$ if $n$ is composite, and $\sqrt n$ if $n$ is prime. 
 """
 
 # ╔═╡ 8eae3bb0-4fa5-4e0f-8336-d28b199ef229
 md"""
-The last changes we made does not affect the runtime complexity itself, as it only shaves of a constant time factor. Never the less, optimizations like this one are not to be underestimated, as for small values of $N$, say $N < 10^9$ for example, a factor of $20$ is often worth more than a factor of $\log(N)$ for instance.
+The last changes we made do not affect the runtime complexity itself, as it only shaves of a constant time factor. Never the less, optimizations like this one are not to be underestimated, as for small values of $N$, say $N < 10^9$ for example, a factor of $20$ is often worth more than a factor of $\log(N)$ for instance.
 """
 
 # ╔═╡ ae8373e9-347d-4d2c-b988-6170ec2040a2
 md"""
 ## Applications
-Now that we have a way of finding the first 10 million primes in almost the blink of an eye, lets make use of them to varify some well-knows but hard to prove result about their distribution.
+Now that we have a way of finding the first 10 million primes in almost the blink of an eye, lets make use of them to verify some well-known but hard to prove result about their distribution.
 """
 
 # ╔═╡ cdefc0aa-aefa-4c62-b8a9-692331c9bf50
-primes = findPrimesV4(100000000)
+primes = findPrimesV4(100_000_000)
 
 # ╔═╡ ba871ee3-125d-402c-aef0-fe7046bf2bde
 md"""
 ### The Prime Number Theorem
-As already mentioned in a previous section, th eprime number theorem states that the number of primes up to $N$ is asymptoticall given by $N/\log N$. A better estimate with the same asymptotic is the function $N/(\log N-1)$. To see this result visually, let us plot $i(\log p_i-1)/p_i$ against $i$:
+As already mentioned in a previous section, the prime number theorem states that the number of primes up to $N$ is asymptotically given by $N/\log N$. A better estimate with the same asymptotic is the function $N/(\log N-1)$. To see this result visually, let us plot $i(\log p_i-1)/p_i$ against $i$:
 """
 
 # ╔═╡ ed0a598c-84a5-4062-bb7a-1d00added226
@@ -351,7 +351,7 @@ As predicted, the ratio does seem to tend towards $1$, be that very slowly.
 # ╔═╡ 03116ef9-39b9-459e-95cc-c367dedd7896
 md"""
 ### First and Last Digits of Primes in Base 10
-Despite their unique properties, prime numbers behave in many ways just like a random subset of the integers with a distribution given by the prime number theorem. For example, looking at the last digits of our primes, we expect all possible digits (the odd digits except five) to approximately appear equaly often:
+Despite their unique properties, prime numbers behave in many ways just like a random subset of the integers with a distribution given by the prime number theorem. For example, looking at the last digits of our primes, we expect all possible digits (the odd digits except five) to approximately appear equally often:
 """
 
 # ╔═╡ 6e66626d-7660-45d6-88c5-497ffce7c81e
@@ -359,7 +359,7 @@ histogram(broadcast(x -> x % 10, primes), bins = -0.5:1:9.5, xticks = -1:9, lege
 
 # ╔═╡ 166c0bb7-e75b-4e32-b3f3-0568e9e3d2b3
 md"""
-The first digits of primes on the other hand we expect to follow the so-called Benford's Law, since the distribution of the primes gets progressively sparcer and therefore lower leading digits are more likely:
+The first digits of primes on the other hand we expect to follow the so-called Benford's Law, since the distribution of the primes gets progressively sparser and therefore lower leading digits are more likely:
 """
 
 # ╔═╡ e5bc63bc-751e-4faa-81ce-db37343baf19
@@ -368,7 +368,7 @@ histogram(broadcast(x -> floor(x/10^floor(log10(x))), primes), bins = 0.5:1:9.5,
 # ╔═╡ 9d56672c-f3a0-4705-8e04-6bd2776d46b5
 md"""
 ### The Goldbach Conjecture
-The Goldbach Conjecture is one of the most famous open problems about prime numebrs. Proposed in 1742 by Christian Goldbach in correspondence with Leonhard Euler, it states that every even integer greater than 2 can be written as the sum of two prime numbers. While the problem remains open to this day, the conjecture is strongly believed to be true, not least becasue no counter example has been found so far. Let us varify this for the first few even integers:
+The Goldbach Conjecture is one of the most famous open problems about prime numbers. Proposed in 1742 by Christian Goldbach in correspondence with Leonhard Euler, it states that every even integer greater than 2 can be written as the sum of two prime numbers. While the problem remains open to this day, the conjecture is strongly believed to be true, not least because no counter example has been found so far. Let us verify this for the first few even integers:
 """
 
 # ╔═╡ b0ba2f26-291f-4204-942f-2b87cd5ba8a8
@@ -397,7 +397,7 @@ verifyGoldbach(100000, primes)
 # ╔═╡ 6ee5e9b2-2d38-4a92-9e71-660f06bbc7a5
 md"""
 ### Reciprocal Sum of Primes
-It is well known that the sum of resicprocals of primes diverges. Moreover, the growth rate of the partial sums is also known. In particular, the quantity
+It is well known that the sum of reciprocals of primes diverges. Moreover, the growth rate of the partial sums is also known. In particular, the quantity
 
 $\sum_{i = 1}^n \frac{1}{p_i} - \log\log n$
 
