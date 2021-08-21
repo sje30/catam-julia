@@ -37,14 +37,46 @@ Such a polynomial function is called a polynomial interpolant.
 # ╔═╡ d669910c-221e-4640-a997-483ef0e3c398
 md"""
 ## Lagrange Interpolation Formula
-To determine a polynomial interpolant a given set of $x_i$ and $f_i$ as above, it is convenient to use Lagrange's interpolation formula (first discovered by Waring):
+To determine a polynomial interpolant from a given set of $x_i$ and $f_i$ as above, it is convenient to use Lagrange's interpolation formula (first discovered by Waring):
 
-$p(x) = \sum_{k=0}^{n} f_k \left(\prod_{l = 0,\ l \neq k}^{n} \frac{x-x_l}{x_k - x_l}\right)$
+$$p(x) = \sum_{k=0}^{n} f_k \left(\prod_{l = 0,\ l \neq k}^{n} \frac{x-x_l}{x_k - x_l}\right)$$
 
 Note that this is the unique polynomial of degree at most $n$ fitting the given data.
+"""
+
+# ╔═╡ 2137e63c-4ebb-426e-b164-b62afc8a4fb7
+md"""
+## Chebyshev Points
+These are the roots of the Chebyshev polynomial of the first kind. For a given $n$, the Chebyshev points in the interval $(-1,1)$ are given by
+
+$x_i = \cos\left(\frac{2i-1}{2n}\pi\right)$
+
+for $i = 1,\dots,n$. They are particularly good points to use for polynomial interpolation since they minimise Runge's phenomenon. Just look at the error graph to convince yourself of this!
 
 
 """
+
+# ╔═╡ db44fc36-2803-4c73-99ce-8916bfe0c300
+md"""
+## Interactive Tool
+**Note:** This interactive tool only works when runnning this file as a Pluto notebook. A documentation on how to intall Pluto and run notebooks can be found [here](https://juliahub.com/docs/Pluto/OJqMt/0.7.4/).
+
+Enter a function in standard julia notation, the number of points to use and a distribution type.
+"""
+
+# ╔═╡ 06174f68-85e8-4d11-a642-7ec5c1c8ef45
+md"""
+Function | Number of Points | Point Distribution | Show Error
+:-- | :-- | :-- | :--
+$(@bind expr TextField(default = "5/(x^2+1)")) | $(@bind num NumberField(1:30, default = 10)) | $(@bind dist Select(["Equidistant", "Chebyshev", "Custom"], default = "Equidistant")) | $(@bind showError CheckBox())
+"""
+
+# ╔═╡ fdfd29e3-e670-485f-b0e2-cedc566f8d50
+if dist == "Custom"
+	md"""
+	**Custom Point Distribution:** $(@bind custDist TextField(default = "-3, -1, 2, 2.5"))
+	"""
+end
 
 # ╔═╡ 451e52ad-045e-466a-9d03-465f6fe5bab8
 function interpolate(points, values)
@@ -71,39 +103,7 @@ function interpolate(points, values)
 		end
 		res
 	end
-end
-
-# ╔═╡ 2137e63c-4ebb-426e-b164-b62afc8a4fb7
-md"""
-## Chebyshev Points
-These are the roots of the Chebyshev polynomial of the first kind. For a given $n$, the Chebyshev points in the interval $(-1,1)$ are given by
-
-$x_i = \cos\left(\frac{2i-1}{2n}\pi\right)$
-
-for $i = 1,\dots,n$. They are particularly good points to use for polynomial interpolation since they minimise Runge's phenomenon. Just look at the error graph to convince yourself of this!
-
-
-"""
-
-# ╔═╡ db44fc36-2803-4c73-99ce-8916bfe0c300
-md"""
-## Interactive Tool
-Enter a function in standard julia notation, the number of points to use and a distribution type.
-"""
-
-# ╔═╡ 06174f68-85e8-4d11-a642-7ec5c1c8ef45
-md"""
-Function | Number of Points | Point Distribution | Show Error
-:-- | :-- | :-- | :--
-$(@bind expr TextField(default = "5/(x^2+1)")) | $(@bind num NumberField(1:30, default = 10)) | $(@bind dist Select(["Equidistant", "Chebyshev", "Custom"], default = "Equidistant")) | $(@bind showError CheckBox())
-"""
-
-# ╔═╡ fdfd29e3-e670-485f-b0e2-cedc566f8d50
-if dist == "Custom"
-	md"""
-	**Custom Point Distribution:** $(@bind custDist TextField(default = "-3, -1, 2, 2.5"))
-	"""
-end
+end;
 
 # ╔═╡ 56c53cde-c07d-43ea-be8d-353919d0c5e7
 begin
@@ -150,8 +150,11 @@ end
 
 # ╔═╡ 070c6c1c-d947-4404-9ec9-79913338b069
 md"""
-**Largest Diviation:** $(round(max([err(x) for x in -5:0.01:5]...), digits = 3))
+**Largest Deviation:** $(round(max([err(x) for x in -5:0.01:5]...), digits = 3))
 """
+
+# ╔═╡ 1c74d193-d3ba-459b-9614-49e45a2c0c57
+PlutoUI.TableOfContents(title = "Contents")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -979,16 +982,17 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╟─8b815060-fdd9-11eb-102f-31aa20bbffba
-# ╠═ad2181e3-27cc-44fa-b731-1d30b6f1a410
-# ╠═a4f7adf0-bd3a-4315-982b-00a2d8e8e032
 # ╟─b08fb981-c72e-47c8-8737-f8cbb749651d
 # ╟─d669910c-221e-4640-a997-483ef0e3c398
-# ╟─451e52ad-045e-466a-9d03-465f6fe5bab8
 # ╟─2137e63c-4ebb-426e-b164-b62afc8a4fb7
 # ╟─db44fc36-2803-4c73-99ce-8916bfe0c300
 # ╟─06174f68-85e8-4d11-a642-7ec5c1c8ef45
 # ╟─fdfd29e3-e670-485f-b0e2-cedc566f8d50
 # ╟─56c53cde-c07d-43ea-be8d-353919d0c5e7
 # ╟─070c6c1c-d947-4404-9ec9-79913338b069
+# ╟─ad2181e3-27cc-44fa-b731-1d30b6f1a410
+# ╟─a4f7adf0-bd3a-4315-982b-00a2d8e8e032
+# ╟─451e52ad-045e-466a-9d03-465f6fe5bab8
+# ╟─1c74d193-d3ba-459b-9614-49e45a2c0c57
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

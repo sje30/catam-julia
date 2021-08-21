@@ -31,7 +31,7 @@ We consider numerical methods to solve differential equations of the form
 
 $y'(x) = f(x,y)$
 
-with a given intial condition $y_0 = y(x_0)$ and small step size $h$. In particular, we will look at the Forward Euler, Backward Euler, Trapezoid, Runge-Kutta 4, Adam-Bashforth 2 and Heun methods.
+with a given intial condition $y_0 = y(x_0)$ and small step size $h$. In particular, we will look at the Forward Euler, Backward Euler, Trapezoid, Runge-Kutta 4, Adams-Bashforth 2 and Heun methods.
 
 
 """
@@ -74,27 +74,25 @@ $k_3 = f\left(x_n + \frac{h}{2},\ y_n +   \frac{hk_2}{2}\right),\quad k_4 = f(x_
 
 # ╔═╡ aa8f5b2e-c2e8-4d1d-87e9-788980be8000
 md"""
-###### Adam-Bashforth 2
+###### Adams-Bashforth 2
 $y_{n+2} = y_{n+1} + \frac{h}{2}(3 f(x_{n+1},\ y_{n+1}) - f(x_n,\ y_n))$
 """
 
 # ╔═╡ 80a3de60-4cdf-4386-92dd-6e77091c20b8
 md"""
 ###### Heun
-$y_{i+n} = y_n + \frac{h}{2}(f(x_n,\ y_n) + f(x_{n+1},\ \tilde{y}_{i+n}))$
+$y_{n+1} = y_n + \frac{h}{2}(f(x_n,\ y_n) + f(x_{n+1},\ \tilde{y}_{n+1}))$
 with
 
 $\tilde{y}_{n+1} = y_n + h f(x_n,\ y_n)$
 """
 
-# ╔═╡ 03ba8f71-c975-4993-92d3-4590964161e5
-md"""
-## Interactive Tool
-"""
-
 # ╔═╡ b27e1442-408b-4506-8adb-29f3e1c463f1
 md"""
-Enter an expression $f(x,y)$ for $y'(x)$, the initial value, step size, range and number of iterations $m$ used for implicit methods below. You can also enter the exact solution for comparison.
+## Interactive Tool
+**Note:** This interactive tool only works when runnning this file as a Pluto notebook. A documentation on how to intall Pluto and run notebooks can be found [here](https://juliahub.com/docs/Pluto/OJqMt/0.7.4/).
+
+Enter an expression $f(x,y)$ for $y'(x)$, the initial value $y_0$, step size $h$, range $[0, x_{max}]$ and number of iterations $m$ used for implicit methods below. You can also enter the exact solution for comparison.
 """
 
 # ╔═╡ d34f5de4-29cd-4598-a4cf-c3e98e6d0829
@@ -115,7 +113,7 @@ md"""
 md"""
 Forward Euler | Backward Euler | Trapezoid | Runge-Kutta 4 | Adam-Bashforth 2 | Heun
 :-: | :-: | :-: | :-: | :-: | :-:
-$(@bind feulerBox CheckBox(default = true)) | $(@bind beulerBox CheckBox()) | $(@bind trapBox CheckBox()) | $(@bind rk4Box CheckBox()) | $(@bind ab2Box CheckBox()) | $(@bind heunBox CheckBox())
+$(@bind feulerBox CheckBox(default = true)) | $(@bind beulerBox CheckBox(default = true)) | $(@bind trapBox CheckBox()) | $(@bind rk4Box CheckBox()) | $(@bind ab2Box CheckBox()) | $(@bind heunBox CheckBox())
 """
 
 # ╔═╡ 184a6af5-2f41-40a8-a016-6568c8d66c22
@@ -185,6 +183,9 @@ begin
 	if exact != :null && exBox plot!(exact, xrange, label = "Exact Solution") end
 	p
 end
+
+# ╔═╡ b549cafe-a9a3-4646-98b0-84b4eb800dce
+PlutoUI.TableOfContents(title = "Contents")
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1012,8 +1013,6 @@ version = "0.9.1+5"
 
 # ╔═╡ Cell order:
 # ╟─15ea0b36-fe73-11eb-1531-4727f7e3ccc7
-# ╠═cce1e70c-f65a-46d4-88be-39bb1e6453f3
-# ╠═9532a951-2bfe-450b-9d28-104304c078b4
 # ╟─d00962ee-7997-4a4f-b51c-28bf62218e0d
 # ╟─e202a91e-14d4-4086-8e78-a30c36f16531
 # ╟─768a26d8-f75c-40a9-9f1d-8ef6dfa9577e
@@ -1022,11 +1021,13 @@ version = "0.9.1+5"
 # ╟─fa75f41e-3a8c-4001-9bc5-94c9b5be4ce9
 # ╟─aa8f5b2e-c2e8-4d1d-87e9-788980be8000
 # ╟─80a3de60-4cdf-4386-92dd-6e77091c20b8
-# ╟─03ba8f71-c975-4993-92d3-4590964161e5
 # ╟─b27e1442-408b-4506-8adb-29f3e1c463f1
 # ╟─d34f5de4-29cd-4598-a4cf-c3e98e6d0829
 # ╟─8cb59c2f-d5f6-4012-848c-ad7c628fd0c5
 # ╟─b2523720-971b-426a-84dc-cba700a2e971
 # ╟─184a6af5-2f41-40a8-a016-6568c8d66c22
+# ╟─cce1e70c-f65a-46d4-88be-39bb1e6453f3
+# ╟─9532a951-2bfe-450b-9d28-104304c078b4
+# ╟─b549cafe-a9a3-4646-98b0-84b4eb800dce
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

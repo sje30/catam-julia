@@ -27,8 +27,8 @@ for mathematicians to learn the key concepts of the
 2. [Modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
 3. [Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
 4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints/lagrangepointsnotebook.html)
-5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes and Efficiency/primes.jl)
-6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles/shuffle.jl)
+5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency/primes.html)
+6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles/shuffle.html)
 
 # Work in progress below
 
@@ -48,10 +48,10 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 1. Logistic equation (for the introduction)
 2. SIR model for disease spread
 3. Four colour map theorem
-4. Finding prime numbers
-5. Matters of efficiency (Gokul mentions maths macros `@simd`, `@fastmath`, `@inbounds` and column-major arrays in particular)
+4. Finding prime numbers (Done)
+5. Matters of efficiency (Gokul mentions maths macros `@simd`, `@fastmath`, `@inbounds` and column-major arrays in particular) (Done)
 6. Advantages of macros
-7. Voronoi diagrams
+7. Voronoi diagrams (Done)
 8. Examples from John Hinch's new book on [fluid dynamics](https://www.cambridge.org/gb/academic/subjects/mathematics/fluid-dynamics-and-solid-mechanics/think-you-compute-prelude-computational-fluid-dynamics?format=PB)?  [code](https://www.damtp.cam.ac.uk/user/hinch/teaching/CMIFM_Handouts/)
 9. Game of life
 10. Automatic differentiation --> neural networks (gradient descent) [starting point](https://www.youtube.com/watch?v=vAp6nUMrKYg)
@@ -59,7 +59,7 @@ with PDF/HTML.  Movies could be made too (but take a lot of time).
 12. Numerical optimisation?
 13. Turing patterns -- following tutorial by [Miura and Maini](https://paperpile.com/app/p/56e34cfe-cb76-07bd-ae2d-49dd9faad3b9)
 14. Mandlebrot/Julia fractals
-15. Statistics of card shuffles
+15. Statistics of card shuffles (Done)
 16. RSA/Diffie-Hellman Encryption
 17. Different approaches to approximate pi or e (monte carlo, series, continued fractions, etc.)
 18. Perlin noise generation
