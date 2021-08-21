@@ -407,7 +407,9 @@ is decreasing and tends to a constant $M \approx 0.2614972$, called the Meissel�
 # ╔═╡ 39b108b3-b41e-44c4-9565-d199c5831746
 function plotReciprocal(primes)
 	partialSum = 0.0
-	data = []
+    data = []
+    ## SJE: think this is wrong -- i is the index prime; not N
+    ## I think the plot is simpler as below
 	for (i, r) in enumerate(broadcast(x -> 1/x, primes))
 		partialSum += r
 		append!(data, partialSum - log(log(i)))
@@ -416,8 +418,17 @@ function plotReciprocal(primes)
 	plot(data, ylims = (0.4, 0.5), legend = false)
 end
 
+
 # ╔═╡ a6ea88df-32ae-406a-9ce2-eedbfff3b77f
-plotReciprocal(primes)
+partialSum = 0.0
+data = []
+for p in primes[1:1000]
+    partialSum += 1/p
+    append!(data, partialSum - log(log(p)))
+end
+plot(data, ylims=(0.25, 0.5),xlabel="Nth prime", ylabel="approximation")
+hline!([0.2615])
+
 
 # ╔═╡ 2eff73ca-34ba-4a86-bc98-8543003fa46f
 md"""
