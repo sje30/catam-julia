@@ -420,14 +420,16 @@ end
 
 
 # ╔═╡ a6ea88df-32ae-406a-9ce2-eedbfff3b77f
-partialSum = 0.0
-data = []
-for p in primes[1:1000]
+begin
+    partialSum = 0.0
+    data = []
+    for p in primes[1:1000]
     partialSum += 1/p
-    append!(data, partialSum - log(log(p)))
+        append!(data, partialSum - log(log(p)))
+    end
+    plot(data, ylims=(0.25, 0.5),xlabel="Nth prime", ylabel="approximation")
+    hline!([0.2615])
 end
-plot(data, ylims=(0.25, 0.5),xlabel="Nth prime", ylabel="approximation")
-hline!([0.2615])
 
 
 # ╔═╡ 2eff73ca-34ba-4a86-bc98-8543003fa46f
