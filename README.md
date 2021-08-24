@@ -17,8 +17,8 @@ for mathematicians to learn the key concepts of the
 ## Core material
 
 1. [Introduction to Julia for CATAM](https://sje30.github.io/catam-julia/intro/julia-manual.html)
-2. [1A material](https://github.com/sje30/catam-julia/tree/main/1a)
-3. [1B material](https://github.com/sje30/catam-julia/tree/main/1b)
+2. [1A material](https://sje30.github.io/catam-julia/1a/)
+3. [1B material](https://sje30.github.io/catam-julia/1b/)
 4. [Root finding introductory project](https://sje30.github.io/catam-julia/introductoryproject/)
 
 ## Case studies
