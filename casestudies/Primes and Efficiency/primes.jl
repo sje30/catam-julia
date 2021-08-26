@@ -45,8 +45,7 @@ Many traditional encryption algorithm make use of the fact that there is no algo
 # ╔═╡ 6164b325-44b8-478e-a122-a871c44d7ab1
 md"""
 ## Asymptotic Runtime Analysis
-When analysing an algorithm theoretically, we are interested in counting the number of "elementary operations" as a function of the input size. An elementary operation, also sometimes called a zero operation, is any algorithmic step that can be performed by the computer in constant time. Elemetary opertaions include addition, multiplication, division, modulus calculations, conditional checks, etc.
-
+When analysing an algorithm theoretically, we are interested in counting the number of "elementary operations" as a function of the input size. An elementary operation, also sometimes called a zero operation, is any algorithmic step that can be performed by the computer in constant time. Elementary operations include addition, multiplication, division, modulus calculations, conditional checks, etc
 While the time to perform some of these operations, for example multiplication, does depend on the size of the numbers involved, modern computers have specific processor instructions to run such operations directly on the hardware in negligible time.
 
 ### The "Big O" Notation
@@ -86,7 +85,7 @@ end
 
 # ╔═╡ e3525717-d598-4730-9ee0-b65ea09f7ce0
 md"""
-Now to finding all the primes up to $N$, we can just run through all the positive integers less than or equal to $N$, add each integer to our list if it passes our primality test.
+Now to find all the primes up to $N$, we can just run through all the positive integers less than or equal to $N$, add each integer to our list if it passes our primality test.
 """
 
 # ╔═╡ 9f7705cb-775b-4e86-bc70-70b2e852fbc2
@@ -110,11 +109,11 @@ findPrimes(100)
 
 # ╔═╡ dc109446-aa32-4fb7-8f74-edc0c6f98c6a
 md"""
-For most applications and in order to have some meaningful statistics, we need many more primes. Let's say we therefore want to use our algorithm to find all primes up to 100 000.
+For most applications and in order to have some meaningful statistics, we need many more primes. Let's say we therefore want to use our algorithm to find all primes up to 100,000.
 """
 
 # ╔═╡ a346aa06-7db4-4d7a-aad8-bf005c294c67
-findPrimes(100000)
+@time findPrimes(100000)
 
 # ╔═╡ ba0eae87-4eec-4387-a210-64e0f2126f87
 md"""
@@ -140,7 +139,7 @@ function plotTime(f, step, num)
 		append!(inputs, i * step)
 		append!(times, @elapsed f(i * step))
 	end
-	plot(inputs, times, xlabel = "input", ylabel = "seconds", legend = false)
+	plot(inputs, times, xlabel = "N", ylabel = "time (seconds)", legend = false)
 end
 
 # ╔═╡ 656b291e-f430-4e32-a3c9-87553cf2b1a5
@@ -173,7 +172,7 @@ end
 
 # ╔═╡ 17fa50b7-afee-42f9-b622-d18ef1060720
 md"""
-Note that now we have to exclude the cases $n < 2$ explicitely, as for these inputs the list of smaller primes would be empty. Let's now use this new, improved version of `isPrime` to write an improved `findPrimes` function.
+Note that now we have to exclude the cases $n < 2$ explicitly, as for these inputs the list of smaller primes would be empty. Let's now use this new, improved version of `isPrime` to write an improved `findPrimes` function.
 """
 
 # ╔═╡ 519ce97d-fde8-49c7-8b92-56185bd02333
@@ -188,7 +187,7 @@ function findPrimesV2(N)
 end
 
 # ╔═╡ 9e76abdc-ddf9-4edd-a40d-059706f556d0
-findPrimesV2(100000)
+@time findPrimesV2(100_000)
 
 # ╔═╡ ae3c3fa7-0581-46e1-a3f3-abe49173ed1c
 md"""
@@ -205,7 +204,7 @@ _**Prime Number Theorem:**_ The number of primes up to $N$ is asymptotically $N/
 
 # ╔═╡ c28f9636-7d0c-4bd2-9c4d-bfc127ea06bc
 md"""
-Instead of $1+2+3+\cdots + N = N(N+1)/2$ iterations of the inner loop we therefore have approximately $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)\leq \frac{N(N+1)/2}{\log((N+1)/2)}$, using concavity of the function $x/\log(x)$ for $x > e^2$. Note that since we only care about the asymptotic behaviour of the expression, there is no problem with dropping the first term of the series to avoid the pole of $x/\log(x)$ at $1$. The runtime complexity is therefore at most $O(N^2/\log(N))$ and as $N$ grows large we have succesfully shaved of  factor of $\log(N)$.
+Instead of $1+2+3+\cdots + N = N(N+1)/2$ iterations of the inner loop we therefore have approximately $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)\leq \frac{N(N+1)/2}{\log((N+1)/2)}$, using concavity of the function $x/\log(x)$ for $x > e^2$. Note that since we only care about the asymptotic behaviour of the expression, there is no problem with dropping the first term of the series to avoid the pole of $x/\log(x)$ at $1$. The runtime complexity is therefore at most $O(N^2/\log(N))$ and as $N$ grows large we have succesfully shaved of a factor of $\log(N)$.
 
 However, $\log N$ is very small for small values of $N$. In the case above with $N=100000$ we merely have $\log(N) \approx 11.5$. As it so happens, julia is heavily optimized for iterators of the form $1:N$, while of looping over a custom array of the same size can take much longer. The efficiency gain from this optimization outweighs the factor of $\log N$ for small values of $N$.
 """
@@ -213,7 +212,7 @@ However, $\log N$ is very small for small values of $N$. In the case above with 
 # ╔═╡ ce2733ab-10a6-4e87-aae4-ed30fa346823
 md"""
 ### Using Some Mathematical Insight
-Our algorithms can be made much more efficient when taking into consideration the following property of a positive integer:
+Our algorithms can be made much more efficient when considering the following property of a positive integer:
 
 
 _**Lemma:**_ If an integer $n\geq 2$ has no prime divisor $p \leq \sqrt n$, then it is prime.
@@ -250,7 +249,7 @@ function findPrimesV3(N)
 end
 
 # ╔═╡ bc2831a1-f808-4bc7-afaf-994abefb5286
-findPrimesV3(100000)
+@time findPrimesV3(100000)
 
 # ╔═╡ 157a17af-eb12-4d6d-be12-37a1b609005d
 md"""
@@ -258,11 +257,11 @@ We have reduced the runtime for `findPrimes(100000)` from about half a minute do
 """
 
 # ╔═╡ 54c591db-16c9-4c9e-9d01-444558af9c6e
-findPrimesV3(1000000)
-
+findPrimesV3(1_000_000)
+1
 # ╔═╡ 6e319277-a897-49aa-9e78-7a905a11dc89
 md"""
-Finding all primes up to one million in around 15 seconds, that's pretty fast now. Let us also analyse the runtime of our improved verion theoretically: instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the previous ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
+Finding all primes up to one million in around 15 seconds, that's pretty fast now. Let us also analyse the runtime of our improved version theoretically: instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the previous ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
 """
 
 # ╔═╡ 3ed289cd-6ace-442f-a9b4-7fe109af5e49
@@ -329,11 +328,11 @@ The last changes we made does not affect the runtime complexity itself, as it on
 # ╔═╡ ae8373e9-347d-4d2c-b988-6170ec2040a2
 md"""
 ## Applications
-Now that we have a way of finding the first 10 million primes in almost the blink of an eye, lets make use of them to verify some well-knows but hard to prove result about their distribution.
+Now that we have a way of finding the first 10 million primes in almost the blink of an eye, lets make use of them to verify some well-known but hard to prove result about their distribution.
 """
 
 # ╔═╡ cdefc0aa-aefa-4c62-b8a9-692331c9bf50
-primes = findPrimesV4(100000000);
+primes = findPrimesV4(10_000_000);
 
 # ╔═╡ ba871ee3-125d-402c-aef0-fe7046bf2bde
 md"""
@@ -370,7 +369,7 @@ histogram(broadcast(x -> x % 10, primes), bins = -0.5:1:9.5, xticks = -1:9, lege
 
 # ╔═╡ 166c0bb7-e75b-4e32-b3f3-0568e9e3d2b3
 md"""
-The first digits of primes on the other hand we expect to follow a distribution approximately resembling the so-called Benford's Law, since the distribution of the primes gets progressively sparcer and therefore lower leading digits are more likely:
+The first digits of primes on the other hand we expect to follow a distribution approximately resembling the so-called Benford's Law, since the distribution of the primes gets progressively sparser and therefore lower leading digits are more likely:
 """
 
 # ╔═╡ e5bc63bc-751e-4faa-81ce-db37343baf19
@@ -379,7 +378,7 @@ histogram(broadcast(x -> floor(x/10^floor(log10(x))), primes), bins = 0.5:1:9.5,
 # ╔═╡ 9d56672c-f3a0-4705-8e04-6bd2776d46b5
 md"""
 ### The Goldbach Conjecture
-The Goldbach Conjecture is one of the most famous open problems about prime numebrs. Proposed in 1742 by Christian Goldbach in correspondence with Leonhard Euler, it states that every even integer greater than 2 can be written as the sum of two prime numbers. While the problem remains open to this day, the conjecture is strongly believed to be true, not least becasue no counter example has been found so far. Let us verify this for the first few even integers:
+The Goldbach Conjecture is one of the most famous open problems about prime numbers. Proposed in 1742 by Christian Goldbach in correspondence with Leonhard Euler, it states that every even integer greater than 2 can be written as the sum of two prime numbers. While the problem remains open to this day, the conjecture is strongly believed to be true, not least because no counter example has been found so far. Let us verify this for the first few even integers:
 """
 
 # ╔═╡ b0ba2f26-291f-4204-942f-2b87cd5ba8a8
@@ -418,7 +417,9 @@ is decreasing and tends to a constant $M \approx 0.2614972$, called the Meissel�
 # ╔═╡ 39b108b3-b41e-44c4-9565-d199c5831746
 function plotReciprocal(primes)
 	partialSum = 0.0
-	data = []
+    data = []
+    ## SJE: think this is wrong -- i is the index prime; not N
+    ## I think the plot is simpler as below
 	for (i, r) in enumerate(broadcast(x -> 1/x, primes))
 		partialSum += r
 		append!(data, partialSum - log(log(i)))
@@ -427,13 +428,27 @@ function plotReciprocal(primes)
 	plot(data, ylims = (0.4, 0.5), legend = false)
 end
 
+
 # ╔═╡ a6ea88df-32ae-406a-9ce2-eedbfff3b77f
-plotReciprocal(primes)
+begin
+    partialSum = 0.0
+    data = []
+    for p in primes[1:1000]
+    partialSum += 1/p
+        append!(data, partialSum - log(log(p)))
+    end
+    plot(data, ylims=(0.25, 0.5),xlabel="Nth prime", ylabel="approximation")
+    hline!([0.2615])
+end
+
 
 # ╔═╡ 2eff73ca-34ba-4a86-bc98-8543003fa46f
 md"""
 The expression does indeed seem to be decreasing and slowly tending towards some positive constant, just as desired.
 """
+
+# ╔═╡ 577326bc-58c8-4e72-ab94-c2ac8aa2e0c1
+
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1266,7 +1281,7 @@ version = "0.9.1+5"
 # ╟─6164b325-44b8-478e-a122-a871c44d7ab1
 # ╟─24f264de-60d8-463b-8907-0a43f8297e52
 # ╠═53cd01c6-0090-47a0-ad59-63950fe471c1
-# ╟─e3525717-d598-4730-9ee0-b65ea09f7ce0
+# ╠═e3525717-d598-4730-9ee0-b65ea09f7ce0
 # ╠═9f7705cb-775b-4e86-bc70-70b2e852fbc2
 # ╟─48e8d826-a81c-42fa-910b-abd3d80a230d
 # ╠═a3d579fc-b5d9-4662-9823-b171e4a29fab

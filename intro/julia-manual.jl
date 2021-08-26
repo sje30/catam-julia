@@ -138,7 +138,7 @@ Julia is unusual in supporting the use of characters usual Latin alphabet, Arabi
 - Some symbols have syntactic meaning, such as using `≤` instead of `<=`, or `∈` instead of the keyword `in`
 - Non-Latin writing systems are supported, allowing variable/function names as well as text within the program to be written in your (human) language of choice
 - Emoji can be used similarly. Unfortunately, the author of this manual is too boring to appreciate this. `😒 = true`
-These can be copied and pasted into your code, or directly typed if you have the capibilities, but the easiest way tends to be to use ``\LaTeX``-like shortcuts with tab-completion, such as `\alpha<tab>` for `α` or `\leq<tab>` for `≤`. The help mode of the REPL allows pasting of characters to see the relevant shortcuts available for typing them.
+These can be copied and pasted into your code, or directly typed if you have the capabilities, but the easiest way tends to be to use ``\LaTeX``-like shortcuts with tab-completion, such as `\alpha<tab>` for `α` or `\leq<tab>` for `≤`. The help mode of the REPL allows pasting of characters to see the relevant shortcuts available for typing them.
 """
 
 # ╔═╡ 6cf95416-a4d0-442b-8dfa-5e59d07d4a15
@@ -153,6 +153,9 @@ function f(x,y)
 	return √(x^2 + y^2)
 end
 
+# ╔═╡ a151d910-5408-40cc-a352-2eeef5434551
+f(3,4)
+
 # ╔═╡ 4f540782-83d9-4401-8865-78bb39af2aae
 md"""
 However, an alternative syntax is particularly useful for readability of short functions, by writing them in the compact form:
@@ -160,6 +163,9 @@ However, an alternative syntax is particularly useful for readability of short f
 
 # ╔═╡ dd43c006-3455-49db-97bc-e928408a0539
 g(x,y) = √(x^2 + y^2)
+
+# ╔═╡ 45a265d6-b489-49d1-b93d-4907f6ea66b2
+g(3,4)
 
 # ╔═╡ 26b5cc22-db0b-46f4-9d45-d3830223d336
 md"""
@@ -175,6 +181,12 @@ h(x) = begin
 	end
 end
 
+# ╔═╡ 2bb4926a-2b5b-4e02-b1f9-d8225b909ae5
+h(2)
+
+# ╔═╡ e3884fe1-4451-4601-b483-6b4ee03d572e
+h(-2)
+
 # ╔═╡ 74e50b24-39d8-49b4-b651-e4cbe07d382f
 md"""
 The function `h` above also demonstrates another ability of Julia, which is to allow multiple comparisons in the same statement. In many languages, `0 < x < 3` would be invalid syntax, and would have to be written as `0 < x && x < 3`.
@@ -185,10 +197,19 @@ A third feature of Julia that appeals to standard mathematical notation is funct
 # ╔═╡ 0c4f78f4-055b-47fd-8c64-8a77259a13c1
 hg = h ∘ g
 
-# ╔═╡ 7b097f93-d92e-4bac-8d41-3e309629ae3a
+# ╔═╡ a2cf252e-604c-40b7-9bff-d0970ebf9b80
 md"""
 Here, `hg` isn't technically a function, but a `ComposedFunction`, although it acts in much the same way.
+"""
 
+# ╔═╡ cef7f72e-73fe-4a6a-b807-46e14d794014
+hg(1,1)
+
+# ╔═╡ a5717ddf-2e3c-4138-8d7c-40f9d6fb1a12
+hg(3,5)
+
+# ╔═╡ be6f9061-dd1b-4c8a-bd13-82455e8a0207
+md"""
 A fourth such feature is the ability to use numeric coefficients to denote multiplication. Consider the following:
 """
 
@@ -289,18 +310,23 @@ p(A)
 
 # ╔═╡ d9788710-0493-41b2-8510-08ff76614977
 md"""
-If instead we want `p` to act elementwise, there are two options.
+If instead we want `p` to act elementwise, Julia provides two simple options. The first is the `broadcast` function:
 """
 
 # ╔═╡ cb4f8751-6678-4db3-98f1-2c380d272428
 broadcast(p,A)
+
+# ╔═╡ 6ee30cb8-70c9-46fb-bc03-c1917a342ffc
+md"""
+and the second is following the function name with a `.`:
+"""
 
 # ╔═╡ fffd5baf-9142-4c32-9a85-c0258e6366be
 p.(A)
 
 # ╔═╡ 30f3d516-6f44-4eb3-8792-aa4e5ef7a93f
 md"""
-Alternatively, you may need to pass each element as separate arguments to a function, which is done through the splat operator `...`. As an example, consider the difference between:
+Another thing that you may need to do with an array is pass each element individually as separate arguments to a function, which is done through the splat operator `...`. As an example, consider the difference between:
 """
 
 # ╔═╡ 7c081773-bb95-489c-844a-16f9c5bd950f
@@ -344,7 +370,7 @@ As it is, Julia is already equipped with many useful tools, which for some proje
 
 Packages are (usually quite specialised) extensions to Julia's functionality which can be downloaded and used in your programs. Any of these can be downloaded for the first time by running `using Pkg; Pkg.add("<package-name>")` in the REPL. Alternatively, pressing `]` in the REPL puts it in package mode, allowing packages to be downloaded by simply typing `add("<package-name>")`. This only needs to be done the first time that a package is used, as it will download and remain accessible to you in the future. To access the functionality of the package, run `using <package-name>`.
 
-Over 4000 packages exist for Julia, which can be searched through by any of the options linked at <https://julialang.org/packages/>
+Over 4000 packages exist for Julia, which can be searched through by any of the options linked at <https://julialang.org/packages/>. Some particularly useful packages are used in this manual, as well as in the accompanying case studies.
 """
 
 # ╔═╡ 2691d33f-7ecc-4c5b-a249-ac3f16fbefdb
@@ -363,6 +389,11 @@ q = quote
 	end
 end;
 
+# ╔═╡ dbe458d4-f24a-4f8d-8c31-b18555afa57b
+md"""
+`q` stores the entire block of code as written inside the `quote`-`end` block as a variable, which can be run at a later stage with `eval`.
+"""
+
 # ╔═╡ 9e65f10e-3963-45c6-a517-cb78756d8d77
 typeof(q)
 
@@ -378,7 +409,7 @@ These can be useful in many situations, such as to operate on pieces of code, or
 function symbolFn(n)
 	subscriptn = String([Char(0x2080+d) for d in reverse(digits(n))])
 	return Symbol("F",subscriptn)
-end;
+end
 
 # ╔═╡ de04ed4a-84f4-4030-84dd-0092e7772ffa
 symbolFn(123)
@@ -392,7 +423,7 @@ Then, the variables themselves can be created:
 begin
 	F₁ = 1
 	F₂ = 1
-	for n = 3:50
+	for n ∈ 3:50
 		eval( :( $(symbolFn(n)) = $(symbolFn(n-1)) + $(symbolFn(n-2)) ) )
 	end
 end
@@ -428,18 +459,23 @@ end
 begin
 	x = 1
 	@multiple 10 x += 1
-	x
-end
+end;
 
-# ╔═╡ d9bc039f-5e55-456c-8a12-d69869e73541
+# ╔═╡ fb37b982-a6f2-4461-ab12-6cf6e3a2837f
+x
+
+# ╔═╡ 9193e3e6-f1aa-40f8-b009-b712248e72c3
 md"""
 The macro `@macroexpand` can be used to show the expression returned by another macro before it is evaluated, which helps to see how macros work and is invaluable for debugging custom macros.
 
-Two related useful macros are `@elapsed`, which times how long its argument takes to run in seconds, returning the time while discarding the result, and `@time`, which prints the time and returns the result.
+Two related useful macros are `@elapsed`, which times how long its argument takes to run in seconds, returning the time while discarding the result, and `@time`, which prints the time and returns the result. An important note about these two is that the first time a function runs, Julia has to compile it first, so it will always be slower than subsequent runs. To counteract this, make sure to either run the function first, or use the macros from `BenchmarkTools` as described in the next section [Efficiency](#d508655f-663b-4baa-af93-d0cbd5935a97).
 """
 
 # ╔═╡ a6023033-f699-4913-83b3-d4abb76e42e6
-@elapsed inv(rand(1000,1000))
+begin
+	inv([[1,0] [0,1]])
+	@elapsed inv(rand(1000,1000))
+end
 
 # ╔═╡ 8e0bb01c-93e6-4f7b-9d5f-6f815370bad6
 md"""
@@ -452,7 +488,7 @@ md"""
 
 One of the principal advantages that Julia has over other languages, especially Matlab, is the speed of execution, and the ease of achieving this. This is because Julia is able to efficiently translate its code into the same machine code as from the equivalent compilation of C code (arguably the gold-standard for efficiency), giving Julia readability and usability while not compromising on speed. A discussion of this is given (with an aesthetic that conceals its modernity) at <https://web.mit.edu/18.06/www/Spring17/Julia-intro.pdf>
 
-Additionally, Julia has many inbuilt ways to exploit knowledge of properties of the variables in order to increase the speed of execution. To demonstrate one instance of this, we will use the `LinearAlgebra` package (which includes many opportunities for such shortcuts to be made) and the `BenchmarkingTools` package (which provides better macros for estimating the average time that a function takes than `@time` or `@elapsed`).
+Additionally, Julia has many inbuilt ways to exploit knowledge of properties of the variables in order to increase the speed of execution. To demonstrate one instance of this, we will use the `LinearAlgebra` package (which includes many opportunities for such shortcuts to be made) and the `BenchmarkTools` package (which provides better macros for estimating the average time that a function takes than `@time` or `@elapsed`).
 
 """
 
@@ -479,7 +515,7 @@ Julia can also recognise properties in matrices that it isn't told. For example,
 
 # ╔═╡ 7091f035-8f17-460f-a9e9-d7cd9198e106
 md"""
-In order for your own code to make best use of the potential efficiency that Julia boasts, refer to documentation, as well as <https://docs.julialang.org/en/v1/manual/performance-tips/>.
+In order for your own code to make best use of the potential efficiency that Julia boasts, refer to documentation, the case studies accompanying this manual, as well as <https://docs.julialang.org/en/v1/manual/performance-tips/>.
 """
 
 # ╔═╡ 3665a395-ae1c-40cf-8e98-00534f53ee4f
@@ -557,7 +593,7 @@ tableconfig = set_pt_conf(
 	columns_width = 15,
 	alignment = :c,
 	formatters = ((value,i,j) -> round(value, digits = 3))
-)
+);
 
 # ╔═╡ 359594ae-dc8b-4d59-babd-5d5163098cad
 with_terminal() do
@@ -669,7 +705,7 @@ bar!(
 
 # ╔═╡ ebdfd3f2-7d95-4391-81e4-1d384b6aa52a
 md"""
-Different plots can be grouped together into a single image using the `layout` attribute:
+Different plots can be grouped together into a single image, with the layout customisable by using the `layout` attribute:
 """
 
 # ╔═╡ 37da7e59-a1e3-454c-86ee-959c761fedeb
@@ -685,9 +721,7 @@ begin
 	
 	sinplot = customfnplot("sin")
 	cosplot = customfnplot("cos")
-	
-	nothing
-end
+end;
 
 # ╔═╡ e44a80d2-dd32-443b-a918-2af821cad6ac
 doubleplot = plot(sinplot, cosplot, layout = (2,1))
@@ -695,7 +729,7 @@ doubleplot = plot(sinplot, cosplot, layout = (2,1))
 # ╔═╡ 6ceecd44-e185-4bcd-993c-94677f033714
 md"""
 Plots can be saved as files by the function `savefig`, or can be saved by file type specific functions such as `png`. The following code, if run, would save the `doubleplot` graph as *sinandcos.png*:
-```
+```julia
 png(doubleplot,"sinandcos")
 ```
 """
@@ -763,7 +797,7 @@ plot(0:N, sequence, legend=false)
 md"""
 If ``r > 3``, the oscillatory behaviour characterising the beginning of the chaotic behaviour of the logistic map is evident. However, it is not the best graphical demonstration of the chaos which occurs for ``r ⪆ 3.57``; instead let's approximate the bifurcation diagram, a graph of the parameter `r` against the corresponding oscillatory values of the difference equation. For this, the algorithm that will be used is detailed at <http://www.math.le.ac.uk/people/rld8/ma1251/lab3.html>.
 
-To start with, choose a range of values of `r`
+To start with, choose a range of values of `r`. The syntax `0:0.005:4` gives all of the numbers counting from `0` to `4` in intervals of `0.005`:
 """
 
 # ╔═╡ adbdc425-5de6-42be-9399-36f24f2d8316
@@ -771,7 +805,7 @@ rvalues = 0:0.005:4
 
 # ╔═╡ b3d635a1-6c3a-4d0b-800c-d08c5c7a7789
 md"""
-All iterations will start with ``x_0 = 0.5``. We need to discard the earliest iterations before they have converged close to the eventual oscillatory values of the sequence
+All iterations will start with `x₀ = 0.5`. We need to discard the earliest iterations before they have converged close to the eventual oscillatory values of the sequence
 """
 
 # ╔═╡ a643373c-ca5f-4d7d-9e94-9d1dcc7446e7
@@ -787,7 +821,7 @@ maxoscillatoryvalues = 100
 
 # ╔═╡ aad017bb-7fa3-4af6-85cc-6d9018c744d8
 md"""
-For each value of ``r``, we run the iteration, plotting each point, and terminating early for efficiency if any iteration results in a value sufficiently close (in this case within ``0.001``) to the last discarded value. This utilises the `Threads.@threads` macro, which is able to significantly increase the speed at which the logistic function can be calculated at each point by processing in parallel:
+For each value of ``r``, we run the iteration, plotting each point, and terminating early for efficiency if any iteration results in a value sufficiently close (in this case within ``0.001``) to the last discarded value.
 """
 
 # ╔═╡ 62c56061-9064-45a2-bf9b-c9f17fb2f8cd
@@ -802,10 +836,10 @@ If you are viewing this manual as an editable Pluto notebook, try some different
 begin
 	bifurcationreset
 	points = Vector{Tuple{Float64,Float64}}(undef, 0)
-end
+end;
 
 # ╔═╡ ad032574-1ca6-483d-b642-58af6838f9d0
-Threads.@threads for rvalue ∈ rvalues
+for rvalue ∈ rvalues
 	x = 0.5
 	for i ∈ 1:discardediterations
 		x = logisticiteration(rvalue,x)
@@ -829,16 +863,18 @@ md"""
 
 Pluto notebooks are created from the Pluto package for Julia. They act as an alternative, more interactive method of presentation of Julia code; indeed this manual itself is a Pluto notebook. Pluto notebooks are edited from the browser, with text written in Markdown, which is simple but reasonably powerful text-editing tool, with a good introductory guide at several pages of <https://www.markdownguide.org/>.
 
+Other than being made specifically for Julia, Pluto's main draw is its reactivity, meaning that different cells work more like a live-updating network of code than a simple linear script. This can mean that not all Julia programs are suitable for Pluto notebook form, but does provide an excellent method of presentation for Julia code as well displaying the outputs beside the code which creates them, while also allowing efficient editing of code and recalculation of only the cells which are affected by these edits.
+
 To use Pluto:
   - Run `using Pkg; Pkg.add("Pluto");` in the Julia REPL and wait for the package to be downloaded and installed
   - Now run `using Pluto; Pluto.run()`, which should open in your browser, or give an address of the form `localhost:1234/?secret=XXXXXXXX` for you to open
-  - You will be presented with a welcome page. A good place to start is the sample notebooks provided by the developers of Pluto, or this manual (see section [Using this manual](#b695a54f-da17-4acf-aa30-5fb2344df48e))
+  - You will be presented with a welcome page. A good place to start is the sample notebooks provided by the developers of Pluto, or this manual (see section [Using this manual](#b695a54f-da17-4acf-aa30-5fb2344df48e)) and the case studies that go along with it
 
 A similar although not Julia-specific notebook tool is Jupyter, which can be installed for VSCode or run in the browser like Pluto. For more information on this, see <https://jupyter.org/>, and the Jupyter extension for VSCode found through the extension search.
 
 ### Excess Pluto code
 
-The following code is run for the purposes of creating this manual only, and is not otherwise relevant to the discussion
+The following code is run for the purposes of creating the contents table, and is not otherwise relevant to the discussion in this manual.
 
 """
 
@@ -1453,9 +1489,9 @@ version = "1.0.1"
 
 [[Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "TableTraits", "Test"]
-git-tree-sha1 = "8ed4a3ea724dac32670b062be3ef1c1de6773ae8"
+git-tree-sha1 = "d0c690d37c73aeb5ca063056283fde5585a41710"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.4.4"
+version = "1.5.0"
 
 [[Tar]]
 deps = ["ArgTools", "SHA"]
@@ -1703,13 +1739,20 @@ version = "0.9.1+5"
 # ╟─af2dd15c-cb27-483f-b047-69c70d9e7532
 # ╟─6cf95416-a4d0-442b-8dfa-5e59d07d4a15
 # ╠═92715aab-25fe-4387-9fd9-45c7e632b50d
+# ╠═a151d910-5408-40cc-a352-2eeef5434551
 # ╟─4f540782-83d9-4401-8865-78bb39af2aae
 # ╠═dd43c006-3455-49db-97bc-e928408a0539
+# ╠═45a265d6-b489-49d1-b93d-4907f6ea66b2
 # ╟─26b5cc22-db0b-46f4-9d45-d3830223d336
 # ╠═59b2dc85-0ce7-4e99-aeae-170cc13cfe87
+# ╠═2bb4926a-2b5b-4e02-b1f9-d8225b909ae5
+# ╠═e3884fe1-4451-4601-b483-6b4ee03d572e
 # ╟─74e50b24-39d8-49b4-b651-e4cbe07d382f
 # ╠═0c4f78f4-055b-47fd-8c64-8a77259a13c1
-# ╟─7b097f93-d92e-4bac-8d41-3e309629ae3a
+# ╟─a2cf252e-604c-40b7-9bff-d0970ebf9b80
+# ╠═cef7f72e-73fe-4a6a-b807-46e14d794014
+# ╠═a5717ddf-2e3c-4138-8d7c-40f9d6fb1a12
+# ╟─be6f9061-dd1b-4c8a-bd13-82455e8a0207
 # ╠═a671de2a-de76-4728-bf7b-f751c284aace
 # ╟─1b859eb6-525f-4405-b4fc-181ff335532b
 # ╠═c33eeb03-07d8-4f16-8691-568bc830e468
@@ -1728,6 +1771,7 @@ version = "0.9.1+5"
 # ╠═e526a902-224f-4f19-8bab-7c53be471671
 # ╟─d9788710-0493-41b2-8510-08ff76614977
 # ╠═cb4f8751-6678-4db3-98f1-2c380d272428
+# ╟─6ee30cb8-70c9-46fb-bc03-c1917a342ffc
 # ╠═fffd5baf-9142-4c32-9a85-c0258e6366be
 # ╟─30f3d516-6f44-4eb3-8792-aa4e5ef7a93f
 # ╠═7c081773-bb95-489c-844a-16f9c5bd950f
@@ -1740,6 +1784,7 @@ version = "0.9.1+5"
 # ╟─ab8d0a33-c0cd-4ad3-9d94-b9b1afbcca4b
 # ╟─2691d33f-7ecc-4c5b-a249-ac3f16fbefdb
 # ╠═46c6cbb6-e2a7-4ad9-8869-8f31a15c9358
+# ╟─dbe458d4-f24a-4f8d-8c31-b18555afa57b
 # ╠═9e65f10e-3963-45c6-a517-cb78756d8d77
 # ╠═2e9e8b67-7173-4e77-b5d1-f7eaa8834b5e
 # ╟─47a3f741-4064-477e-8eb9-fc0ccac5858c
@@ -1753,7 +1798,8 @@ version = "0.9.1+5"
 # ╟─85843b08-dcf9-4449-88f9-255773605970
 # ╠═cdde6b43-39f2-4cda-bfea-eef48ee494eb
 # ╠═3c21e020-7287-4a3c-9046-7e2ab1150065
-# ╟─d9bc039f-5e55-456c-8a12-d69869e73541
+# ╠═fb37b982-a6f2-4461-ab12-6cf6e3a2837f
+# ╟─9193e3e6-f1aa-40f8-b009-b712248e72c3
 # ╠═a6023033-f699-4913-83b3-d4abb76e42e6
 # ╟─8e0bb01c-93e6-4f7b-9d5f-6f815370bad6
 # ╟─d508655f-663b-4baa-af93-d0cbd5935a97
