@@ -258,7 +258,8 @@ We have reduced the runtime for `findPrimes(100000)` from about half a minute do
 
 # ╔═╡ 54c591db-16c9-4c9e-9d01-444558af9c6e
 findPrimesV3(1_000_000)
-1
+
+
 # ╔═╡ 6e319277-a897-49aa-9e78-7a905a11dc89
 md"""
 Finding all primes up to one million in around 15 seconds, that's pretty fast now. Let us also analyse the runtime of our improved version theoretically: instead of the approximate $2/\log(2) + 3/\log(3) + \cdots + N/\log(N)$ iterations, we now have approximately $\sqrt 2/\log(\sqrt 2) + \sqrt 3/\log(\sqrt 3) + \cdots + \sqrt N/\log(\sqrt N)\leq \frac{N\sqrt{(N+1)/2})}{\log(\sqrt{(N+1)/2})}$, again using concavity, this time of the function $\sqrt x/\log(\sqrt x)$ for $x > e^{2\sqrt 2}$. We get a runtime complexity of $O(N^{3/2}/\log(N))$, a factor $\sqrt N$ better than before. This efficiency gain is much greater than the previous ones, as $\sqrt N$ grows much faster than $\log(N)$ for large $N$.
@@ -409,7 +410,7 @@ md"""
 ### Reciprocal Sum of Primes
 It is well known that the sum of reciprocals of primes diverges. Moreover, the growth rate of the partial sums is also known. In particular, the quantity
 
-$\sum_{i = 1}^n \frac{1}{p_i} - \log\log n$
+$P(n) = \sum_{p \leq n} \frac{1}{p} - \log\log n$
 
 is decreasing and tends to a constant $M \approx 0.2614972$, called the Meissel–Mertens constant, as $n$ tends to infinity. Let us verify that this result is consistent with our data:
 """
@@ -418,37 +419,24 @@ is decreasing and tends to a constant $M \approx 0.2614972$, called the Meissel�
 function plotReciprocal(primes)
 	partialSum = 0.0
     data = []
-    ## SJE: think this is wrong -- i is the index prime; not N
-    ## I think the plot is simpler as below
-	for (i, r) in enumerate(broadcast(x -> 1/x, primes))
-		partialSum += r
-		append!(data, partialSum - log(log(i)))
+	for (i, p) in enumerate(primes)
+		partialSum += 1/p
+		append!(data, partialSum - log(log(p)))
 	end
 	
-	plot(data, ylims = (0.4, 0.5), legend = false)
+	plot(xlabel="i-th prime q_i", ylabel="P(q_i)", legend = false)
+	plot!(data, ylims = (0.261, 0.263))
+	hline!([0.2615])
 end
 
 
-# ╔═╡ a6ea88df-32ae-406a-9ce2-eedbfff3b77f
-begin
-    partialSum = 0.0
-    data = []
-    for p in primes[1:1000]
-    partialSum += 1/p
-        append!(data, partialSum - log(log(p)))
-    end
-    plot(data, ylims=(0.25, 0.5),xlabel="Nth prime", ylabel="approximation")
-    hline!([0.2615])
-end
-
+# ╔═╡ 00484f64-99c0-43b0-97aa-2c2d3ed98318
+plotReciprocal(primes)
 
 # ╔═╡ 2eff73ca-34ba-4a86-bc98-8543003fa46f
 md"""
 The expression does indeed seem to be decreasing and slowly tending towards some positive constant, just as desired.
 """
-
-# ╔═╡ 577326bc-58c8-4e72-ab94-c2ac8aa2e0c1
-
 
 # ╔═╡ 00000000-0000-0000-0000-000000000001
 PLUTO_PROJECT_TOML_CONTENTS = """
@@ -1336,7 +1324,7 @@ version = "0.9.1+5"
 # ╠═6d322108-fa1b-41ad-81d6-5f36b6ef2fb1
 # ╟─6ee5e9b2-2d38-4a92-9e71-660f06bbc7a5
 # ╠═39b108b3-b41e-44c4-9565-d199c5831746
-# ╟─a6ea88df-32ae-406a-9ce2-eedbfff3b77f
+# ╠═00484f64-99c0-43b0-97aa-2c2d3ed98318
 # ╟─2eff73ca-34ba-4a86-bc98-8543003fa46f
 # ╟─e6bbe0a2-3f9c-431a-894d-32279bef9e73
 # ╟─73a77da6-7ec7-4460-9542-bb994676a375
