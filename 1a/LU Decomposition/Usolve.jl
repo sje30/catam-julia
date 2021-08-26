@@ -12,7 +12,7 @@ function Usolve(U, y)
     end
     
     # we initialize x to y
-    x = y;
+    x = copy(y);
 
     # we loop backwards over the rows of U
     for k = URows:-1:1

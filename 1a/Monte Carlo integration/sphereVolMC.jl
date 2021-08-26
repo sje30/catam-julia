@@ -11,7 +11,7 @@ function sphereVolMC(d, n)
 		# we generate a vector with d random floats from [0,1]
 		x = rand(d)
 
-		# we calculat the squared norm of x
+		# we calculate the squared norm of x
 		norm2 = x' * x
 
 		# if x is inside the hypersphere we increment the count

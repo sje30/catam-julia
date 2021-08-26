@@ -16,7 +16,7 @@ function LUdecomp(A)
     U = zeros(n, n)
 
     # we make a copy of A in order not to modify the original
-    B = A
+    B = copy(A)
 
     for k = 1:n
 

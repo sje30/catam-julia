@@ -12,7 +12,7 @@ function Lsolve(L, b)
     end
 
     # we initialize y to b
-    y = b;
+    y = copy(b);
 
     # we loop over the rows of L
     for k = 1:LRows
