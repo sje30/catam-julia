@@ -23,12 +23,13 @@ for mathematicians to learn the key concepts of the
 
 ## Case studies
 
-1. [Permutations](https://sje30.github.io/catam-julia/casestudies/Permutations/permutationsnotebook.html)
-2. [Modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases/Modelling%20infectious%20diseases.html)
-3. [Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi/voronoidiagrams.html)
-4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints/lagrangepointsnotebook.html)
-5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency/primes.html)
-6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles/shuffle.html)
+1. [Permutations](https://sje30.github.io/catam-julia/casestudies/Permutations)
+2. [Modelling infectious diseases](https://sje30.github.io/catam-julia/casestudies/Modelling%20infectious%20diseases)
+3. [Voronoi diagrams](https://sje30.github.io/catam-julia/casestudies/voronoi)
+4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints)
+5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency)
+6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles)
+7. [Random walks](https://sje30.github.io/catam-julia/casestudies/randomwalks)
 
 # Work in progress below
 
