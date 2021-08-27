@@ -8,5 +8,5 @@
 - Generate the elements of groups from generators in `Permutation` form
 
 **Additional files**
-- Code file: [`permutations.jl`](https://sje30.github.io/catam-julia/casestudies/Permutations/Permutations.jl)
+- Code file: [`permutations.jl`](https://sje30.github.io/catam-julia/casestudies/Permutations/permutations.jl)
 - Pluto file: [`permutationsnotebook.jl`](https://sje30.github.io/catam-julia/casestudies/Permutations/permutationsnotebook.jl)
