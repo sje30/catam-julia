@@ -102,6 +102,7 @@ function moondiagram()
 		vars = (1,2),
 		linecolor = :white,
 		linewidth = 1,
+		arrow = true,
 		bg = :black,
 		ticks = false,
 		showaxis = false,
@@ -143,7 +144,7 @@ function trajectory(α, M₁, n, T, lims = [2,1])
 		diagram,
 		[Tuple(simulatedtrajectory.u[1][1:2]), (-α,0), (1-α, 0)],
 		markercolor = [:white, :yellow, :aqua],
-		markersize = [2, 10, 4]
+		markersize = [3, 10, 4]
 	)
 	
 	return diagram
