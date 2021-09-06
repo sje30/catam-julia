@@ -17,7 +17,7 @@ md"""
 ## Objectives
 - **Import** images from files or the web
 - **Transform** images using julia
-- Use **convolutions** to modify or process images
+- Use **convolutions** to modify and process images
 """
 
 # ╔═╡ 1c73a61f-38b6-4dc5-beda-ff09f6b69f5f
