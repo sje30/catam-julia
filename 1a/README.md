@@ -1,11 +1,10 @@
 # 1A material
 
-Conversion of the matlab code that is used in the 1A lectures.
+Conversion of the MATLAB code used in 1A lectures.
 
 [Slides and MATLAB code](https://www.maths.cam.ac.uk/undergrad/catam/part-ia-lectures)
 
-All esential matlab files have been transcribed into julia and python.
-
+All esential files have been transcribed into julia and python:
 
 Topic | Julia | Pluto Notebook | Python
 --- | --- | --- | ---
