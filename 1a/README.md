@@ -9,4 +9,4 @@ All esential matlab files have been transcribed into julia and python.
 
 Topic | Julia | Pluto Notebook | Python
 --- | --- | --- | ---
-Intro Lecture | [mult.jl](https://github.com/sje30/catam-julia/1a/Matrix%20Multiplication/mult.jl) | [mult_test.jl](https://github.com/sje30/catam-julia/1a/Matrix%20Multiplication/mult_test.jl) | [mult.py](https://github.com/sje30/catam-julia/1a/Matrix%20Multiplication/mult.py)
+Intro Lecture | [mult.jl](https://sje30.github.io/catam-julia/1a/Matrix%20Multiplication/mult.jl) | [mult_test.jl](https://sje30.github.io/catam-julia/1a/Matrix%20Multiplication/mult_test.jl) | [mult.py](https://sje30.github.io/catam-julia/1a/Matrix%20Multiplication/mult.py)
