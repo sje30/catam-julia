@@ -29,7 +29,8 @@ for mathematicians to learn the key concepts of the
 4. [Lagrange points](https://sje30.github.io/catam-julia/casestudies/lagrangepoints)
 5. [Primes and efficiency](https://sje30.github.io/catam-julia/casestudies/Primes%20and%20Efficiency)
 6. [Shuffles](https://sje30.github.io/catam-julia/casestudies/Shuffles)
-7. [Random walks](https://sje30.github.io/catam-julia/casestudies/randomwalks)
+7. [Image Processing](https://sje30.github.io/catam-julia/casestudies/Images)
+8. [Random walks](https://sje30.github.io/catam-julia/casestudies/randomwalks)
 
 # Work in progress below
 
