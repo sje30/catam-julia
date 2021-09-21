@@ -229,7 +229,7 @@ lagrangepoints = zeros(Float64, nαvals, 10);
 
 # ╔═╡ 4cddf611-8b43-4351-bb1d-08c29a75003f
 md"""
-Now I am ready to use `NLsolve`. For each value of `α`, I create the function `evalF!`, and input it into the `nlsolve` function five times, once with each of the five starting points. It requires a way of finding a gradient so that it can converge on the root, which in this instance I provide with the `autodiff` parameter. This tells `nlsolve` to find the gradient using automatic differentiation as provided by the `ForwardDiff` package, which will work well with my function as it is in terms of polynomials, quotients, and square roots. The output of `nlsolve` is a special type containing lots of data about the root-finding operation, but as I only want the root that it has found, I simply take the field `zero`, and save the value in `lagrangepoints` appropriately.
+Now I am ready to use `NLsolve`. For each value of `α`, I create the function `evalF!`, and input it into the `nlsolve` function five times, once with each of the five starting points. It requires a way of finding a gradient so that it can converge on the root, which in this instance I provide with the `autodiff` parameter. This tells `nlsolve` to find the gradient using [automatic differentiation](https://www.youtube.com/watch?v=vAp6nUMrKYg) as provided by the `ForwardDiff` package, which will work well with my function as it is in terms of polynomials, quotients, and square roots. The output of `nlsolve` is a special type containing lots of data about the root-finding operation, but as I only want the root that it has found, I simply take the field `zero`, and save the value in `lagrangepoints` appropriately.
 """
 
 # ╔═╡ afc3d520-d321-4102-8a55-5ea66bdfbedc
@@ -291,7 +291,7 @@ plot(
 
 # ╔═╡ b7acb521-51f1-47fa-b0ae-db0676d517e2
 md"""
-These plots show that the coordinates that I have found line up well with the theoretical locations (for small ``\alpha`` where there are first-order approximations). Although the ``y`` axes of the graphs are not shown (to avoid clutter), the errors seen in the ``y`` coordinate of ``L_4`` and ``L_5`` for small ``\alpha`` are of magnitude ``< 10^{-8}``, so I can safely dismiss them. Because of this, I can confidently say that the numerical values that I have found for the ``x``-coordinates of ``L_1``, ``L_2``, and ``L_3`` for larger ``\alpha`` are also reasonably accurate.
+These plots show that the coordinates that I have found line up well with the theoretical locations (for small ``\alpha`` where there are first-order approximations). Although the ``y`` axes of the graphs above are not shown to avoid clutter, the errors seen in the ``y`` coordinate of ``L_4`` and ``L_5`` for small ``\alpha`` are of magnitude ``< 10^{-8}``, so I can safely dismiss them. Because of this, I can confidently say that the numerical values that I have found for the ``x``-coordinates of ``L_1``, ``L_2``, and ``L_3`` for larger ``\alpha`` are also reasonably accurate.
 """
 
 # ╔═╡ 243aa0fb-6162-4fc5-b2f4-ac7a92a86c27
@@ -340,9 +340,9 @@ so that
 \frac{d\mathbf{u}}{dt} = \begin{pmatrix} \dot{x} \\ \dot{y} \\ \ddot{x} \\ \ddot{y} \end{pmatrix}
 ```
 
-with ``\ddot{\mathbf{r}} = \ddot{x} \hat{\mathbf{x}} + \ddot{y} \hat{\mathbf{y}} `` calculated in terms of ``x``, ``y``, ``\dot{x}``, ``\dot{y}``, and the parameters in ``\mathbf{p}`` by `acceleration` above already. This equation is not time dependent, but `DifferentialEquations` still requires the function to have all four inputs.
+with ``\ddot{\mathbf{r}} = \ddot{x} \hat{\mathbf{x}} + \ddot{y} \hat{\mathbf{y}} `` already expressed in terms of ``x``, ``y``, ``\dot{x}``, ``\dot{y}``, and the parameters in ``\mathbf{p}``, as calculated by `acceleration` above. This equation is not time dependent, but `DifferentialEquations` still requires the function to have all four inputs.
 
-The function that I have written implement to do this is `derivative!`:
+The function that I have written to implement this is `derivative!`:
 """
 
 # ╔═╡ 1768e022-8e1a-4978-b6cd-f7612a9d3242
@@ -411,6 +411,7 @@ let
 		vars = (1,2),
 		linecolor = :white,
 		linewidth = 1,
+		arrow = true,
 		bg = :black,
 		ticks = false,
 		showaxis = false,
@@ -469,7 +470,7 @@ function trajectory(α, M₁, n, T, lims = [2,1])
 		diagram,
 		[Tuple(simulatedtrajectory.u[1][1:2]), (-α,0), (1-α, 0)],
 		markercolor = [:white, :yellow, :aqua],
-		markersize = [2, 10, 4],
+		markersize = [3, 10, 4],
 		markerstrokewidth = 0
 	)
 	

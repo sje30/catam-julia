@@ -16,7 +16,7 @@ function PALUdecompV2(A)
     # we initialize L and U to zero, P to {1,2, ..., n}
     L = zeros(n, n)
     U = zeros(n, n)
-    P = 1:n
+    p = collect(1:n)
 
     # we make a copy of A to work with
     B = copy(A)
@@ -24,15 +24,15 @@ function PALUdecompV2(A)
     for k = 1:n
 
         # we find the pivot
-        maxk = findLargestinCol(B, k)
+        maxk = findLargestInCol(B, k)
         if maxk != k
             swapRowsV2!(B, maxk, k)
             swapRowsV2!(L, maxk, k)
             
             # we swap two elements of P instead of two rows
-            temp = P[maxk]
-            P[maxk] = P[k]
-            P[k] = temp
+            temp = p[maxk]
+            p[maxk] = p[k]
+            p[k] = temp
         end
         
         # we proceed with the normal LU decomposition algorithm
@@ -54,6 +54,11 @@ function PALUdecompV2(A)
                 B[i,j] -= L[i,k] * U[k,j];
             end
         end
+    end
+
+    P = zeros(n,n)
+    for i = 1:n
+        P[i,p[i]] = 1
     end
 
     # we return P, L and U

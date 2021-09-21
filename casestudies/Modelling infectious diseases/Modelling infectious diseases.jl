@@ -247,6 +247,7 @@ This model has some features that the first does not which may make it more real
 
 However, due to the simulation of individuals rather than the simulation of the population as a whole, this is inevitably more computationally intensive. Hence, efficiency will be essential to make this model usable.
 
+### Setting up the model
 To begin with, I will set up the parameters for the model.
 """
 
@@ -298,9 +299,6 @@ md"""
 As an additional form of output, I will create an animation of the population at each stage, using the `Plots` package. I use the function `populationplot` to convert the matrix `population` into a heatmap where `1` is yellow, `2` is red, and `3` is blue (which is why I use numbers in the matrix). In order to maintain these colours, three additional pixels of each of these values are added, as otherwise `Plots` will change the scale if the range of values of the plot is not 1 to 3.
 """
 
-# ╔═╡ f4e7d095-13c3-40dc-b248-61d8a065d61c
-anim₂ = Animation();
-
 # ╔═╡ dfc867ac-d8d7-4f90-9410-03746e134443
 function populationplot(population::Matrix{Int64})
     return heatmap(
@@ -314,8 +312,11 @@ function populationplot(population::Matrix{Int64})
     )
 end
 
-# ╔═╡ 2580fb40-9e40-47e8-a8b8-de72ee54b213
-frame(anim₂, populationplot(population))
+# ╔═╡ f4e7d095-13c3-40dc-b248-61d8a065d61c
+begin
+	anim₂ = Animation()
+	frame(anim₂, populationplot(population))
+end;
 
 # ╔═╡ 559aeb30-0d2e-4077-9af1-b4ed4702f9e5
 md"""
@@ -379,9 +380,9 @@ for n ∈ 2:(maxsteps+1)
     blues = CartesianIndex{2}[]
     for j ∈ 1:sqrtN₂, i ∈ 1:sqrtN₂
         if population[i,j] == 2
-            i > 1     && population[i-1,j] == 1 && rand() < p &&
+            i > 1      && population[i-1,j] == 1 && rand() < p &&
 				push!(reds,CartesianIndex(i-1,j))
-            j > 1     && population[i,j-1] == 1 && rand() < p &&
+            j > 1      && population[i,j-1] == 1 && rand() < p &&
 				push!(reds,CartesianIndex(i,j-1))
             i < sqrtN₂ && population[i+1,j] == 1 && rand() < p &&
 				push!(reds,CartesianIndex(i+1,j))
@@ -447,7 +448,7 @@ population[rand(1:N₂)] = :red
 anim₂ = Animation()
 function populationplot(population::Matrix{Symbol})
 	return scatter(
-		[(i,j) for i ∈ 1:sqrtN₂, j ∈ 1:sqrtN₂][:],
+		[(i,j) for j ∈ 1:sqrtN₂, i ∈ 1:sqrtN₂][:],
 		markersize = 3,
 		markercolor = population[:],
 		markerstrokewidth = 0,
@@ -489,11 +490,11 @@ end
 md"""
 With experience coding in Julia (and in general), you can pick up tips and tricks for efficiency that become almost automatic for you to include. Some examples of this in this instance are already included in my early draft, and some could be added in:
 
-- Julia orders the elements of matrices by columns then rows, i.e the next element of a matrix `A` after `A[i,j]` is `A[i+1,j]` (the element below it). Note that this is opposite to some other languages e.g. Python. A consqeuence of this is that when looping over matrices, the outer loops should loop over the columns, and the inner loop over the rows, since then the entries are being accessed in exactly the order that they lie in memory. In the example above, one such loop is correct, but the other (in the function `populationplot`) should instead be
+- Julia orders the elements of matrices by columns then rows, i.e the next element of a matrix `A` after `A[i,j]` is `A[i+1,j]` (the element below it). Note that this is opposite to some other languages, such as Python. A consqeuence of this is that when looping over matrices, the outer loops should loop over the columns, and the inner loop over the rows, since then the entries are being accessed in exactly the order that they lie in memory. In the example above, this is the reason why I have written:
 ```julia
-[(i,j) for j ∈ 1:sqrtN₂, i ∈ 1:sqrtN₂][:]
+for j ∈ 1:sqrtN₂, i ∈ 1:sqrtN₂
 ```
-- Another way of fixing this is to use `eachindex`, which gives an efficient way of iterating over an array (with syntax `for i ∈ eachindex(A)`). This is better when the row and column indices are irrelevant to the operation inside the loop, but since both of the occasions in which I have used such loops I have needed the indices, it isn't the right choice here.
+- Another way of fixing this is to use `eachindex`, which gives an efficient way of iterating over an array (with syntax `for i ∈ eachindex(A)`). This is better when the row and column indices are irrelevant to the operation inside the loop, but I needed the indices, it isn't the right choice here.
 
 - If multiple conditions need to be checked, it makes sense to check the fastest and/or most likely to fail first, since then the loop can move on quicker. This is seen in the draft, where the probability `p` checks are only made after checking that the target individual is susceptible, since that is a quick operation and is quite likely to not be true
 
@@ -1486,9 +1487,8 @@ version = "0.9.1+5"
 # ╠═94272156-621b-4ed5-8582-c079625fa977
 # ╠═ef4051e0-38f2-4dc6-a765-b0c76a4b0705
 # ╟─8fbf94ce-50f5-48a6-91ce-d2f67fa505e4
-# ╠═f4e7d095-13c3-40dc-b248-61d8a065d61c
 # ╠═dfc867ac-d8d7-4f90-9410-03746e134443
-# ╠═2580fb40-9e40-47e8-a8b8-de72ee54b213
+# ╠═f4e7d095-13c3-40dc-b248-61d8a065d61c
 # ╟─559aeb30-0d2e-4077-9af1-b4ed4702f9e5
 # ╠═dc815f4e-a731-4e6d-987d-9a9db7ee5270
 # ╟─3e2119c2-9482-482b-8caf-f9d386ae0522
@@ -1506,6 +1506,6 @@ version = "0.9.1+5"
 # ╟─87cac64d-90a8-431c-8179-7f7462e5c11a
 # ╠═ba1205e6-dcde-4c44-a246-5bc180085ec7
 # ╟─89c2bc30-220c-4add-8bc8-21b5b610d45b
-# ╠═bae4a3e4-2224-4e5d-ab15-bbdf86310ba8
+# ╟─bae4a3e4-2224-4e5d-ab15-bbdf86310ba8
 # ╟─00000000-0000-0000-0000-000000000001
 # ╟─00000000-0000-0000-0000-000000000002

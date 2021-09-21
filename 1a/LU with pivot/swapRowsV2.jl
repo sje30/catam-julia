@@ -4,6 +4,6 @@ function swapRowsV2!(A, u, v)
 
 	# we directly swap rows u and v of A without copying
 	temp = A[u, :]
-	A[u ,:] = A[v, :]
-	A[v ,:] = temp
+	A[u, :] = A[v, :]
+	A[v, :] = temp
 end

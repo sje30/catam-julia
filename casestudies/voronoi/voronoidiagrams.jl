@@ -43,8 +43,10 @@ A Voronoi diagram is a diagram constructed in the plane, where given a number of
 
 # ╔═╡ e9845cba-d61a-4150-9698-6dffbdde3138
 md"""
+Here, each point represents the location of a college, with each surrounded by a convex polygon defining the set of points in the plane, coloured according to the key. It is worth pointing out that although any diagram such as the one above will truncate polygons to fit its bounds, there will always exist infinite polygons in the "full" Voronoi diagram (i.e. in the infinite plane). For the diagram above, there are five of these, Girton, Homerton, Hughes Hall, Jesus, and Wolfson (although the Murray Edwards polygon meets the edge of the diagram, it is not infinite, sharing a vertex with Girton and Jesus outside of the square).
+
 Three particular degenerate cases can occur in Voronoi diagrams. The first one I will attempt to reduce the impact of, but the other two I will ignore for the purposes of this project:
-- Three (or more) points can be exactly collinear. This does not always pose a problem, particularly if there are other points nearby. Indeed, in the example above, the points representing King's, Corpus Christi, and Pembroke are exactly collinear, but the diagram is still generated without an issue.
+- Three (or more) points can be exactly collinear. This does not always pose a problem, particularly if there are other points nearby. Indeed, in the example above, the points representing King's, Corpus Christi, and Pembroke happen to be exactly collinear, but the diagram is still generated without an issue.
 - Even worse, two points could coincide, which is guaranteed to break the algorithm. Unsurprisingly, no porter's lodges coincide, with the closest being Corpus Christi and St Catharine's at a distance of the width of Trumpington Street, two pavements and a bit of lawn apart, which is more than enough to be distinguished at this scale.
 - Four (or more) points can lie on a circle and so their regions meet at a quadripoint. This is far less likely to occur but requires a special case which I have not programmed into the algorithm. Despite a couple of near misses, there are no exact quadripoints in the dataset of colleges. The nearest is between Clare, King's, St Catharine's, and Queens', with the King's and Queens' regions sharing an edge of length approximately 1 metre (although this is well within errors caused by curvature of the Earth and the fact that porter's lodges are not particularly zero-dimensional)
 """
@@ -52,12 +54,12 @@ Three particular degenerate cases can occur in Voronoi diagrams. The first one I
 # ╔═╡ 2b2f564c-03f1-4da0-941e-c08bff8203fc
 md"""
 ## Importing the data
-The first step to creating a Voronoi diagram is to get the data, which in this case is stored in *.csv* files. The CSV package allows for the easy import of such data.
+Before I start creating a Voronoi diagram, I need to get the coordinates of the points that will define it, which in this case are stored in a *.csv* file. The CSV package allows for the easy import of such data.
 """
 
 # ╔═╡ 3683349f-55da-4725-937c-882d620261ac
 md"""
-I construct the function `getpoints` to perform this import. Empty vectors are created to store the data: `xs` for the first coordinate of each point, `ys` for the second coordinate of each point, and `names` for names (if they are specified). Then, using the iterator `CSV.Rows`, I read the input file row by row, taking down the values stored. Then, I output the two/three (depending on if names are specified) vectors of data obtained from the file:
+I construct the function `getpoints` to perform this import. Empty vectors are created to store the data: `xs` for the first coordinate of each point, `ys` for the second coordinate of each point, and `names` for names of the points (if they are specified, such as in the Cambridge colleges example above). Then, using the iterator `CSV.Rows`, I read the input file row by row, taking down the values stored. Then, I output the two/three (depending on if the points have names) vectors of data obtained from the file:
 """
 
 # ╔═╡ 00f99f29-fd88-4bdd-875a-83e892cf4182
@@ -960,7 +962,7 @@ plot(
 md"""
 Most common here are hexagons, with pentagons just behind, and heptagons in third place. This distribution mirrors the results of Tanemura in *Statistical Distributions of Poisson Voronoi Cells in Two and Three Dimensions*, in particular [this figure](https://www.semanticscholar.org/paper/Statistical-Distributions-of-Poisson-Voronoi-Cells-Tanemura/c7a539e69a36b4501ab2a763de34c5d0c17c465e/figure/10), although the uniformly random sampling is exchanged for the slightly different Poisson point process.
 
-I will now look at the number of edges that a Voronoi diagram has when the points are more regularly arranged. I start with a lattice, either square or hexagonal, with the ``\frac{6}{7}`` used as a rational approximation of ``\frac{\sqrt{3}}{2}`` to make the hexagonal lattice approximately equilateral. I then apply some normally distributed randomness with standard deviation `σ` to each point, rounded off to keep the coordinates rational. Then, I generate bar graphs using `voronoidistribution` as before.
+I will now look at the number of edges that a Voronoi diagram has when the points are more regularly arranged. I start with a lattice, either square or hexagonal, with ``\frac{6}{7}`` used as a rational approximation of ``\frac{\sqrt{3}}{2}`` to make the hexagonal lattice approximately equilateral. I then apply some normally distributed randomness with standard deviation `σ` to each point, rounded off to keep the coordinates rational. Then, I generate bar graphs using `voronoidistribution` as before.
 """
 
 # ╔═╡ 0ebcb0f4-159a-4f12-ba9d-f9887762b6e3
