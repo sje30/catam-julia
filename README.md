@@ -36,7 +36,7 @@ studies and book examples.
 # Data-Driven Science and Engineering
 
 We have examined a recent textbook published by CUP entitled
-[Data-Driven Science and Engineering](https://databookuw.com) which
+[Data-Driven Science and Engineering](http://databookuw.com) which
 contains code in matlab and python.  We have converted the Matlab code
 from Chapter 1 and most of Chapter 2 into Julia.  The conversion was
 relatively quick the similarities between Julia and Matlab.  [Julia
