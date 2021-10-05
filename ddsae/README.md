@@ -11,3 +11,5 @@ Not all code has been translated, specifically code solely used for MATLAB forma
 The easiest way to browse our Julia code for this book is to view the
 files [directly on
 github](https://github.com/sje30/catam-julia/edit/main/ddsae/).
+Relevant data files are also included.
+
