@@ -40,7 +40,7 @@ We have examined a recent textbook published by CUP entitled
 contains code in matlab and python.  We have converted the Matlab code
 from Chapter 1 and most of Chapter 2 into Julia.  The conversion was
 relatively quick the similarities between Julia and Matlab.  [Julia
-code](https://sje30.github.io/catam-julia/ddsae).
+code and further details here](https://sje30.github.io/catam-julia/ddsae).
 
 
 
